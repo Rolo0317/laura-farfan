@@ -1,0 +1,173 @@
+<!DOCTYPE html>
+<html lang="es-CO">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Laura Farfán — Mi Historia</title>
+  <style>
+    /* TOQUE COLOMBIANO — colores bandera como acento sutil */
+    :root {
+      --col-amarillo: #FCD116;
+      --col-azul: #003087;
+      --col-rojo: #CE1126;
+      --bg-dark: #0f0f0f;
+      --bg-card: #1a1a1a;
+      --text-primary: #f5f5f5;
+      --text-secondary: #a0a0a0;
+    }
+
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    body {
+      font-family: 'Segoe UI', system-ui, sans-serif;
+      background: var(--bg-dark);
+      color: var(--text-primary);
+      line-height: 1.6;
+      min-height: 100vh;
+    }
+
+    /* Barra tricolor animada al tope de la página */
+    body::before {
+      content: '';
+      position: fixed;
+      top: 0; left: 0; right: 0;
+      height: 3px;
+      background: linear-gradient(to right,
+        var(--col-amarillo) 0%,
+        var(--col-amarillo) 40%,
+        var(--col-azul) 40%,
+        var(--col-azul) 60%,
+        var(--col-rojo) 60%,
+        var(--col-rojo) 100%
+      );
+      z-index: 9999;
+    }
+
+    header {
+      text-align: center;
+      padding: 60px 20px 40px;
+      background: linear-gradient(180deg, #151515 0%, var(--bg-dark) 100%);
+    }
+
+    header h1 {
+      font-size: 2.5rem;
+      font-weight: 300;
+      letter-spacing: 0.1em;
+      margin-bottom: 8px;
+    }
+
+    header h1 span {
+      color: var(--col-amarillo);
+    }
+
+    header p {
+      color: var(--text-secondary);
+      font-size: 1rem;
+      letter-spacing: 0.05em;
+    }
+
+    .gallery {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+      gap: 24px;
+      padding: 40px;
+      max-width: 1400px;
+      margin: 0 auto;
+    }
+
+    .photo-card {
+      background: var(--bg-card);
+      border-radius: 12px;
+      overflow: hidden;
+      transition: transform 0.3s ease, box-shadow 0.3s ease;
+    }
+
+    .photo-card:hover {
+      transform: translateY(-4px);
+      box-shadow: 0 12px 40px rgba(0, 0, 0, 0.4);
+    }
+
+    .photo-card img {
+      width: 100%;
+      height: 220px;
+      object-fit: cover;
+      display: block;
+    }
+
+    .photo-card .caption {
+      padding: 16px;
+      font-size: 0.9rem;
+      color: var(--text-secondary);
+      border-left: 3px solid var(--col-azul);
+    }
+
+    footer {
+      text-align: center;
+      padding: 40px 20px;
+      background: #0a0a0a;
+      color: var(--text-secondary);
+    }
+
+    footer .footer-colombiana {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      margin-top: 16px;
+      font-size: 0.78rem;
+      letter-spacing: 0.15em;
+      color: var(--col-amarillo);
+      text-transform: uppercase;
+    }
+
+    @media (max-width: 600px) {
+      header h1 { font-size: 1.8rem; }
+      .gallery { padding: 20px; gap: 16px; }
+    }
+  </style>
+</head>
+<body>
+  <header>
+    <h1>Laura <span>Farfán</span></h1>
+    <p>Una vida en momentos — Bogotá D.C.</p>
+  </header>
+
+  <main class="gallery" id="gallery"></main>
+
+  <footer>
+    <p>&copy; 2026 Laura Farfán. Todos los derechos reservados.</p>
+    <p class="footer-colombiana">🇨🇴 Hecha en Colombia · Bogotá D.C.</p>
+  </footer>
+
+  <script>
+    const photos = [
+      { src: 'imagenes/foto-08-bebe-infancia.jpeg',     caption: 'Los primeros latidos — El comienzo de todo' },
+      { src: 'imagenes/foto-10-sombrero-vueltiao.jpeg',  caption: 'El sombrero vueltiao — Legado y raíces colombianas' },
+      { src: 'imagenes/foto-05-futbol-sala-bogota.jpeg', caption: 'Representando a Bogotá D.C. — Fútbol sala' },
+      { src: 'imagenes/foto-01-parque-acuatico.jpeg',    caption: 'Familia unida — Momentos de alegría' },
+      { src: 'imagenes/foto-04-familia-noche.jpeg',      caption: 'Los míos y mi mascota — El hogar bogotano' },
+      { src: 'imagenes/foto-09-mascota-perro.jpeg',      caption: 'La mascota del hogar — Amor peludo' },
+      { src: 'imagenes/foto-07-amigas-selfie.jpeg',      caption: 'Amigas — Familia por elección' },
+      { src: 'imagenes/foto-03-amigos-reunion.jpeg',     caption: 'La magia de compartir — Momentos con amigos' },
+      { src: 'imagenes/foto-06-graduacion.jpeg',         caption: 'El día de la graduación — Sueños cumplidos' },
+      { src: 'imagenes/foto-00-cumpleanos-familia.jpeg', caption: 'Feliz cumpleaños — Celebrando con papá y mamá' },
+      { src: 'imagenes/foto-02-scooter-libertad.jpeg',   caption: 'Libertad sobre dos ruedas — El scooter' },
+      { src: 'imagenes/foto-11-moto-tvs.jpeg',           caption: 'La moto TVS — Presente en movimiento' },
+    ];
+
+    const gallery = document.getElementById('gallery');
+    photos.forEach(photo => {
+      const card = document.createElement('div');
+      card.className = 'photo-card';
+      card.innerHTML = `
+        <img src="${photo.src}" alt="${photo.caption}" loading="lazy">
+        <div class="caption">${photo.caption}</div>
+      `;
+      gallery.appendChild(card);
+    });
+  </script>
+</body>
+</html>
