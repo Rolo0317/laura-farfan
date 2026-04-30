@@ -3,10 +3,11 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>El Tapiz de Mi Vida — Laura Farfán</title>
+  <meta name="description" content="El Tapiz de Mi Vida: autobiografía interactiva de Laura Farfán en Bogotá D.C., Colombia.">
+  <title>El Tapiz de Mi Vida - Laura Farfán</title>
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,600;0,700;1,400;1,600&family=Nunito:wght@300;400;500;600&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,600;0,700;1,400;1,600;1,700&family=Nunito:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
   <style>
     :root {
       --fucsia: #f70071;
@@ -20,2162 +21,1398 @@
       --borde: rgba(255,27,130,0.18);
       --texto: #fff0f7;
       --texto2: rgba(255,200,225,0.65);
-      --oro: var(--fucsia);
-      --oro-claro: var(--rosa);
-      --ease-out: cubic-bezier(.16,1,.3,1);
+      --ease: cubic-bezier(0.16, 1, 0.3, 1);
     }
 
-    * { margin: 0; padding: 0; box-sizing: border-box; }
+    * { box-sizing: border-box; margin: 0; padding: 0; }
     html { scroll-behavior: smooth; }
-
     body {
-      font-family: 'Nunito', sans-serif;
+      min-height: 100vh;
       background: var(--fondo);
       color: var(--texto);
-      line-height: 1.7;
-      overflow-x: hidden;
       cursor: none;
+      font-family: "Nunito", sans-serif;
+      line-height: 1.75;
+      overflow-x: hidden;
     }
+    img { display: block; max-width: 100%; }
+    a { color: inherit; }
+    button, a { font: inherit; }
 
-    /* Cursor personalizado */
-    .cursor-dot {
-      width: 8px;
-      height: 8px;
-      background: var(--fucsia);
-      border-radius: 50%;
-      position: fixed;
-      pointer-events: none;
-      z-index: 10000;
-    }
-    .cursor-ring {
-      width: 40px;
-      height: 40px;
-      border: 1px solid rgba(247,0,113,0.5);
-      border-radius: 50%;
-      position: fixed;
-      pointer-events: none;
-      z-index: 9999;
-      opacity: 0.6;
-    }
-
-    /* Noise overlay */
-    .noise-overlay {
-      position: fixed;
-      top: 0;
-      left: 0;
-      width: 100%;
-      height: 100%;
-      pointer-events: none;
-      z-index: 9998;
-      opacity: 0.03;
-      background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)'/%3E%3C/svg%3E");
-    }
-
-    /* Barra tricolor fucsia */
     .tricolor-bar {
-      position: fixed;
-      top: 0;
-      left: 0;
-      right: 0;
+      background: linear-gradient(90deg, var(--fucsia), var(--rosa), var(--rosa3));
       height: 4px;
-      background: linear-gradient(to right,
-        var(--fucsia) 0%, var(--fucsia) 40%,
-        var(--rosa) 40%, var(--rosa) 60%,
-        var(--rosa3) 60%, var(--rosa3) 100%
-      );
-      z-index: 10001;
+      inset: 0 0 auto;
+      position: fixed;
+      z-index: 9999;
     }
-
-    /* Navegación */
-    nav {
+    .reading-progress {
+      background: var(--fucsia);
+      box-shadow: 0 0 18px rgba(247,0,113,.55);
+      height: 2px;
+      left: 0;
       position: fixed;
       top: 4px;
-      left: 0;
-      right: 0;
-      padding: 1rem 2rem;
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      background: rgba(13,0,9,0.85);
-      backdrop-filter: blur(20px);
-      border-bottom: 1px solid var(--borde);
-      z-index: 1000;
-      transition: box-shadow 0.4s var(--ease-out);
-    }
-    nav.scrolled { box-shadow: 0 8px 40px rgba(247,0,113,0.2); }
-    .nav-logo {
-      font-family: 'Playfair Display', serif;
-      font-size: 1.3rem;
-      color: var(--fucsia);
-      font-style: italic;
-    }
-    .nav-links {
-      display: flex;
-      gap: 2rem;
-      list-style: none;
-    }
-    .nav-links a {
-      color: var(--texto);
-      text-decoration: none;
-      font-size: 0.9rem;
-      font-weight: 500;
-      letter-spacing: 0.05em;
-      text-transform: uppercase;
-      transition: color 0.3s ease;
-      position: relative;
-    }
-    .nav-links a::after {
-      content: '';
-      position: absolute;
-      bottom: -4px;
-      left: 0;
+      transform-origin: left;
       width: 0;
-      height: 1px;
-      background: var(--fucsia);
-      transition: width 0.4s var(--ease-out);
+      z-index: 9998;
     }
-    .nav-links a:hover { color: var(--fucsia); }
-    .nav-links a:hover::after { width: 100%; }
-
-    /* Hero */
-    .hero {
-      min-height: 100vh;
-      display: flex;
-      flex-direction: column;
-      justify-content: center;
-      align-items: center;
-      text-align: center;
-      padding: 2rem;
-      position: relative;
+    .bg-fixed {
       background:
         radial-gradient(ellipse 80% 60% at 15% 10%, rgba(247,0,113,.15) 0%, transparent 60%),
         radial-gradient(ellipse 60% 50% at 85% 80%, rgba(255,96,197,.10) 0%, transparent 55%),
         radial-gradient(ellipse 50% 40% at 55% 35%, rgba(255,27,130,.08) 0%, transparent 50%),
-        var(--fondo);
-    }
-
-    .hero-decoration {
-      position: absolute;
-      top: 100px;
-      left: 50%;
-      transform: translateX(-50%);
-      display: flex;
-      gap: 12px;
-    }
-    .hero-decoration span {
-      width: 12px;
-      height: 12px;
-      border-radius: 50%;
-    }
-    .hero-decoration span:nth-child(1) { background: var(--fucsia); }
-    .hero-decoration span:nth-child(2) { background: var(--rosa); }
-    .hero-decoration span:nth-child(3) { background: var(--rosa3); }
-
-    .hero-subtitle {
-      font-size: 0.85rem;
-      letter-spacing: 0.25em;
-      text-transform: uppercase;
-      color: var(--rosa);
-      margin-bottom: 1rem;
-      opacity: 0;
-      animation: subeOp 1s var(--ease-out) 0.2s forwards;
-    }
-
-    .hero-title {
-      font-family: 'Playfair Display', serif;
-      font-size: clamp(2.5rem, 8vw, 5rem);
-      font-weight: 400;
-      line-height: 1.1;
-      margin-bottom: 1rem;
-      opacity: 0;
-      animation: subeOp 1s var(--ease-out) 0.4s forwards;
-    }
-    .hero-title .gold { color: var(--fucsia); font-style: italic; }
-
-    .hero-desc {
-      max-width: 600px;
-      font-size: 1.05rem;
-      color: var(--texto2);
-      line-height: 1.8;
-      margin-bottom: 2rem;
-      opacity: 0;
-      animation: subeOp 1s var(--ease-out) 0.6s forwards;
-    }
-
-    .hero-cta {
-      display: inline-block;
-      background: var(--fucsia);
-      color: #fff;
-      padding: 1rem 2.5rem;
-      border-radius: 50px;
-      text-decoration: none;
-      font-weight: 600;
-      letter-spacing: 0.05em;
-      transition: all 0.4s var(--ease-out);
-      opacity: 0;
-      animation: subeOp 1s var(--ease-out) 0.7s forwards;
-    }
-    .hero-cta:hover {
-      background: var(--fucsia2);
-      transform: scale(1.04);
-    }
-
-    .scroll-indicator {
-      position: absolute;
-      bottom: 40px;
-      left: 50%;
-      transform: translateX(-50%);
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      gap: 8px;
-      opacity: 0;
-      animation: subeOp 1s var(--ease-out) 0.9s forwards;
-    }
-    .scroll-indicator span {
-      font-size: 0.7rem;
-      letter-spacing: 0.2em;
-      text-transform: uppercase;
-      color: var(--texto2);
-    }
-    .scroll-line {
-      width: 1px;
-      height: 40px;
-      background: linear-gradient(to bottom, var(--fucsia), transparent);
-      animation: pulso 2s ease-in-out infinite;
-    }
-
-    @keyframes subeOp { to { opacity: 1; transform: translateY(0); } }
-    @keyframes pulso { 0%, 100% { opacity: 0.3; transform: scaleY(1); } 50% { opacity: 1; transform: scaleY(1.2); } }
-
-    /* Secciones */
-    section { padding: 6rem 2rem; max-width: 1200px; margin: 0 auto; }
-    .section-label { font-size: 0.75rem; letter-spacing: 0.3em; text-transform: uppercase; color: var(--fucsia); margin-bottom: 0.5rem; }
-    .section-title { font-family: 'Playfair Display', serif; font-size: clamp(2rem, 5vw, 3rem); font-weight: 400; margin-bottom: 1.5rem; }
-    .divider { width: 60px; height: 2px; background: linear-gradient(90deg, var(--fucsia), var(--rosa)); margin: 1rem 0; }
-
-    /* Glass card */
-    .glass-card {
-      background: var(--vidrio);
-      backdrop-filter: blur(20px);
-      border: 1px solid var(--borde);
-      border-radius: 16px;
-      padding: 2rem;
-    }
-
-    /* Intro */
-    .intro { display: grid; grid-template-columns: 1fr 1fr; gap: 4rem; align-items: center; }
-    .intro-text p { color: var(--texto2); font-size: 1.05rem; margin-top: 1rem; }
-    .intro-image img { width: 100%; border-radius: 16px; object-fit: cover; }
-
-    /* Stats */
-    .stats { display: grid; grid-template-columns: repeat(4, 1fr); gap: 1.5rem; margin: 4rem 0; }
-    .stat-card { text-align: center; padding: 2rem 1rem; }
-    .stat-number { font-family: 'Playfair Display', serif; font-size: 2.5rem; color: var(--rosa); margin-bottom: 0.5rem; }
-    .stat-label { font-size: 0.9rem; color: var(--texto2); }
-
-    /* Parallax quote */
-    .parallax-quote {
-      min-height: 60vh;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      background: linear-gradient(85%, rgba(247,0,113,0.08) 0%, rgba(13,0,9,0.85) 100%);
-      position: relative;
-      overflow: hidden;
-    }
-    .quote-card {
-      max-width: 700px;
-      text-align: center;
-      padding: 3rem;
-      background: rgba(247,0,113,0.08);
-      border: 1px solid var(--borde);
-      border-radius: 16px;
-    }
-    .quote-text {
-      font-family: 'Playfair Display', serif;
-      font-size: clamp(1.3rem, 3vw, 1.8rem);
-      font-style: italic;
-      color: var(--texto);
-      line-height: 1.6;
-    }
-    .quote-author {
-      display: block;
-      margin-top: 1.5rem;
-      font-size: 0.75rem;
-      letter-spacing: 0.2em;
-      text-transform: uppercase;
-      color: var(--fucsia);
-    }
-
-    /* Timeline */
-    .timeline { position: relative; padding: 4rem 0; }
-    .timeline::before {
-      content: '';
-      position: absolute;
-      left: 50%;
-      top: 0;
-      bottom: 0;
-      width: 2px;
-      background: linear-gradient(to bottom, var(--fucsia), var(--rosa));
-      transform: translateX(-50%);
-    }
-
-    .timeline-item {
-      display: flex;
-      justify-content: flex-end;
-      padding-right: calc(50% + 60px);
-      margin-bottom: 3rem;
-      opacity: 0;
-      transform: translateY(50px);
-      transition: all 0.8s var(--ease-out);
-    }
-    .timeline-item.visible { opacity: 1; transform: translateY(0); }
-    .timeline-item:nth-child(even) {
-      justify-content: flex-start;
-      padding-right: 0;
-      padding-left: calc(50% + 60px);
-    }
-
-    .timeline-content { max-width: 420px; position: relative; }
-    .timeline-number {
-      font-family: 'Playfair Display', serif;
-      font-size: 6rem;
-      color: rgba(247,0,113,0.08);
-      position: absolute;
-      top: -30px;
-      left: -10px;
+        linear-gradient(145deg, var(--fondo), var(--fondo2) 55%, var(--fondo));
+      inset: 0;
+      pointer-events: none;
+      position: fixed;
       z-index: 0;
     }
-    .timeline-dot {
-      position: absolute;
-      right: -52px;
-      top: 20px;
-      width: 16px;
-      height: 16px;
-      border-radius: 50%;
-      background: var(--fucsia);
-      box-shadow: 0 0 20px var(--fucsia);
-    }
-    .timeline-item:nth-child(1) .timeline-dot { background: var(--fucsia); box-shadow: 0 0 20px var(--fucsia); }
-    .timeline-item:nth-child(2) .timeline-dot { background: var(--fucsia2); box-shadow: 0 0 20px var(--fucsia2); }
-    .timeline-item:nth-child(3) .timeline-dot { background: var(--rosa); box-shadow: 0 0 20px var(--rosa); }
-    .timeline-item:nth-child(4) .timeline-dot { background: var(--rosa2); box-shadow: 0 0 20px var(--rosa2); }
-    .timeline-item:nth-child(5) .timeline-dot { background: var(--rosa3); box-shadow: 0 0 20px var(--rosa3); }
-    .timeline-item:nth-child(6) .timeline-dot { background: var(--fucsia); box-shadow: 0 0 20px var(--fucsia); }
-    .timeline-item:nth-child(7) .timeline-dot { background: var(--fucsia2); box-shadow: 0 0 20px var(--fucsia2); }
-    .timeline-item:nth-child(even) .timeline-dot { right: auto; left: -52px; }
-
-    .timeline-inner {
-      display: flex;
-      gap: 1.5rem;
-      align-items: flex-start;
-    }
-    .timeline-item:nth-child(even) .timeline-inner { flex-direction: row-reverse; }
-
-    .timeline-photo {
-      flex-shrink: 0;
-      width: 180px;
-      height: 220px;
-      border-radius: 16px;
-      border: 1px solid var(--borde);
-      box-shadow: 0 8px 32px rgba(247,0,113,0.18);
-      overflow: hidden;
-      cursor: pointer;
-      transition: transform 0.4s var(--ease-out);
-    }
-    .timeline-photo:hover { transform: scale(1.03); }
-    .timeline-photo img {
-      width: 100%;
-      height: 100%;
-      object-fit: cover;
-    }
-
-    .timeline-text-content { flex: 1; }
-    .timeline-title { font-family: 'Playfair Display', serif; font-size: 1.4rem; margin-bottom: 0.3rem; color: var(--rosa); }
-    .timeline-subtitle { font-size: 0.75rem; letter-spacing: 0.15em; text-transform: uppercase; color: var(--rosa2); margin-bottom: 0.8rem; }
-    .timeline-text { color: var(--texto2); font-size: 0.9rem; line-height: 1.7; }
-
-    /* Carousel for Chapter IV */
-    .carousel-container {
-      flex-shrink: 0;
-      width: 180px;
-      height: 220px;
-      border-radius: 16px;
-      border: 1px solid var(--borde);
-      box-shadow: 0 8px 32px rgba(247,0,113,0.18);
-      overflow: hidden;
-      position: relative;
-    }
-    .carousel-slide {
-      position: absolute;
+    .noise {
+      background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='.7'/%3E%3C/svg%3E");
       inset: 0;
-      opacity: 0;
-      transition: opacity 0.8s ease-in-out;
-    }
-    .carousel-slide.active { opacity: 1; }
-    .carousel-slide img {
-      width: 100%;
-      height: 100%;
-      object-fit: cover;
-    }
-    .carousel-overlay {
-      position: absolute;
-      bottom: 0;
-      left: 0;
-      right: 0;
-      padding: 1rem;
-      background: linear-gradient(to top, rgba(13,0,9,0.9) 0%, transparent 100%);
-      text-align: center;
-    }
-    .carousel-overlay span {
-      font-size: 0.7rem;
-      font-style: italic;
-      color: var(--rosa2);
-    }
-    .carousel-dots {
-      position: absolute;
-      bottom: 8px;
-      left: 50%;
-      transform: translateX(-50%);
-      display: flex;
-      gap: 6px;
-    }
-    .carousel-dot {
-      width: 6px;
-      height: 6px;
-      border-radius: 50%;
-      background: var(--rosa3);
-      cursor: pointer;
-      transition: background 0.3s ease;
-    }
-    .carousel-dot.active { background: var(--fucsia); }
-
-    /* Gallery */
-    .gallery-section { padding: 6rem 2rem; max-width: 1400px; margin: 0 auto; }
-    .gallery-title { text-align: center; margin-bottom: 3rem; }
-    .gallery-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 1rem; }
-    .gallery-item {
-      position: relative;
-      border-radius: 12px;
-      overflow: hidden;
-      cursor: pointer;
-      opacity: 0;
-      transform: translateY(30px);
-      transition: all 0.6s var(--ease-out);
-    }
-    .gallery-item.visible { opacity: 1; transform: translateY(0); }
-    .gallery-item.wide { grid-column: span 2; }
-    .gallery-item.tall { grid-row: span 2; }
-    .gallery-item img { width: 100%; height: 100%; object-fit: cover; transition: transform 0.6s var(--ease-out); }
-    .gallery-item:hover img { transform: scale(1.06); }
-    .gallery-overlay {
-      position: absolute;
-      inset: 0;
-      background: linear-gradient(to top, rgba(13,0,9,0.9) 0%, transparent 60%);
-      opacity: 0;
-      transition: opacity 0.4s ease;
-      display: flex;
-      align-items: flex-end;
-      padding: 1.5rem;
-    }
-    .gallery-item:hover .gallery-overlay { opacity: 1; }
-    .gallery-caption { font-size: 0.9rem; color: var(--texto); }
-
-    /* Lightbox */
-    .lightbox {
+      opacity: .035;
+      pointer-events: none;
       position: fixed;
-      inset: 0;
-      background: rgba(13,0,9,0.95);
-      backdrop-filter: blur(30px);
-      z-index: 10002;
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      justify-content: center;
-      opacity: 0;
-      visibility: hidden;
-      transition: all 0.4s ease;
-    }
-    .lightbox.active { opacity: 1; visibility: visible; }
-    .lightbox-close {
-      position: absolute;
-      top: 2rem;
-      right: 2rem;
-      background: none;
-      border: none;
-      color: var(--texto);
-      font-size: 2rem;
-      cursor: pointer;
-      opacity: 0.7;
-      transition: opacity 0.3s ease;
-    }
-    .lightbox-close:hover { opacity: 1; }
-    .lightbox-image { max-width: 80vw; max-height: 70vh; border-radius: 12px; }
-    .lightbox-caption { margin-top: 1.5rem; font-size: 1.1rem; color: var(--texto2); text-align: center; }
-    .lightbox-nav {
-      position: absolute;
-      top: 50%;
-      transform: translateY(-50%);
-      background: var(--vidrio);
-      border: 1px solid var(--borde);
-      color: var(--texto);
-      font-size: 1.5rem;
-      width: 50px;
-      height: 50px;
-      border-radius: 50%;
-      cursor: pointer;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      transition: all 0.3s ease;
-    }
-    .lightbox-nav:hover { background: var(--fucsia); color: #fff; }
-    .lightbox-prev { left: 2rem; }
-    .lightbox-next { right: 2rem; }
-
-    /* Present */
-    .present { display: grid; grid-template-columns: 1fr 1fr; gap: 4rem; align-items: center; }
-    .badges { display: flex; flex-wrap: wrap; gap: 0.8rem; margin-top: 2rem; }
-    .badge {
-      background: var(--vidrio);
-      border: 1px solid var(--borde);
-      padding: 0.6rem 1.2rem;
-      border-radius: 30px;
-      font-size: 0.85rem;
-      color: var(--texto);
-    }
-    .present-quote {
-      font-family: 'Playfair Display', serif;
-      font-size: 1.2rem;
-      font-style: italic;
-      color: var(--texto);
-      line-height: 1.7;
-      padding: 2rem;
-    }
-
-    /* Footer */
-    footer { text-align: center; padding: 4rem 2rem; background: linear-gradient(to bottom, var(--fondo), #050005); }
-    .footer-title { font-family: 'Playfair Display', serif; font-size: 1.8rem; font-style: italic; color: var(--fucsia); margin-bottom: 1.5rem; }
-    .footer-divider { width: 80px; height: 2px; background: linear-gradient(90deg, transparent, var(--fucsia), transparent); margin: 0 auto 1.5rem; }
-    .footer-text { color: var(--texto2); font-size: 0.95rem; margin-bottom: 1rem; }
-    .footer-colombiana { display: inline-flex; align-items: center; gap: 8px; margin-top: 1rem; font-size: 0.8rem; letter-spacing: 0.15em; text-transform: uppercase; color: var(--rosa3); }
-
-    /* Reveal */
-    .reveal { opacity: 0; transform: translateY(50px); transition: all 0.8s var(--ease-out); }
-    .reveal.visible { opacity: 1; transform: translateY(0); }
-
-    /* Responsive */
-    @media (max-width: 768px) {
-      .nav-links { display: none; }
-      .intro, .present { grid-template-columns: 1fr; }
-      .stats { grid-template-columns: repeat(2, 1fr); }
-      .timeline::before { left: 20px; }
-      .timeline-item, .timeline-item:nth-child(even) { padding: 0 0 0 60px; justify-content: flex-start; }
-      .timeline-dot, .timeline-item:nth-child(even) .timeline-dot { left: 12px !important; right: auto !important; }
-      .timeline-inner { flex-direction: column !important; }
-      .timeline-photo, .carousel-container { width: 100%; height: 200px; }
-      .gallery-grid { grid-template-columns: repeat(2, 1fr); }
-      .gallery-item.wide, .gallery-item.tall { grid-column: span 1; grid-row: span 1; }
-      .lightbox-nav { width: 40px; height: 40px; font-size: 1.2rem; }
-      .lightbox-prev { left: 1rem; }
-      .lightbox-next { right: 1rem; }
-    }
-  </style>
-</head>
-<body>
-  <!-- Cursor -->
-  <div class="cursor-dot" id="cursorDot"></div>
-  <div class="cursor-ring" id="cursorRing"></div>
-  <div class="noise-overlay"></div>
-  <div class="tricolor-bar"></div>
-
-  <!-- Navegación -->
-  <nav id="nav">
-    <div class="nav-logo">El Tapiz de Mi Vida</div>
-    <ul class="nav-links">
-      <li><a href="#inicio">Inicio</a></li>
-      <li><a href="#historia">Historia</a></li>
-      <li><a href="#galeria">Galería</a></li>
-      <li><a href="#capitulos">Capítulos</a></li>
-      <li><a href="#presente">Presente</a></li>
-    </ul>
-  </nav>
-
-  <!-- Hero -->
-  <section class="hero" id="inicio">
-    <div class="hero-decoration"><span></span><span></span><span></span></div>
-    <p class="hero-subtitle">Entre Raíces, Sueños y Libertad</p>
-    <h1 class="hero-title">El Tapiz de <span class="gold">Mi Vida</span></h1>
-    <p class="hero-desc">Esta es la historia de una vida que se ha tejido con hilos de amor incondicional, esfuerzo constante y la búsqueda incansable de la felicidad. Cada imagen que guardo no es solo un recuerdo, sino un testimonio de los pasos que me han convertido en la persona que soy hoy.</p>
-    <a href="#historia" class="hero-cta">Descubre mi historia ↓</a>
-    <div class="scroll-indicator"><span>Desliza</span><div class="scroll-line"></div></div>
-  </section>
-
-  <!-- Intro -->
-  <section class="intro" id="historia">
-    <div class="intro-text reveal">
-      <p class="section-label">El comienzo</p>
-      <h2 class="section-title">Los Primeros Latidos</h2>
-      <div class="divider"></div>
-      <p>Todo comenzó con la sencillez y la pureza de la infancia. Recuerdo —o me han contado a través de las fotos— aquel rincón cálido donde el mundo era pequeño y seguro. Allí estaba yo, una pequeña rodeada de la ternura de una cobija de Piolín, luciendo un vestido de cuadros que hoy me arranca una sonrisa. En esa etapa, la vida se medía en caricias y en el cuidado constante de una familia que me recibió como el tesoro más grande.</p>
-    </div>
-    <div class="intro-image reveal">
-      <div class="glass-card">
-        <img src="imagenes/foto-08-bebe-infancia.jpeg" alt="Los primeros latidos" onerror="this.style.background='linear-gradient(135deg, #1a0012, #2a0020)'">
-      </div>
-    </div>
-  </section>
-
-  <!-- Stats -->
-  <section>
-    <div class="stats">
-      <div class="stat-card glass-card reveal"><div class="stat-number">∞</div><div class="stat-label">Amor de familia</div></div>
-      <div class="stat-card glass-card reveal"><div class="stat-number">5+</div><div class="stat-label">Ciudades colombianas</div></div>
-      <div class="stat-card glass-card reveal"><div class="stat-number">1</div><div class="stat-label">Graduación cumplida</div></div>
-      <div class="stat-card glass-card reveal"><div class="stat-number">2</div><div class="stat-label">Ruedas de libertad</div></div>
-    </div>
-  </section>
-
-  <!-- Quote 1 -->
-  <section class="parallax-quote">
-    <div class="quote-card reveal">
-      <p class="quote-text">"La verdadera riqueza no está en lo que tenemos, sino en a quiénes tenemos a nuestro lado en la mesa."</p>
-      <span class="quote-author">— Laura Farfán</span>
-    </div>
-  </section>
-
-  <!-- Timeline -->
-  <section id="capitulos">
-    <div class="gallery-title reveal">
-      <p class="section-label">Mi historia</p>
-      <h2 class="section-title">Los Siete Capítulos</h2>
-    </div>
-    <div class="timeline">
-      <!-- Capítulo I -->
-      <div class="timeline-item">
-        <div class="timeline-content glass-card">
-          <span class="timeline-number">I</span>
-          <div class="timeline-dot"></div>
-          <div class="timeline-inner">
-            <div class="timeline-photo" data-index="0"><img src="imagenes/foto-08-bebe-infancia.jpeg" alt="Capítulo I" onerror="this.style.background='linear-gradient(135deg, #1a0012, #2a0020)'"></div>
-            <div class="timeline-text-content">
-              <h3 class="timeline-title">Los Primeros Latidos</h3>
-              <p class="timeline-subtitle">El despertar</p>
-              <p class="timeline-text">Todo comenzó con la sencillez y la pureza de la infancia. Recuerdo —o me han contado a través de las fotos— aquel rincón cálido donde el mundo era pequeño y seguro. Allí estaba yo, una pequeña rodeada de la ternura de una cobija de Piolín, luciendo un vestido de cuadros que hoy me arranca una sonrisa. En esa etapa, la vida se medía en caricias y en el cuidado constante de una familia que me recibió como el tesoro más grande. Esas manos que me sostenían entonces son las mismas que, con el tiempo, me enseñaron a caminar con firmeza y a mirar al futuro sin miedo.</p>
-            </div>
-          </div>
-        </div>
-      </div>
-
-      <!-- Capítulo II -->
-      <div class="timeline-item">
-        <div class="timeline-content glass-card">
-          <span class="timeline-number">II</span>
-          <div class="timeline-dot"></div>
-          <div class="timeline-inner">
-            <div class="timeline-photo" data-index="1"><img src="imagenes/foto-10-sombrero-vueltiao.jpeg" alt="Capítulo II" onerror="this.style.background='linear-gradient(135deg, #1a0012, #2a0020)'"></div>
-            <div class="timeline-text-content">
-              <h3 class="timeline-title">El Legado de la Tierra</h3>
-              <p class="timeline-subtitle">Raíces y sangre</p>
-              <p class="timeline-text">Crecí entendiendo que nadie llega lejos si olvida de dónde viene. Mi identidad está profundamente ligada a mis raíces y a la tradición que mi familia lleva con orgullo. Uno de los tesoros más grandes de mi memoria es la imagen de todos nosotros unidos, compartiendo la alegría de nuestra cultura y luciendo el sombrero vueltiao. Ese símbolo no es solo una prenda; es el recordatorio del esfuerzo de nuestros ancestros, de la tierra que pisamos y del valor de la unidad. En casa, aprendí que la verdadera riqueza no está en lo que tenemos, sino en a quiénes tenemos a nuestro lado en la mesa.</p>
-            </div>
-          </div>
-        </div>
-      </div>
-
-      <!-- Capítulo III -->
-      <div class="timeline-item">
-        <div class="timeline-content glass-card">
-          <span class="timeline-number">III</span>
-          <div class="timeline-dot"></div>
-          <div class="timeline-inner">
-            <div class="timeline-photo" data-index="2"><img src="imagenes/foto-05-futbol-sala-bogota.jpeg" alt="Capítulo III" onerror="this.style.background='linear-gradient(135deg, #1a0012, #2a0020)'"></div>
-            <div class="timeline-text-content">
-              <h3 class="timeline-title">Vocación y Movimiento</h3>
-              <p class="timeline-subtitle">El templo de la cancha</p>
-              <p class="timeline-text">Lo que empezó como un juego en los coliseos de Bogotá, representando los colores de mi ciudad en el fútbol sala, se transformó en el propósito de mi vida. Vestir esos uniformes y sentir la adrenalina de la competencia me llevó a entender que el cuerpo y el movimiento son herramientas de transformación social. Por eso, hoy mi camino está trazado por la Licenciatura en Educación Física. No solo busco ser una deportista, sino una guía que enseñe el valor de la disciplina, la salud y la perseverancia a las futuras generaciones. La cancha dejó de ser solo un lugar de juego para convertirse en mi laboratorio de enseñanza, donde el sudor y el esfuerzo se traducen en formación y carácter.</p>
-            </div>
-          </div>
-        </div>
-      </div>
-
-      <!-- Capítulo IV - Carousel -->
-      <div class="timeline-item">
-        <div class="timeline-content glass-card">
-          <span class="timeline-number">IV</span>
-          <div class="timeline-dot"></div>
-          <div class="timeline-inner">
-            <div class="carousel-container" id="carousel-chapter">
-              <div class="carousel-slide active"><img src="imagenes/ciudad-01.jpeg" alt="Ciudad 1" onerror="this.style.background='linear-gradient(135deg, #1a0012, #2a0020)'"></div>
-              <div class="carousel-slide"><img src="imagenes/ciudad-02.jpeg" alt="Ciudad 2" onerror="this.style.background='linear-gradient(135deg, #1a0012, #2a0020)'"></div>
-              <div class="carousel-slide"><img src="imagenes/ciudad-03.jpeg" alt="Ciudad 3" onerror="this.style.background='linear-gradient(135deg, #1a0012, #2a0020)'"></div>
-              <div class="carousel-slide"><img src="imagenes/ciudad-04.jpeg" alt="Ciudad 4" onerror="this.style.background='linear-gradient(135deg, #1a0012, #2a0020)'"></div>
-              <div class="carousel-overlay"><span>Armenia · Pereira · Casanare · Buga</span></div>
-              <div class="carousel-dots">
-                <span class="carousel-dot active" data-slide="0"></span>
-                <span class="carousel-dot" data-slide="1"></span>
-                <span class="carousel-dot" data-slide="2"></span>
-                <span class="carousel-dot" data-slide="3"></span>
-              </div>
-            </div>
-            <div class="timeline-text-content">
-              <h3 class="timeline-title">Horizontes Colombianos</h3>
-              <p class="timeline-subtitle">El camino del aprendizaje</p>
-              <p class="timeline-text">Mi curiosidad me ha llevado más allá de las fronteras de mi ciudad. Viajar ha sido una extensión de mi educación. He recorrido la calidez de Armenia y los paisajes vibrantes de Pereira en el Eje Cafetero, donde el verde de las montañas me ha inspirado a valorar lo nuestro. He sentido la inmensidad de los llanos en Casanare y la espiritualidad y calma que envuelve a Buga. Cada viaje ha sido una lección de geografía humana, permitiéndome entender la diversidad de nuestro país y reforzando mi deseo de llevar el deporte y la educación a cada rincón.</p>
-            </div>
-          </div>
-        </div>
-      </div>
-
-      <!-- Capítulo V -->
-      <div class="timeline-item">
-        <div class="timeline-content glass-card">
-          <span class="timeline-number">V</span>
-          <div class="timeline-dot"></div>
-          <div class="timeline-inner">
-            <div class="timeline-photo" data-index="6"><img src="imagenes/foto-07-amigas-selfie.jpeg" alt="Capítulo V" onerror="this.style.background='linear-gradient(135deg, #1a0012, #2a0020)'"></div>
-            <div class="timeline-text-content">
-              <h3 class="timeline-title">La Magia de Compartir</h3>
-              <p class="timeline-subtitle">Celebrar y conectar</p>
-              <p class="timeline-text">La vida me ha bendecido con amistades que son familia por elección. He aprendido a valorar esos momentos sencillos que lo son todo: una selfie improvisada con mis mejores amigas, las risas que se extienden hasta la madrugada y la complicidad de quienes conocen mis sueños y mis miedos. Y, por supuesto, mis padres. Cada cumpleaños ha sido un hito de gratitud. Verlos allí, celebrando mi existencia con globos, pasteles y un amor que no conoce límites, es lo que me da fuerza. Ellos han sido mi refugio en las tormentas y mi mayor aplauso en los triumphs.</p>
-            </div>
-          </div>
-        </div>
-      </div>
-
-      <!-- Capítulo VI -->
-      <div class="timeline-item">
-        <div class="timeline-content glass-card">
-          <span class="timeline-number">VI</span>
-          <div class="timeline-dot"></div>
-          <div class="timeline-inner">
-            <div class="timeline-photo" data-index="8"><img src="imagenes/foto-06-graduacion.jpeg" alt="Capítulo VI" onerror="this.style.background='linear-gradient(135deg, #1a0012, #2a0020)'"></div>
-            <div class="timeline-text-content">
-              <h3 class="timeline-title">El Triunfo</h3>
-              <p class="timeline-subtitle">La graduación</p>
-              <p class="timeline-text">Hubo un día en que el cielo pareció más brillante: el día de mi graduación. Ese momento de colocarme la toga y el birrete no fue solo un acto protocolario; fue la culminación de noches de estudio, de dudas superadas y de una meta alcanzada con pulso propio. Ver el orgullo en los ojos de mi familia mientras sostenía mi diploma fue el regalo más grande. En ese instante comprendí que los sueños no se cumplen por arte de magia, sino por la determinación de no rendirse nunca.</p>
-            </div>
-          </div>
-        </div>
-      </div>
-
-      <!-- Capítulo VII -->
-      <div class="timeline-item">
-        <div class="timeline-content glass-card">
-          <span class="timeline-number">VII</span>
-          <div class="timeline-dot"></div>
-          <div class="timeline-inner">
-            <div class="timeline-photo" data-index="10"><img src="imagenes/foto-02-scooter-libertad.jpeg" alt="Capítulo VII" onerror="this.style.background='linear-gradient(135deg, #1a0012, #2a0020)'"></div>
-            <div class="timeline-text-content">
-              <h3 class="timeline-title">Presente en Movimiento</h3>
-              <p class="timeline-subtitle">Libertad y hogar</p>
-              <p class="timeline-text">Hoy, mi vida es un equilibrio entre la serenidad del hogar y la emoción de la ruta. He descubierto una libertad inigualable sobre dos ruedas. Ya sea en la agilidad de mi scooter o sintiendo el motor de mi motocicleta de marchas, el viento en el rostro me recuerda que estoy viva y que el mundo es vasto para quien se atreve a recorrerlo. Conducir es mi meditación, mi forma de conectar con el camino y conmigo misma. Al regresar a casa, me espera la calidez de los míos y la alegría juguetona de mis mascotas, esos seres leales que completan nuestro hogar.</p>
-            </div>
-          </div>
-        </div>
-      </div>
-    </div>
-  </section>
-
-  <!-- Gallery -->
-  <section class="gallery-section" id="galeria">
-    <div class="gallery-title reveal">
-      <p class="section-label">Memories</p>
-      <h2 class="section-title">La Galería de la Vida</h2>
-    </div>
-    <div class="gallery-grid">
-      <div class="gallery-item wide" data-index="0"><img src="imagenes/foto-08-bebe-infancia.jpeg" alt="" onerror="this.style.background='linear-gradient(135deg, #1a0012, #2a0020)'"><div class="gallery-overlay"><span class="gallery-caption">Los primeros latidos — El comienzo de todo</span></div></div>
-      <div class="gallery-item" data-index="1"><img src="imagenes/foto-10-sombrero-vueltiao.jpeg" alt="" onerror="this.style.background='linear-gradient(135deg, #1a0012, #2a0020)'"><div class="gallery-overlay"><span class="gallery-caption">El sombrero vueltiao — Raíces colombianas</span></div></div>
-      <div class="gallery-item" data-index="2"><img src="imagenes/foto-05-futbol-sala-bogota.jpeg" alt="" onerror="this.style.background='linear-gradient(135deg, #1a0012, #2a0020)'"><div class="gallery-overlay"><span class="gallery-caption">Representando Bogotá D.C. — Fútbol sala</span></div></div>
-      <div class="gallery-item" data-index="3"><img src="imagenes/foto-01-parque-acuatico.jpeg" alt="" onerror="this.style.background='linear-gradient(135deg, #1a0012, #2a0020)'"><div class="gallery-overlay"><span class="gallery-caption">Familia united — Momentos de alegría</span></div></div>
-      <div class="gallery-item tall" data-index="4"><img src="imagenes/foto-04-familia-noche.jpeg" alt="" onerror="this.style.background='linear-gradient(135deg, #1a0012, #2a0020)'"><div class="gallery-overlay"><span class="gallery-caption">Los míos — El hogar bogotano</span></div></div>
-      <div class="gallery-item" data-index="5"><img src="imagenes/foto-09-mascota-perro.jpeg" alt="" onerror="this.style.background='linear-gradient(135deg, #1a0012, #2a0020)'"><div class="gallery-overlay"><span class="gallery-caption">La mascota del hogar — Amor peludo</span></div></div>
-      <div class="gallery-item" data-index="6"><img src="imagenes/foto-07-amigas-selfie.jpeg" alt="" onerror="this.style.background='linear-gradient(135deg, #1a0012, #2a0020)'"><div class="gallery-overlay"><span class="gallery-caption">Amigas — Familia por elección</span></div></div>
-      <div class="gallery-item" data-index="7"><img src="imagenes/foto-03-amigos-reunion.jpeg" alt="" onerror="this.style.background='linear-gradient(135deg, #1a0012, #2a0020)'"><div class="gallery-overlay"><span class="gallery-caption">La magia de compartir</span></div></div>
-      <div class="gallery-item wide" data-index="8"><img src="imagenes/foto-06-graduacion.jpeg" alt="" onerror="this.style.background='linear-gradient(135deg, #1a0012, #2a0020)'"><div class="gallery-overlay"><span class="gallery-caption">El triunfo de la perseverancia</span></div></div>
-      <div class="gallery-item" data-index="9"><img src="imagenes/foto-00-cumpleanos-familia.jpeg" alt="" onerror="this.style.background='linear-gradient(135deg, #1a0012, #2a0020)'"><div class="gallery-overlay"><span class="gallery-caption">Feliz cumpleaños — Con papá y mamá</span></div></div>
-      <div class="gallery-item" data-index="10"><img src="imagenes/foto-02-scooter-libertad.jpeg" alt="" onerror="this.style.background='linear-gradient(135deg, #1a0012, #2a0020)'"><div class="gallery-overlay"><span class="gallery-caption">Libertad sobre dos ruedas</span></div></div>
-      <div class="gallery-item" data-index="11"><img src="imagenes/foto-11-moto-tvs.jpeg" alt="" onerror="this.style.background='linear-gradient(135deg, #1a0012, #2a0020)'"><div class="gallery-overlay"><span class="gallery-caption">Presente en movimiento — TVS</span></div></div>
-    </div>
-  </section>
-
-  <!-- Quote 2 -->
-  <section class="parallax-quote">
-    <div class="quote-card reveal">
-      <p class="quote-text">"Los sueños no se cumplen por arte de magia, sino por la determinación de no rendirse nunca."</p>
-      <span class="quote-author">— Laura Farfán</span>
-    </div>
-  </section>
-
-  <!-- Present -->
-  <section class="present" id="presente">
-    <div class="present-text reveal">
-      <p class="section-label">Hoy</p>
-      <h2 class="section-title">Presente en Movimiento</h2>
-      <div class="divider"></div>
-      <p>Hoy, mi vida es un equilibrio entre la serenidad del hogar y la emoción de la ruta. He descubierto una libertad inigualable sobre dos ruedas. Ya sea en la agilidad de mi scooter o sintiendo el motor de mi motocicleta de marchas, el viento en el rostro me recuerda que estoy viva y que el mundo es vasto para quien se atreve a recorrerlo. Conducir es mi meditación, mi forma de conectar con el camino y conmigo misma. Al regresar a casa, me espera la calidez de los míos y la alegría juguetona de mis mascotas, esos seres leales que completan nuestro hogar. Soy el resultado de cada gol anotado, de cada kilómetro recorrido por las carreteras de Colombia, de cada clase de educación física y de cada abrazo de mis padres. Esta es mi historia, una que sigo escribiendo cada día con la fuerza de una profesional que ama lo que hace y una mujer que sabe que lo mejor aún está por venir.</p>
-      <div class="badges">
-        <span class="badge">🏍️ Motociclista</span>
-        <span class="badge">⚽ Deportista</span>
-        <span class="badge">📚 Licenciada</span>
-        <span class="badge">🐾 Amante Animales</span>
-      </div>
-    </div>
-    <div class="present-image reveal">
-      <div class="glass-card">
-        <p class="present-quote">"Soy el resultado de cada gol anotado, de cada kilómetro recorrido por las carreteras de Colombia, de cada clase de educación física y de cada abrazo de mis padres. Esta es mi historia, una que sigo escribiendo cada día."</p>
-      </div>
-    </div>
-  </section>
-
-  <!-- Footer -->
-  <footer>
-    <h3 class="footer-title">Lo mejor aún está por venir</h3>
-    <div class="footer-divider"></div>
-    <p class="footer-text">Una historia colombiana de amor, esfuerzo y libertad · Bogotá D.C.</p>
-    <p class="footer-colombiana">🇨🇴 Hecha en Colombia · 2026</p>
-  </footer>
-
-  <!-- Lightbox -->
-  <div class="lightbox" id="lightbox">
-    <button class="lightbox-close" id="lightboxClose">×</button>
-    <button class="lightbox-nav lightbox-prev" id="lightboxPrev">‹</button>
-    <button class="lightbox-nav lightbox-next" id="lightboxNext">›</button>
-    <img class="lightbox-image" id="lightboxImage" src="" alt="">
-    <p class="lightbox-caption" id="lightboxCaption"></p>
-  </div>
-
-  <script>
-    // Gallery data
-    const galleryData = [
-      { src: 'imagenes/foto-08-bebe-infancia.jpeg', caption: 'Los primeros latidos — El comienzo de todo' },
-      { src: 'imagenes/foto-10-sombrero-vueltiao.jpeg', caption: 'El sombrero vueltiao — Raíces colombianas' },
-      { src: 'imagenes/foto-05-futbol-sala-bogota.jpeg', caption: 'Representando Bogotá D.C. — Fútbol sala' },
-      { src: 'imagenes/foto-01-parque-acuatico.jpeg', caption: 'Familia united — Momentos de alegría' },
-      { src: 'imagenes/foto-04-familia-noche.jpeg', caption: 'Los míos — El hogar bogotano' },
-      { src: 'imagenes/foto-09-mascota-perro.jpeg', caption: 'La mascota del hogar — Amor peludo' },
-      { src: 'imagenes/foto-07-amigas-selfie.jpeg', caption: 'Amigas — Familia por elección' },
-      { src: 'imagenes/foto-03-amigos-reunion.jpeg', caption: 'La magia de compartir' },
-      { src: 'imagenes/foto-06-graduacion.jpeg', caption: 'El triunfo de la perseverancia' },
-      { src: 'imagenes/foto-00-cumpleanos-familia.jpeg', caption: 'Feliz cumpleaños — Con papá y mamá' },
-      { src: 'imagenes/foto-02-scooter-libertad.jpeg', caption: 'Libertad sobre dos ruedas' },
-      { src: 'imagenes/foto-11-moto-tvs.jpeg', caption: 'Presente en movimiento — TVS' }
-    ];
-
-    // Cursor
-    const cursorDot = document.getElementById('cursorDot');
-    const cursorRing = document.getElementById('cursorRing');
-    let mouseX = 0, mouseY = 0, ringX = 0, ringY = 0;
-
-    document.addEventListener('mousemove', (e) => {
-      mouseX = e.clientX;
-      mouseY = e.clientY;
-      cursorDot.style.left = mouseX - 4 + 'px';
-      cursorDot.style.top = mouseY - 4 + 'px';
-    });
-
-    function animateRing() {
-      ringX += (mouseX - ringX) * 0.15;
-      ringY += (mouseY - ringY) * 0.15;
-      cursorRing.style.left = ringX - 20 + 'px';
-      cursorRing.style.top = ringY - 20 + 'px';
-      requestAnimationFrame(animateRing);
-    }
-    animateRing();
-
-    // Nav scroll
-    const nav = document.getElementById('nav');
-    window.addEventListener('scroll', () => {
-      nav.classList.toggle('scrolled', window.scrollY > 50);
-    });
-
-    // Reveal on scroll
-    const revealElements = document.querySelectorAll('.reveal, .timeline-item, .gallery-item');
-    const observer = new IntersectionObserver((entries) => {
-      entries.forEach((entry) => {
-        if (entry.isIntersecting) entry.target.classList.add('visible');
-      });
-    }, { threshold: 0.1 });
-    revealElements.forEach(el => observer.observe(el));
-
-    // Gallery stagger
-    document.querySelectorAll('.gallery-item').forEach((item, index) => {
-      item.style.transitionDelay = (index * 0.1) + 's';
-    });
-
-    // Lightbox
-    const lightbox = document.getElementById('lightbox');
-    const lightboxImage = document.getElementById('lightboxImage');
-    const lightboxCaption = document.getElementById('lightboxCaption');
-    let currentIndex = 0;
-
-    function openLightbox(index) {
-      currentIndex = index;
-      lightboxImage.src = galleryData[index].src;
-      lightboxCaption.textContent = galleryData[index].caption;
-      lightbox.classList.add('active');
-    }
-
-    document.querySelectorAll('.gallery-item').forEach((item, index) => {
-      item.addEventListener('click', () => openLightbox(index));
-    });
-
-    document.querySelectorAll('.timeline-photo').forEach((photo, index) => {
-      photo.addEventListener('click', () => openLightbox(index));
-    });
-
-    document.getElementById('lightboxClose').addEventListener('click', () => lightbox.classList.remove('active'));
-    document.getElementById('lightboxPrev').addEventListener('click', () => {
-      currentIndex = (currentIndex - 1 + galleryData.length) % galleryData.length;
-      lightboxImage.src = galleryData[currentIndex].src;
-      lightboxCaption.textContent = galleryData[currentIndex].caption;
-    });
-    document.getElementById('lightboxNext').addEventListener('click', () => {
-      currentIndex = (currentIndex + 1) % galleryData.length;
-      lightboxImage.src = galleryData[currentIndex].src;
-      lightboxCaption.textContent = galleryData[currentIndex].caption;
-    });
-
-    document.addEventListener('keydown', (e) => {
-      if (!lightbox.classList.contains('active')) return;
-      if (e.key === 'Escape') lightbox.classList.remove('active');
-      if (e.key === 'ArrowLeft') {
-        currentIndex = (currentIndex - 1 + galleryData.length) % galleryData.length;
-        lightboxImage.src = galleryData[currentIndex].src;
-        lightboxCaption.textContent = galleryData[currentIndex].caption;
-      }
-      if (e.key === 'ArrowRight') {
-        currentIndex = (currentIndex + 1) % galleryData.length;
-        lightboxImage.src = galleryData[currentIndex].src;
-        lightboxCaption.textContent = galleryData[currentIndex].caption;
-      }
-    });
-
-    lightbox.addEventListener('click', (e) => {
-      if (e.target === lightbox) lightbox.classList.remove('active');
-    });
-
-    // Carousel Chapter IV
-    const carousel = document.getElementById('carousel-chapter');
-    if (carousel) {
-      const slides = carousel.querySelectorAll('.carousel-slide');
-      const dots = carousel.querySelectorAll('.carousel-dot');
-      let currentSlide = 0;
-      let interval;
-      let isPaused = false;
-
-      function showSlide(index) {
-        slides.forEach(s => s.classList.remove('active'));
-        dots.forEach(d => d.classList.remove('active'));
-        slides[index].classList.add('active');
-        dots[index].classList.add('active');
-      }
-
-      function nextSlide() {
-        if (!isPaused) {
-          currentSlide = (currentSlide + 1) % slides.length;
-          showSlide(currentSlide);
-        }
-      }
-
-      interval = setInterval(nextSlide, 3500);
-
-      dots.forEach((dot, index) => {
-        dot.addEventListener('click', () => {
-          currentSlide = index;
-          showSlide(currentSlide);
-          clearInterval(interval);
-          interval = setInterval(nextSlide, 3500);
-        });
-      });
-
-      carousel.addEventListener('mouseenter', () => { isPaused = true; });
-      carousel.addEventListener('mouseleave', () => { isPaused = false; });
-    }
-
-    // Parallax
-    window.addEventListener('scroll', () => {
-      const scrolled = window.scrollY;
-      document.querySelectorAll('.parallax-quote').forEach(section => {
-        section.style.backgroundPositionY = (scrolled * 0.3) + 'px';
-      });
-    });
-  </script>
-</body>
-</html>
-
-    nav.scrolled {
-      box-shadow: 0 8px 40px rgba(0,0,0,0.5);
-    }
-
-    .nav-logo {
-      font-family: 'Playfair Display', serif;
-      font-size: 1.3rem;
-      color: var(--gold);
-      font-style: italic;
-      letter-spacing: 0.02em;
-    }
-
-    .nav-links {
-      display: flex;
-      gap: 2rem;
-      list-style: none;
-    }
-
-    .nav-links a {
-      color: #f5f5f5;
-      text-decoration: none;
-      font-size: 0.9rem;
-      font-weight: 500;
-      letter-spacing: 0.05em;
-      text-transform: uppercase;
-      transition: color 0.3s ease;
-      position: relative;
-    }
-
-    .nav-links a::after {
-      content: '';
-      position: absolute;
-      bottom: -4px;
-      left: 0;
-      width: 0;
-      height: 1px;
-      background: var(--gold);
-      transition: width 0.4s var(--ease-out);
-    }
-
-    .nav-links a:hover {
-      color: var(--gold);
-    }
-
-    .nav-links a:hover::after {
-      width: 100%;
-    }
-
-    /* Hero */
-    .hero {
-      min-height: 100vh;
-      display: flex;
-      flex-direction: column;
-      justify-content: center;
-      align-items: center;
-      text-align: center;
-      padding: 2rem;
-      position: relative;
-      background: radial-gradient(ellipse at 50% 30%, rgba(201,168,76,0.08) 0%, transparent 60%),
-                  radial-gradient(ellipse at 20% 80%, rgba(0,48,135,0.1) 0%, transparent 40%),
-                  radial-gradient(ellipse at 80% 80%, rgba(206,17,38,0.08) 0%, transparent 40%),
-                  var(--bg-dark);
-    }
-
-    .hero-decoration {
-      position: absolute;
-      top: 80px;
-      left: 50%;
-      transform: translateX(-50%);
-      display: flex;
-      gap: 8px;
-    }
-
-    .hero-decoration span {
-      width: 40px;
-      height: 4px;
-      border-radius: 2px;
-    }
-
-    .hero-decoration span:nth-child(1) { background: var(--col-amarillo); }
-    .hero-decoration span:nth-child(2) { background: var(--col-azul); }
-    .hero-decoration span:nth-child(3) { background: var(--col-rojo); }
-
-    .hero-subtitle {
-      font-size: 0.85rem;
-      letter-spacing: 0.25em;
-      text-transform: uppercase;
-      color: var(--rose);
-      margin-bottom: 1rem;
-      opacity: 0;
-      animation: subeOp 1s var(--ease-out) 0.2s forwards;
-    }
-
-    .hero-title {
-      font-family: 'Playfair Display', serif;
-      font-size: clamp(2.5rem, 8vw, 5rem);
-      font-weight: 400;
-      line-height: 1.1;
-      margin-bottom: 1.5rem;
-      opacity: 0;
-      animation: subeOp 1s var(--ease-out) 0.4s forwards;
-    }
-
-    .hero-title .gold {
-      color: var(--gold);
-      font-style: italic;
-    }
-
-    .hero-desc {
-      max-width: 600px;
-      font-size: 1.1rem;
-      color: rgba(245,245,245,0.8);
-      line-height: 1.8;
-      opacity: 0;
-      animation: subeOp 1s var(--ease-out) 0.6s forwards;
-    }
-
-    .scroll-indicator {
-      position: absolute;
-      bottom: 40px;
-      left: 50%;
-      transform: translateX(-50%);
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      gap: 8px;
-      opacity: 0;
-      animation: subeOp 1s var(--ease-out) 0.8s forwards;
-    }
-
-    .scroll-indicator span {
-      font-size: 0.7rem;
-      letter-spacing: 0.2em;
-      text-transform: uppercase;
-      color: rgba(245,245,245,0.5);
-    }
-
-    .scroll-line {
-      width: 1px;
-      height: 40px;
-      background: linear-gradient(to bottom, var(--gold), transparent);
-      animation: pulso 2s ease-in-out infinite;
-    }
-
-    @keyframes subeOp {
-      to { opacity: 1; transform: translateY(0); }
-    }
-
-    @keyframes pulso {
-      0%, 100% { opacity: 0.3; transform: scaleY(1); }
-      50% { opacity: 1; transform: scaleY(1.2); }
-    }
-
-    /* Secciones generales */
-    section {
-      padding: 6rem 2rem;
-      max-width: 1200px;
-      margin: 0 auto;
-    }
-
-    .section-label {
-      font-size: 0.75rem;
-      letter-spacing: 0.3em;
-      text-transform: uppercase;
-      color: var(--gold);
-      margin-bottom: 0.5rem;
-    }
-
-    .section-title {
-      font-family: 'Playfair Display', serif;
-      font-size: clamp(2rem, 5vw, 3rem);
-      font-weight: 400;
-      margin-bottom: 1.5rem;
-    }
-
-    .divider {
-      width: 60px;
-      height: 2px;
-      background: linear-gradient(90deg, var(--gold), var(--gold-light));
-      margin: 1rem 0;
-    }
-
-    /* Glass card */
-    .glass-card {
-      background: var(--glass-bg);
-      backdrop-filter: blur(20px);
-      -webkit-backdrop-filter: blur(20px);
-      border: 1px solid var(--glass-border);
-      border-radius: 16px;
-      padding: 2rem;
-    }
-
-    /* Intro section */
-    .intro {
-      display: grid;
-      grid-template-columns: 1fr 1fr;
-      gap: 4rem;
-      align-items: center;
-    }
-
-    .intro-text p {
-      color: rgba(245,245,245,0.85);
-      font-size: 1.05rem;
-      margin-top: 1rem;
-    }
-
-    .intro-image {
-      position: relative;
-    }
-
-    .intro-image::before {
-      content: '';
-      position: absolute;
-      top: -20px;
-      left: -20px;
-      right: 20px;
-      bottom: 20px;
-      border: 1px solid var(--gold);
-      border-radius: 16px;
-      opacity: 0.3;
-    }
-
-    .intro-image img {
-      width: 100%;
-      border-radius: 16px;
-      object-fit: cover;
-    }
-
-    /* Stats */
-    .stats {
-      display: grid;
-      grid-template-columns: repeat(4, 1fr);
-      gap: 1.5rem;
-      margin: 4rem 0;
-    }
-
-    .stat-card {
-      text-align: center;
-      padding: 2rem 1rem;
-    }
-
-    .stat-number {
-      font-family: 'Playfair Display', serif;
-      font-size: 2.5rem;
-      color: var(--gold);
-      margin-bottom: 0.5rem;
-    }
-
-    .stat-label {
-      font-size: 0.9rem;
-      color: rgba(245,245,245,0.7);
-    }
-
-    /* Parallax quote */
-    .parallax-quote {
-      min-height: 60vh;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      background: var(--bg-dark);
-      position: relative;
-      overflow: hidden;
-    }
-
-    .parallax-quote::before {
-      content: '';
-      position: absolute;
-      top: 0;
-      left: 0;
-      right: 0;
-      bottom: 0;
-      background: radial-gradient(ellipse at 50% 50%, rgba(201,168,76,0.1) 0%, transparent 70%);
-    }
-
-    .quote-card {
-      max-width: 700px;
-      text-align: center;
-      padding: 3rem;
-      position: relative;
       z-index: 1;
     }
-
-    .quote-text {
-      font-family: 'Playfair Display', serif;
-      font-size: clamp(1.3rem, 3vw, 1.8rem);
-      font-style: italic;
-      color: rgba(245,245,245,0.95);
-      line-height: 1.6;
-    }
-
-    /* Timeline */
-    .timeline {
-      position: relative;
-      padding: 4rem 0;
-    }
-
-    .timeline::before {
-      content: '';
-      position: absolute;
-      left: 50%;
-      top: 0;
-      bottom: 0;
-      width: 2px;
-      background: linear-gradient(to bottom, var(--gold), var(--rose));
-      transform: translateX(-50%);
-    }
-
-    .timeline-item {
-      display: flex;
-      justify-content: flex-end;
-      padding-right: calc(50% + 40px);
-      margin-bottom: 4rem;
-      opacity: 0;
-      transform: translateY(50px);
-      transition: all 0.8s var(--ease-out);
-    }
-
-    .timeline-item.visible {
-      opacity: 1;
-      transform: translateY(0);
-    }
-
-    .timeline-item:nth-child(even) {
-      justify-content: flex-start;
-      padding-right: 0;
-      padding-left: calc(50% + 40px);
-    }
-
-    .timeline-content {
-      max-width: 450px;
-      position: relative;
-    }
-
-    .timeline-number {
-      font-family: 'Playfair Display', serif;
-      font-size: 6rem;
-      color: rgba(201,168,76,0.1);
-      position: absolute;
-      top: -40px;
-      left: -20px;
-      z-index: -1;
-    }
-
-    .timeline-dot {
-      position: absolute;
-      right: -48px;
-      top: 20px;
-      width: 16px;
-      height: 16px;
-      border-radius: 50%;
-      background: var(--gold);
-      box-shadow: 0 0 20px var(--gold);
-    }
-
-    .timeline-item:nth-child(1) .timeline-dot { background: var(--col-amarillo); box-shadow: 0 0 20px var(--col-amarillo); }
-    .timeline-item:nth-child(2) .timeline-dot { background: var(--col-azul); box-shadow: 0 0 20px var(--col-azul); }
-    .timeline-item:nth-child(3) .timeline-dot { background: var(--col-rojo); box-shadow: 0 0 20px var(--col-rojo); }
-    .timeline-item:nth-child(4) .timeline-dot { background: var(--gold); box-shadow: 0 0 20px var(--gold); }
-    .timeline-item:nth-child(5) .timeline-dot { background: var(--rose); box-shadow: 0 0 20px var(--rose); }
-    .timeline-item:nth-child(6) .timeline-dot { background: var(--gold-light); box-shadow: 0 0 20px var(--gold-light); }
-    .timeline-item:nth-child(7) .timeline-dot { background: var(--col-amarillo); box-shadow: 0 0 20px var(--col-amarillo); }
-
-    .timeline-item:nth-child(even) .timeline-dot {
-      right: auto;
-      left: -48px;
-    }
-
-    .timeline-title {
-      font-family: 'Playfair Display', serif;
-      font-size: 1.5rem;
-      margin-bottom: 0.5rem;
-      color: var(--gold-light);
-    }
-
-    .timeline-subtitle {
-      font-size: 0.8rem;
-      letter-spacing: 0.15em;
-      text-transform: uppercase;
-      color: var(--rose);
-      margin-bottom: 1rem;
-    }
-
-    .timeline-text {
-      color: rgba(245,245,245,0.8);
-      font-size: 0.95rem;
-    }
-
-    /* Gallery */
-    .gallery-section {
-      padding: 6rem 2rem;
-      max-width: 1400px;
-      margin: 0 auto;
-    }
-
-    .gallery-title {
-      text-align: center;
-      margin-bottom: 3rem;
-    }
-
-    .gallery-grid {
-      display: grid;
-      grid-template-columns: repeat(4, 1fr);
-      gap: 1rem;
-    }
-
-    .gallery-item {
-      position: relative;
-      border-radius: 12px;
-      overflow: hidden;
-      cursor: pointer;
-      opacity: 0;
-      transform: translateY(30px);
-      transition: all 0.6s var(--ease-out);
-    }
-
-    .gallery-item.visible {
-      opacity: 1;
-      transform: translateY(0);
-    }
-
-    .gallery-item.wide { grid-column: span 2; }
-    .gallery-item.tall { grid-row: span 2; }
-
-    .gallery-item img {
-      width: 100%;
-      height: 100%;
-      object-fit: cover;
-      transition: transform 0.6s var(--ease-out);
-    }
-
-    .gallery-item:hover img {
-      transform: scale(1.06);
-    }
-
-    .gallery-overlay {
-      position: absolute;
-      inset: 0;
-      background: linear-gradient(to top, rgba(6,4,16,0.9) 0%, transparent 60%);
-      opacity: 0;
-      transition: opacity 0.4s ease;
-      display: flex;
-      align-items: flex-end;
-      padding: 1.5rem;
-    }
-
-    .gallery-item:hover .gallery-overlay {
-      opacity: 1;
-    }
-
-    .gallery-caption {
-      font-size: 0.9rem;
-      color: #f5f5f5;
-    }
-
-    /* Lightbox */
-    .lightbox {
+    .cursor-dot, .cursor-ring {
+      left: 0;
+      pointer-events: none;
       position: fixed;
-      inset: 0;
-      background: rgba(6,4,16,0.95);
-      backdrop-filter: blur(30px);
-      -webkit-backdrop-filter: blur(30px);
-      z-index: 10002;
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      justify-content: center;
-      opacity: 0;
-      visibility: hidden;
-      transition: all 0.4s ease;
+      top: 0;
+      z-index: 10000;
     }
-
-    .lightbox.active {
-      opacity: 1;
-      visibility: visible;
-    }
-
-    .lightbox-close {
-      position: absolute;
-      top: 2rem;
-      right: 2rem;
-      background: none;
-      border: none;
-      color: #f5f5f5;
-      font-size: 2rem;
-      cursor: pointer;
-      opacity: 0.7;
-      transition: opacity 0.3s ease;
-    }
-
-    .lightbox-close:hover {
-      opacity: 1;
-    }
-
-    .lightbox-image {
-      max-width: 80vw;
-      max-height: 70vh;
-      border-radius: 12px;
-    }
-
-    .lightbox-caption {
-      margin-top: 1.5rem;
-      font-size: 1.1rem;
-      color: rgba(245,245,245,0.9);
-      text-align: center;
-    }
-
-    .lightbox-nav {
-      position: absolute;
-      top: 50%;
-      transform: translateY(-50%);
-      background: var(--glass-bg);
-      border: 1px solid var(--glass-border);
-      color: #f5f5f5;
-      font-size: 1.5rem;
-      width: 50px;
-      height: 50px;
+    .cursor-dot {
+      background: var(--fucsia);
       border-radius: 50%;
-      cursor: pointer;
+      height: 10px;
+      width: 10px;
+    }
+    .cursor-ring {
+      border: 1px solid rgba(247,0,113,.48);
+      border-radius: 50%;
+      height: 34px;
+      width: 34px;
+    }
+
+    .site-nav {
+      align-items: center;
+      background: rgba(13,0,9,.70);
+      backdrop-filter: blur(24px);
+      border-bottom: 1px solid var(--borde);
       display: flex;
+      justify-content: space-between;
+      left: 0;
+      padding: 18px clamp(18px, 4vw, 56px);
+      position: fixed;
+      right: 0;
+      top: 6px;
+      transition: box-shadow .45s var(--ease), background .45s var(--ease);
+      z-index: 1000;
+    }
+    .site-nav.scrolled {
+      background: rgba(13,0,9,.82);
+      box-shadow: 0 12px 46px rgba(247,0,113,.22);
+    }
+    .logo {
+      color: var(--fucsia);
+      font-family: "Playfair Display", serif;
+      font-size: 1.35rem;
+      font-style: italic;
+      font-weight: 700;
+      text-decoration: none;
+    }
+    .nav-links {
       align-items: center;
-      justify-content: center;
-      transition: all 0.3s ease;
-    }
-
-    .lightbox-nav:hover {
-      background: var(--gold);
-      color: var(--bg-dark);
-    }
-
-    .lightbox-prev { left: 2rem; }
-    .lightbox-next { right: 2rem; }
-
-    /* Present section */
-    .present {
-      display: grid;
-      grid-template-columns: 1fr 1fr;
-      gap: 4rem;
-      align-items: center;
-    }
-
-    .badges {
       display: flex;
-      flex-wrap: wrap;
-      gap: 0.8rem;
-      margin-top: 2rem;
+      gap: clamp(18px, 3vw, 34px);
+      list-style: none;
     }
-
-    .badge {
-      background: var(--glass-bg);
-      border: 1px solid var(--glass-border);
-      padding: 0.6rem 1.2rem;
-      border-radius: 30px;
-      font-size: 0.85rem;
-      color: rgba(245,245,245,0.9);
-    }
-
-    .present-quote {
-      font-family: 'Playfair Display', serif;
-      font-size: 1.3rem;
-      font-style: italic;
-      color: rgba(245,245,245,0.9);
-      line-height: 1.7;
-      padding: 2rem;
-    }
-
-    /* Footer */
-    footer {
-      text-align: center;
-      padding: 4rem 2rem;
-      background: linear-gradient(to bottom, var(--bg-dark), #030208);
-    }
-
-    .footer-title {
-      font-family: 'Playfair Display', serif;
-      font-size: 1.8rem;
-      font-style: italic;
-      color: var(--gold);
-      margin-bottom: 1.5rem;
-    }
-
-    .footer-divider {
-      width: 80px;
-      height: 2px;
-      background: linear-gradient(90deg, transparent, var(--gold), transparent);
-      margin: 0 auto 1.5rem;
-    }
-
-    .footer-text {
-      color: rgba(245,245,245,0.6);
-      font-size: 0.95rem;
-      margin-bottom: 1rem;
-    }
-
-    .footer-colombiana {
-      display: inline-flex;
-      align-items: center;
-      gap: 8px;
-      margin-top: 1rem;
-      font-size: 0.8rem;
-      letter-spacing: 0.15em;
+    .nav-links a {
+      color: var(--texto2);
+      font-size: .78rem;
+      font-weight: 800;
+      letter-spacing: .12em;
+      position: relative;
+      text-decoration: none;
       text-transform: uppercase;
-      color: var(--col-amarillo);
+      transition: color .35s var(--ease);
+    }
+    .nav-links a::after {
+      background: var(--fucsia);
+      bottom: -8px;
+      content: "";
+      height: 1px;
+      left: 0;
+      position: absolute;
+      transform: scaleX(0);
+      transform-origin: left;
+      transition: transform .45s var(--ease);
+      width: 100%;
+    }
+    .nav-links a:hover { color: var(--texto); }
+    .nav-links a:hover::after { transform: scaleX(1); }
+    .nav-toggle {
+      background: transparent;
+      border: 1px solid var(--borde);
+      border-radius: 50%;
+      color: var(--texto);
+      display: none;
+      height: 42px;
+      width: 42px;
     }
 
-    /* Reveal animation */
+    main, footer { position: relative; z-index: 2; }
+    section { padding: clamp(76px, 10vw, 132px) clamp(18px, 5vw, 72px); }
+    .wrap { margin: 0 auto; max-width: 1180px; width: 100%; }
+    .narrow { max-width: 760px; }
+    .glass {
+      background: var(--vidrio);
+      backdrop-filter: blur(22px);
+      border: 1px solid var(--borde);
+      box-shadow: 0 24px 80px rgba(0,0,0,.24);
+    }
+    .section-label, .hero-tag {
+      color: var(--rosa);
+      font-size: .74rem;
+      font-weight: 900;
+      letter-spacing: .26em;
+      text-transform: uppercase;
+    }
+    .section-title {
+      font-family: "Playfair Display", serif;
+      font-size: clamp(2.25rem, 6vw, 4.9rem);
+      font-weight: 700;
+      letter-spacing: 0;
+      line-height: 1.05;
+      margin-top: 12px;
+    }
+    .section-subtitle {
+      color: var(--texto2);
+      font-size: clamp(1rem, 2vw, 1.15rem);
+      margin-top: 16px;
+      max-width: 680px;
+    }
+    .divider {
+      background: linear-gradient(90deg, var(--fucsia), rgba(255,90,164,.4), transparent);
+      height: 1px;
+      margin: 22px 0 26px;
+      width: 100%;
+    }
     .reveal {
       opacity: 0;
-      transform: translateY(50px);
-      transition: all 0.8s var(--ease-out);
+      transform: translateY(40px);
+      transition: opacity .95s var(--ease), transform .95s var(--ease);
     }
-
     .reveal.visible {
       opacity: 1;
       transform: translateY(0);
     }
 
-    /* Responsive */
+    @keyframes subeOp {
+      from { opacity: 0; transform: translateY(30px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+    @keyframes pulso {
+      0%, 100% { opacity: 0.4; transform: scaleY(1); }
+      50% { opacity: 1; transform: scaleY(1.15); }
+    }
+    @keyframes parpadeo {
+      0%, 100% { opacity: 1; }
+      50% { opacity: 0.4; }
+    }
+
+    .hero {
+      align-items: center;
+      display: flex;
+      min-height: 100vh;
+      overflow: hidden;
+      padding-top: 108px;
+      text-align: center;
+    }
+    .hero::before {
+      background: radial-gradient(circle at center, rgba(247,0,113,.15), transparent 60%);
+      content: "";
+      height: 520px;
+      position: absolute;
+      top: 12%;
+      width: 520px;
+      z-index: -1;
+    }
+    .hero-deco {
+      display: flex;
+      gap: 12px;
+      justify-content: center;
+      margin-bottom: 28px;
+      opacity: 0;
+      animation: subeOp .9s var(--ease) .2s forwards;
+    }
+    .hero-deco span {
+      border-radius: 50%;
+      height: 10px;
+      width: 10px;
+    }
+    .hero-deco span:nth-child(1) { background: var(--fucsia); }
+    .hero-deco span:nth-child(2) { background: var(--rosa); }
+    .hero-deco span:nth-child(3) { background: var(--rosa3); }
+    .hero-tag { animation: subeOp .9s var(--ease) .4s forwards; opacity: 0; }
+    .hero h1 {
+      font-family: "Playfair Display", serif;
+      font-size: clamp(3rem, 11vw, 8rem);
+      font-weight: 700;
+      line-height: .95;
+      margin: 18px 0 16px;
+      opacity: 0;
+      animation: subeOp 1s var(--ease) .6s forwards;
+    }
+    .hero h1 em { color: var(--fucsia); font-style: italic; }
+    .hero h2 {
+      color: var(--rosa);
+      font-family: "Playfair Display", serif;
+      font-size: clamp(1.1rem, 3vw, 2rem);
+      font-style: italic;
+      font-weight: 600;
+      margin-bottom: 22px;
+      opacity: 0;
+      animation: subeOp 1s var(--ease) .8s forwards;
+    }
+    .hero-copy {
+      color: var(--texto2);
+      font-size: 1.04rem;
+      line-height: 1.9;
+      margin: 0 auto;
+      max-width: 560px;
+      opacity: 0;
+      animation: subeOp 1s var(--ease) 1s forwards;
+    }
+    .cta {
+      align-items: center;
+      background: var(--fucsia);
+      border: 0;
+      border-radius: 50px;
+      color: #fff;
+      display: inline-flex;
+      font-weight: 800;
+      justify-content: center;
+      margin-top: 34px;
+      padding: 16px 40px;
+      text-decoration: none;
+      transition: transform .4s var(--ease), background .4s var(--ease), box-shadow .4s var(--ease);
+      opacity: 0;
+      animation: subeOp 1s var(--ease) 1.3s forwards;
+    }
+    .cta:hover {
+      background: var(--fucsia2);
+      box-shadow: 0 8px 30px rgba(247,0,113,.4);
+      transform: scale(1.04);
+    }
+    .scroll-cue {
+      align-items: center;
+      bottom: 28px;
+      color: var(--rosa);
+      display: flex;
+      flex-direction: column;
+      font-size: .66rem;
+      font-weight: 900;
+      gap: 10px;
+      left: 50%;
+      letter-spacing: .22em;
+      position: absolute;
+      text-transform: uppercase;
+      transform: translateX(-50%);
+    }
+    .scroll-cue span:first-child {
+      animation: pulso 1.5s ease-in-out infinite;
+      background: linear-gradient(var(--fucsia), transparent);
+      height: 58px;
+      transform-origin: top;
+      width: 1px;
+    }
+
+    .intro-card {
+      border-radius: 24px;
+      margin: 0 auto;
+      max-width: 720px;
+      padding: clamp(32px, 6vw, 58px);
+      text-align: center;
+    }
+    .intro-card p {
+      color: var(--texto2);
+      font-size: 1.06rem;
+      margin-top: 18px;
+    }
+    .stats {
+      display: grid;
+      gap: 16px;
+      grid-template-columns: repeat(4, 1fr);
+      margin: 34px auto 0;
+      max-width: 960px;
+    }
+    .stat {
+      border-radius: 18px;
+      padding: 22px 16px;
+      text-align: center;
+    }
+    .stat strong {
+      color: var(--rosa);
+      display: block;
+      font-family: "Playfair Display", serif;
+      font-size: 2.6rem;
+      line-height: 1;
+    }
+    .stat span {
+      color: var(--texto2);
+      display: block;
+      font-size: .9rem;
+      margin-top: 10px;
+    }
+
+    .series-head {
+      align-items: end;
+      display: grid;
+      gap: 24px;
+      grid-template-columns: 1fr auto;
+      margin-bottom: 48px;
+    }
+    .reading-time {
+      border-radius: 999px;
+      color: var(--rosa3);
+      font-size: .82rem;
+      font-weight: 900;
+      padding: 10px 16px;
+      white-space: nowrap;
+    }
+    .chapter-card {
+      border-radius: 24px;
+      margin-bottom: 60px;
+      overflow: hidden;
+      padding: clamp(28px, 5vw, 48px);
+      position: relative;
+    }
+    .chapter-roman {
+      color: var(--fucsia);
+      font-family: "Playfair Display", serif;
+      font-size: 5rem;
+      font-weight: 700;
+      left: 24px;
+      line-height: 1;
+      opacity: .12;
+      position: absolute;
+      top: 18px;
+    }
+    .chapter-head { position: relative; z-index: 1; }
+    .badge {
+      background: var(--fucsia);
+      border-radius: 20px;
+      color: #fff;
+      display: inline-flex;
+      font-size: .7rem;
+      font-weight: 900;
+      letter-spacing: .12em;
+      margin-bottom: 14px;
+      padding: 7px 12px;
+      text-transform: uppercase;
+    }
+    .chapter-title {
+      font-family: "Playfair Display", serif;
+      font-size: clamp(1.8rem, 4vw, 2.7rem);
+      line-height: 1.1;
+    }
+    .chapter-time {
+      color: var(--texto2);
+      font-size: .88rem;
+      margin-top: 8px;
+    }
+    .chapter-grid {
+      align-items: center;
+      display: grid;
+      gap: clamp(28px, 5vw, 52px);
+      grid-template-columns: minmax(0, 1fr) minmax(300px, .92fr);
+      margin-top: 28px;
+    }
+    .chapter-grid.image-first {
+      grid-template-columns: minmax(300px, .92fr) minmax(0, 1fr);
+    }
+    .chapter-text p {
+      color: rgba(255,240,247,.84);
+      font-size: 1rem;
+      line-height: 1.95;
+    }
+    .hook {
+      color: var(--rosa);
+      display: block;
+      font-family: "Playfair Display", serif;
+      font-size: 1.08rem;
+      font-style: italic;
+      margin-top: 22px;
+    }
+    .chapter-media {
+      border-radius: 18px;
+      padding: 10px;
+    }
+    .chapter-img, .present-photos img {
+      border: 1px solid var(--borde);
+      border-radius: 16px;
+      box-shadow: 0 12px 40px rgba(247,0,113,.20);
+      cursor: pointer;
+      height: 320px;
+      object-fit: cover;
+      transition: transform .4s var(--ease), border-color .4s var(--ease);
+      width: 100%;
+    }
+    .chapter-img:hover, .present-photos img:hover {
+      border-color: var(--fucsia);
+      transform: scale(1.03);
+    }
+    .next-link {
+      background: transparent;
+      border: 1px solid rgba(247,0,113,.75);
+      border-radius: 50px;
+      color: var(--texto);
+      display: inline-flex;
+      font-weight: 800;
+      margin-top: 34px;
+      padding: 12px 24px;
+      text-decoration: none;
+      transition: background .35s var(--ease), transform .35s var(--ease);
+    }
+    .next-link:hover {
+      background: var(--fucsia);
+      transform: translateY(-2px);
+    }
+
+    .carousel {
+      border: 1px solid var(--borde);
+      border-radius: 16px;
+      height: 320px;
+      overflow: hidden;
+      position: relative;
+    }
+    .carousel-slide {
+      inset: 0;
+      opacity: 0;
+      position: absolute;
+      transition: opacity .8s var(--ease);
+    }
+    .carousel-slide.active { opacity: 1; }
+    .carousel-slide img {
+      background: linear-gradient(135deg, var(--fondo2), var(--fucsia));
+      height: 100%;
+      object-fit: cover;
+      width: 100%;
+    }
+    .carousel-slide.fallback::after {
+      align-items: center;
+      background: linear-gradient(135deg, var(--fondo2), var(--fucsia));
+      color: #fff;
+      content: "Colombia 🇨🇴";
+      display: flex;
+      font-family: "Playfair Display", serif;
+      font-size: 2rem;
+      inset: 0;
+      justify-content: center;
+      position: absolute;
+    }
+    .carousel-caption {
+      background: linear-gradient(transparent, rgba(13,0,9,.86));
+      bottom: 0;
+      color: var(--rosa3);
+      font-family: "Playfair Display", serif;
+      font-style: italic;
+      left: 0;
+      padding: 58px 18px 16px;
+      position: absolute;
+      right: 0;
+      z-index: 2;
+    }
+    .carousel-btn {
+      align-items: center;
+      background: rgba(13,0,9,.42);
+      backdrop-filter: blur(12px);
+      border: 1px solid var(--borde);
+      border-radius: 50%;
+      color: var(--texto);
+      display: flex;
+      height: 42px;
+      justify-content: center;
+      opacity: 0;
+      position: absolute;
+      top: 50%;
+      transform: translateY(-50%);
+      transition: opacity .35s var(--ease), background .35s var(--ease);
+      width: 42px;
+      z-index: 3;
+    }
+    .carousel:hover .carousel-btn { opacity: 1; }
+    .carousel-btn:hover { background: var(--fucsia); }
+    .carousel-prev { left: 14px; }
+    .carousel-next { right: 14px; }
+    .carousel-dots {
+      bottom: 14px;
+      display: flex;
+      gap: 8px;
+      left: 50%;
+      position: absolute;
+      transform: translateX(-50%);
+      z-index: 4;
+    }
+    .carousel-dot {
+      background: var(--rosa3);
+      border: 0;
+      border-radius: 50%;
+      height: 8px;
+      opacity: .55;
+      width: 8px;
+    }
+    .carousel-dot.active {
+      background: var(--fucsia);
+      opacity: 1;
+      transform: scale(1.25);
+    }
+
+    .parallax {
+      align-items: center;
+      display: flex;
+      height: 400px;
+      justify-content: center;
+      overflow: hidden;
+      padding: 0 clamp(18px, 5vw, 72px);
+      position: relative;
+    }
+    .parallax-bg {
+      background:
+        linear-gradient(rgba(13,0,9,.64), rgba(13,0,9,.72)),
+        radial-gradient(circle at 25% 20%, rgba(247,0,113,.44), transparent 34%),
+        radial-gradient(circle at 78% 70%, rgba(255,150,197,.30), transparent 36%),
+        url("imagenes/foto-10-sombrero-vueltiao.jpeg") center/cover;
+      inset: -70px 0;
+      position: absolute;
+      will-change: transform;
+    }
+    .parallax.second .parallax-bg {
+      background:
+        linear-gradient(rgba(13,0,9,.66), rgba(13,0,9,.76)),
+        radial-gradient(circle at 20% 20%, rgba(247,0,113,.35), transparent 32%),
+        radial-gradient(circle at 84% 72%, rgba(255,90,164,.34), transparent 34%),
+        url("imagenes/foto-06-graduacion.jpeg") center/cover;
+    }
+    .quote-card {
+      border-radius: 22px;
+      max-width: 760px;
+      padding: clamp(28px, 5vw, 46px);
+      position: relative;
+      text-align: center;
+      z-index: 1;
+    }
+    .quote-card blockquote {
+      font-family: "Playfair Display", serif;
+      font-size: clamp(1.35rem, 3.8vw, 2.35rem);
+      font-style: italic;
+      line-height: 1.35;
+    }
+    .quote-card cite {
+      color: var(--rosa);
+      display: block;
+      font-size: .72rem;
+      font-style: normal;
+      font-weight: 900;
+      letter-spacing: .18em;
+      margin-top: 18px;
+      text-transform: uppercase;
+    }
+
+    .gallery-grid {
+      display: grid;
+      gap: 14px;
+      grid-auto-flow: dense;
+      grid-auto-rows: 172px;
+      grid-template-columns: repeat(4, 1fr);
+      margin-top: 42px;
+    }
+    .gallery-item {
+      border: 1px solid rgba(255,27,130,.10);
+      border-radius: 16px;
+      cursor: pointer;
+      overflow: hidden;
+      position: relative;
+      transition: border-color .35s var(--ease), transform .35s var(--ease);
+    }
+    .gallery-item.wide { grid-column: span 2; }
+    .gallery-item.tall { grid-row: span 2; }
+    .gallery-item img {
+      height: 100%;
+      object-fit: cover;
+      transition: transform .55s var(--ease);
+      width: 100%;
+    }
+    .gallery-item::after {
+      background: linear-gradient(transparent 35%, rgba(13,0,9,.82));
+      content: "";
+      inset: 0;
+      opacity: 0;
+      position: absolute;
+      transition: opacity .35s var(--ease);
+    }
+    .gallery-item span {
+      bottom: 16px;
+      color: #fff;
+      font-family: "Playfair Display", serif;
+      font-size: 1.2rem;
+      font-style: italic;
+      left: 16px;
+      opacity: 0;
+      position: absolute;
+      transform: translateY(12px);
+      transition: opacity .35s var(--ease), transform .35s var(--ease);
+      z-index: 1;
+    }
+    .gallery-item:hover {
+      border-color: var(--fucsia);
+      transform: translateY(-3px);
+    }
+    .gallery-item:hover img { transform: scale(1.06); }
+    .gallery-item:hover::after, .gallery-item:hover span {
+      opacity: 1;
+      transform: translateY(0);
+    }
+
+    .present-grid {
+      align-items: center;
+      display: grid;
+      gap: clamp(30px, 6vw, 62px);
+      grid-template-columns: 1.05fr .95fr;
+    }
+    .badges {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 10px;
+      margin-top: 26px;
+    }
+    .life-badge {
+      border-radius: 999px;
+      color: var(--rosa3);
+      font-size: .88rem;
+      font-weight: 800;
+      padding: 10px 14px;
+    }
+    .present-card {
+      border-radius: 24px;
+      padding: clamp(24px, 4vw, 36px);
+    }
+    .present-card blockquote {
+      font-family: "Playfair Display", serif;
+      font-size: clamp(1.35rem, 3vw, 2rem);
+      font-style: italic;
+      line-height: 1.45;
+    }
+    .present-photos {
+      display: grid;
+      gap: 12px;
+      grid-template-columns: repeat(2, 1fr);
+      margin-top: 24px;
+    }
+    .present-photos img { height: 180px; border-radius: 12px; }
+
+    .share-card {
+      border-radius: 26px;
+      margin: 0 auto;
+      max-width: 840px;
+      padding: clamp(30px, 6vw, 58px);
+      text-align: center;
+    }
+    .share-card h2 {
+      font-family: "Playfair Display", serif;
+      font-size: clamp(2rem, 5vw, 3.6rem);
+      line-height: 1.1;
+    }
+    .share-card p {
+      color: var(--texto2);
+      margin-top: 12px;
+    }
+    .share-actions {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 12px;
+      justify-content: center;
+      margin-top: 28px;
+    }
+    .share-btn {
+      background: transparent;
+      border: 1px solid var(--borde);
+      border-radius: 50px;
+      color: var(--texto);
+      cursor: pointer;
+      display: inline-flex;
+      font-weight: 800;
+      gap: 8px;
+      padding: 13px 20px;
+      text-decoration: none;
+      transition: background .35s var(--ease), transform .35s var(--ease), border-color .35s var(--ease);
+    }
+    .share-btn:hover {
+      background: var(--fucsia);
+      border-color: var(--fucsia);
+      transform: translateY(-2px);
+    }
+    .toast {
+      background: var(--fucsia);
+      border-radius: 12px;
+      bottom: 24px;
+      box-shadow: 0 14px 40px rgba(247,0,113,.35);
+      color: #fff;
+      font-weight: 900;
+      opacity: 0;
+      padding: 12px 24px;
+      position: fixed;
+      right: 24px;
+      transform: translateY(18px);
+      transition: opacity .35s var(--ease), transform .35s var(--ease);
+      z-index: 10010;
+    }
+    .toast.show {
+      opacity: 1;
+      transform: translateY(0);
+    }
+
+    footer {
+      padding: 70px 18px 44px;
+      text-align: center;
+    }
+    .footer-title {
+      color: var(--fucsia);
+      font-family: "Playfair Display", serif;
+      font-size: clamp(2rem, 5vw, 3.7rem);
+      font-style: italic;
+      line-height: 1.1;
+      margin-bottom: 24px;
+    }
+    .footer-divider {
+      background: linear-gradient(90deg, transparent, var(--fucsia), var(--rosa), transparent);
+      height: 1px;
+      margin: 0 auto 24px;
+      max-width: 560px;
+    }
+    footer p {
+      color: var(--texto2);
+      margin: 8px 0;
+    }
+
+    .lightbox {
+      align-items: center;
+      background: rgba(13,0,9,.95);
+      backdrop-filter: blur(12px);
+      display: flex;
+      flex-direction: column;
+      inset: 0;
+      justify-content: center;
+      opacity: 0;
+      padding: 24px;
+      pointer-events: none;
+      position: fixed;
+      transition: opacity .35s var(--ease);
+      z-index: 10002;
+    }
+    .lightbox.active {
+      opacity: 1;
+      pointer-events: auto;
+    }
+    .lightbox-img {
+      border: 1px solid var(--borde);
+      border-radius: 12px;
+      max-height: 85vh;
+      max-width: 85vw;
+      object-fit: contain;
+      opacity: 0;
+      transform: scale(.88);
+      transition: opacity .42s var(--ease), transform .42s var(--ease);
+    }
+    .lightbox.active .lightbox-img {
+      opacity: 1;
+      transform: scale(1);
+    }
+    .lightbox-caption {
+      color: var(--rosa2);
+      font-family: "Playfair Display", serif;
+      font-size: 1.15rem;
+      font-style: italic;
+      margin-top: 18px;
+      text-align: center;
+    }
+    .lightbox-close, .lightbox-nav {
+      background: rgba(247,0,113,.11);
+      backdrop-filter: blur(12px);
+      border: 1px solid var(--borde);
+      border-radius: 50%;
+      color: var(--texto);
+      cursor: pointer;
+      position: absolute;
+      transition: background .35s var(--ease), transform .35s var(--ease);
+    }
+    .lightbox-close {
+      font-size: 1.6rem;
+      height: 48px;
+      right: 26px;
+      top: 26px;
+      width: 48px;
+    }
+    .lightbox-nav {
+      font-size: 1.8rem;
+      height: 54px;
+      top: 50%;
+      transform: translateY(-50%);
+      width: 54px;
+    }
+    .lightbox-close:hover, .lightbox-nav:hover {
+      background: var(--fucsia);
+    }
+    .lightbox-prev { left: 28px; }
+    .lightbox-next { right: 28px; }
+
     @media (max-width: 768px) {
-      .nav-links { display: none; }
-      .intro, .present { grid-template-columns: 1fr; }
+      body { cursor: auto; }
+      .cursor-dot, .cursor-ring { display: none; }
+      .site-nav { padding: 14px 18px; }
+      .nav-toggle { display: inline-grid; place-items: center; }
+      .nav-links {
+        background: rgba(13,0,9,.94);
+        backdrop-filter: blur(22px);
+        border-bottom: 1px solid var(--borde);
+        display: grid;
+        gap: 0;
+        left: 0;
+        max-height: 0;
+        overflow: hidden;
+        padding: 0 18px;
+        position: absolute;
+        right: 0;
+        top: 100%;
+        transition: max-height .45s var(--ease), padding .45s var(--ease);
+      }
+      .nav-links.open {
+        max-height: 320px;
+        padding: 8px 18px 18px;
+      }
+      .nav-links a {
+        display: block;
+        padding: 12px 0;
+      }
+      .hero { padding-top: 94px; }
+      .hero h1 { font-size: clamp(3rem, 18vw, 5rem); }
+      .cta { width: 100%; }
       .stats { grid-template-columns: repeat(2, 1fr); }
-      .timeline::before { left: 20px; }
-      .timeline-item, .timeline-item:nth-child(even) {
-        padding: 0 0 0 60px;
-        justify-content: flex-start;
+      .series-head { display: block; }
+      .reading-time { display: inline-flex; margin-top: 22px; }
+      .chapter-grid, .chapter-grid.image-first {
+        display: flex;
+        flex-direction: column;
       }
-      .timeline-dot, .timeline-item:nth-child(even) .timeline-dot {
-        left: 12px !important;
-        right: auto !important;
+      .chapter-media { order: -1; width: 100%; }
+      .chapter-img, .carousel { height: 285px; }
+      .carousel-btn { opacity: 1; }
+      .parallax { height: 280px; }
+      .gallery-grid {
+        grid-auto-rows: 180px;
+        grid-template-columns: repeat(2, 1fr);
       }
-      .gallery-grid { grid-template-columns: repeat(2, 1fr); }
-      .gallery-item.wide, .gallery-item.tall { grid-column: span 1; grid-row: span 1; }
-      .lightbox-nav { width: 40px; height: 40px; font-size: 1.2rem; }
-      .lightbox-prev { left: 1rem; }
-      .lightbox-next { right: 1rem; }
+      .gallery-item.wide, .gallery-item.tall {
+        grid-column: span 1;
+        grid-row: span 1;
+      }
+      .present-grid { grid-template-columns: 1fr; }
+      .present-photos img { height: 160px; }
+      .share-actions { align-items: stretch; flex-direction: column; }
+      .share-btn { justify-content: center; }
+      .lightbox-nav {
+        bottom: 78px;
+        top: auto;
+        transform: none;
+      }
+      .lightbox-prev { left: 24px; }
+      .lightbox-next { right: 24px; }
+      .toast { bottom: 18px; left: 18px; right: 18px; text-align: center; }
     }
   </style>
 </head>
 <body>
-  <!-- Cursor -->
+  <div class="tricolor-bar"></div>
+  <div class="reading-progress" id="readingProgress"></div>
+  <div class="bg-fixed"></div>
+  <div class="noise"></div>
   <div class="cursor-dot" id="cursorDot"></div>
   <div class="cursor-ring" id="cursorRing"></div>
-  
-  <!-- Noise overlay -->
-  <div class="noise-overlay"></div>
-  
-  <!-- Barra tricolor -->
-  <div class="tricolor-bar"></div>
 
-  <!-- Navegación -->
-  <nav id="nav">
-    <div class="nav-logo">El Tapiz de Mi Vida</div>
-    <ul class="nav-links">
+  <nav class="site-nav" id="siteNav" aria-label="Navegacion principal">
+    <a class="logo" href="#inicio">Laura Farfán</a>
+    <button class="nav-toggle" id="navToggle" aria-label="Abrir menu" aria-expanded="false">☰</button>
+    <ul class="nav-links" id="navLinks">
       <li><a href="#inicio">Inicio</a></li>
       <li><a href="#historia">Historia</a></li>
-      <li><a href="#galeria">Galería</a></li>
       <li><a href="#capitulos">Capítulos</a></li>
+      <li><a href="#galeria">Galería</a></li>
       <li><a href="#presente">Presente</a></li>
     </ul>
   </nav>
 
-  <!-- Hero -->
-  <section class="hero" id="inicio">
-    <div class="hero-decoration">
-      <span></span><span></span><span></span>
-    </div>
-    <p class="hero-subtitle">Bogotá D.C. · Colombia</p>
-    <h1 class="hero-title">El Tapiz de <span class="gold">Mi Vida</span></h1>
-    <p class="hero-desc">Entre raíces, sueños y libertad — una historia de amor incondicional, esfuerzo constante y la búsqueda incansable de la felicidad desde el corazón de Colombia.</p>
-    <div class="scroll-indicator">
-      <span>Desliza</span>
-      <div class="scroll-line"></div>
-    </div>
-  </section>
+  <main>
+    <section class="hero" id="inicio">
+      <div class="wrap narrow">
+        <div class="hero-deco" aria-hidden="true"><span></span><span></span><span></span></div>
+        <p class="hero-tag">Bogotá D.C. · Colombia · Una historia real</p>
+        <h1>El Tapiz de<br><em>Mi Vida</em></h1>
+        <h2>Entre Raíces, Sueños y Libertad</h2>
+        <p class="hero-copy">Esta es la historia de una vida tejida con hilos de amor incondicional, esfuerzo constante y la búsqueda incansable de la felicidad. Cada imagen que guardo no es solo un recuerdo, sino un testimonio de los pasos que me han convertido en la persona que soy hoy.</p>
+        <a class="cta" href="#capitulos">📖 Leer desde el Capítulo I</a>
+      </div>
+      <div class="scroll-cue" aria-hidden="true"><span></span><span>Descubre</span></div>
+    </section>
 
-  <!-- Intro -->
-  <section class="intro" id="historia">
-    <div class="intro-text reveal">
-      <p class="section-label">El comienzo</p>
-      <h2 class="section-title">Los Primeros Latidos</h2>
-      <div class="divider"></div>
-      <p>Nació rodeada de amor familiar. Sus primeras fotos la muestran pequeña, tierna, envuelta en cobijas de Piolín con un vestido de cuadros. Las manos que la sostuvieron de bebé le enseñaron a caminar con firmeza y a mirar al futuro sin miedo.</p>
-    </div>
-    <div class="intro-image reveal">
-      <div class="glass-card">
-        <img src="imagenes/foto-08-bebe-infancia.jpeg" alt="Los primeros latidos" onerror="this.style.background='linear-gradient(135deg, #1a1520, #2a2030)'">
+    <section id="historia">
+      <div class="intro-card glass reveal">
+        <p class="section-label">La Historia</p>
+        <h2 class="section-title">Una vida escrita en imágenes</h2>
+        <p>Esta es la historia de una vida que se ha tejido con hilos de amor incondicional, esfuerzo constante y la búsqueda incansable de la felicidad. Cada imagen que guardo no es solo un recuerdo, sino un testimonio de los pasos que me han convertido en la persona que soy hoy.</p>
       </div>
-    </div>
-  </section>
+      <div class="stats">
+        <div class="stat glass reveal"><strong>∞</strong><span>Amor de familia</span></div>
+        <div class="stat glass reveal"><strong>5+</strong><span>Ciudades colombianas</span></div>
+        <div class="stat glass reveal"><strong>1</strong><span>Graduación cumplida</span></div>
+        <div class="stat glass reveal"><strong>2</strong><span>Ruedas de libertad</span></div>
+      </div>
+    </section>
 
-  <!-- Stats -->
-  <section>
-    <div class="stats">
-      <div class="stat-card glass-card reveal">
-        <div class="stat-number">∞</div>
-        <div class="stat-label">Amor de familia</div>
-      </div>
-      <div class="stat-card glass-card reveal">
-        <div class="stat-number">5+</div>
-        <div class="stat-label">Ciudades colombianas</div>
-      </div>
-      <div class="stat-card glass-card reveal">
-        <div class="stat-number">1</div>
-        <div class="stat-label">Graduación cumplida</div>
-      </div>
-      <div class="stat-card glass-card reveal">
-        <div class="stat-number">2</div>
-        <div class="stat-label">Ruedas de libertad</div>
-      </div>
-    </div>
-  </section>
+    <section id="capitulos">
+      <div class="wrap">
+        <header class="series-head reveal">
+          <div>
+            <p class="section-label">La Serie</p>
+            <h2 class="section-title">Siete capítulos, una vida</h2>
+            <p class="section-subtitle">Cada capítulo es un momento que me formó. Léelos en orden — cada uno te lleva al siguiente.</p>
+          </div>
+          <div class="reading-time glass">7 capítulos · ~15 min de lectura</div>
+        </header>
 
-  <!-- Quote 1 -->
-  <section class="parallax-quote">
-    <div class="quote-card glass-card reveal">
-      <p class="quote-text">"La verdadera riqueza no está en lo que tenemos, sino en a quiénes tenemos a nuestro lado en la mesa."</p>
-    </div>
-  </section>
+        <article class="chapter-card glass reveal" id="capitulo-1">
+          <span class="chapter-roman">I</span>
+          <header class="chapter-head">
+            <span class="badge">Capítulo I</span>
+            <h3 class="chapter-title">Los Primeros Latidos: El Despertar</h3>
+            <p class="chapter-time">⏱ 2 min lectura</p>
+            <div class="divider"></div>
+          </header>
+          <div class="chapter-grid">
+            <div class="chapter-text">
+              <p>Todo comenzó con la sencillez y la pureza de la infancia. Recuerdo —o me han contado a través de las fotos— aquel rincón cálido donde el mundo era pequeño y seguro. Allí estaba yo, una pequeña rodeada de la ternura de una cobija de Piolín, luciendo un vestido de cuadros que hoy me arranca una sonrisa. En esa etapa, la vida se medía en caricias y en el cuidado constante de una familia que me recibió como el tesoro más grande. Esas manos que me sostenían entonces son las mismas que, con el tiempo, me enseñaron a caminar con firmeza y a mirar al futuro sin miedo.</p>
+              <em class="hook">Pero crecer significaba descubrir algo mucho más grande que ese rincón cálido…</em>
+            </div>
+            <div class="chapter-media glass"><img class="chapter-img js-lightbox" src="imagenes/foto-08-bebe-infancia.jpeg" alt="Laura en su infancia" data-caption="El comienzo"></div>
+          </div>
+          <a class="next-link" href="#capitulo-2">Continuar al capítulo II →</a>
+        </article>
 
-  <!-- Timeline -->
-  <section id="capitulos">
-    <div class="gallery-title reveal">
-      <p class="section-label">Mi historia</p>
-      <h2 class="section-title">Los Siete Capítulos</h2>
-    </div>
-    <div class="timeline">
-      <div class="timeline-item">
-        <div class="timeline-content glass-card">
-          <span class="timeline-number">I</span>
-          <div class="timeline-dot"></div>
-          <h3 class="timeline-title">Los Primeros Latidos</h3>
-          <p class="timeline-subtitle">El despertar</p>
-          <p class="timeline-text">Nació rodeada de amor familiar. Sus primeras fotos la muestran pequeña, tierna, envuelta en cobijas de Piolín con un vestido de cuadros. Las manos que la sostuvieron de bebé le enseñaron a caminar con firmeza y a mirar al futuro sin miedo.</p>
+        <article class="chapter-card glass reveal" id="capitulo-2">
+          <span class="chapter-roman">II</span>
+          <header class="chapter-head">
+            <span class="badge">Capítulo II</span>
+            <h3 class="chapter-title">El Legado de la Tierra y la Sangre</h3>
+            <p class="chapter-time">⏱ 2 min lectura</p>
+            <div class="divider"></div>
+          </header>
+          <div class="chapter-grid image-first">
+            <div class="chapter-media glass"><img class="chapter-img js-lightbox" src="imagenes/foto-10-sombrero-vueltiao.jpeg" alt="Familia con sombrero vueltiao" data-caption="Raíces colombianas"></div>
+            <div class="chapter-text">
+              <p>Crecí entendiendo que nadie llega lejos si olvida de dónde viene. Mi identidad está profundamente ligada a mis raíces y a la tradición que mi familia lleva con orgullo. Uno de los tesoros más grandes de mi memoria es la imagen de todos nosotros unidos, compartiendo la alegría de nuestra cultura y luciendo el sombrero vueltiao. Ese símbolo no es solo una prenda; es el recordatorio del esfuerzo de nuestros ancestros, de la tierra que pisamos y del valor de la unidad. En casa, aprendí que la verdadera riqueza no está en lo que tenemos, sino en a quiénes tenemos a nuestro lado en la mesa.</p>
+              <em class="hook">Y fue precisamente esa raíz la que me empujó a encontrar mi vocación…</em>
+            </div>
+          </div>
+          <a class="next-link" href="#capitulo-3">Continuar al capítulo III →</a>
+        </article>
+
+        <article class="chapter-card glass reveal" id="capitulo-3">
+          <span class="chapter-roman">III</span>
+          <header class="chapter-head">
+            <span class="badge">Capítulo III</span>
+            <h3 class="chapter-title">Vocación y Movimiento: El Templo de la Cancha</h3>
+            <p class="chapter-time">⏱ 2 min lectura</p>
+            <div class="divider"></div>
+          </header>
+          <div class="chapter-grid">
+            <div class="chapter-text">
+              <p>Lo que empezó como un juego en los coliseos de Bogotá, representando los colores de mi ciudad en el fútbol sala, se transformó en el propósito de mi vida. Vestir esos uniformes y sentir la adrenalina de la competencia me llevó a entender que el cuerpo y el movimiento son herramientas de transformación social. Por eso, hoy mi camino está trazado por la Licenciatura en Educación Física. No solo busco ser una deportista, sino una guía que enseñe el valor de la disciplina, la salud y la perseverancia a las futuras generaciones. La cancha dejó de ser solo un lugar de juego para convertirse en mi laboratorio de enseñanza, donde el sudor y el esfuerzo se traducen en formación y carácter.</p>
+              <em class="hook">Pero Colombia tenía más lecciones guardadas para mí, más allá de cualquier cancha…</em>
+            </div>
+            <div class="chapter-media glass"><img class="chapter-img js-lightbox" src="imagenes/foto-05-futbol-sala-bogota.jpeg" alt="Fútbol sala en Bogotá" data-caption="Bogotá D.C. en la cancha"></div>
+          </div>
+          <a class="next-link" href="#parallax-1">Continuar al capítulo IV →</a>
+        </article>
+      </div>
+    </section>
+
+    <section class="parallax" id="parallax-1">
+      <div class="parallax-bg"></div>
+      <div class="quote-card glass reveal">
+        <blockquote>“La verdadera riqueza no está en lo que tenemos,<br>sino en a quiénes tenemos a nuestro lado en la mesa.”</blockquote>
+        <cite>— El Tapiz de Mi Vida</cite>
+      </div>
+    </section>
+
+    <section>
+      <div class="wrap">
+        <article class="chapter-card glass reveal" id="capitulo-4">
+          <span class="chapter-roman">IV</span>
+          <header class="chapter-head">
+            <span class="badge">Capítulo IV</span>
+            <h3 class="chapter-title">Horizontes Colombianos: El Camino del Aprendizaje</h3>
+            <p class="chapter-time">⏱ 2 min lectura</p>
+            <div class="divider"></div>
+          </header>
+          <div class="chapter-grid image-first">
+            <div class="chapter-media glass">
+              <div class="carousel" id="cityCarousel" aria-label="Carrusel de ciudades colombianas">
+                <div class="carousel-slide active"><img src="imagenes/ciudad-01.jpeg" alt="Armenia"></div>
+                <div class="carousel-slide"><img src="imagenes/ciudad-02.jpeg" alt="Pereira"></div>
+                <div class="carousel-slide"><img src="imagenes/ciudad-03.jpeg" alt="Casanare"></div>
+                <div class="carousel-slide"><img src="imagenes/ciudad-04.jpeg" alt="Buga"></div>
+                <div class="carousel-slide"><img src="imagenes/ciudad-05.jpeg" alt="Colombia"></div>
+                <button class="carousel-btn carousel-prev" type="button" aria-label="Ciudad anterior">←</button>
+                <button class="carousel-btn carousel-next" type="button" aria-label="Ciudad siguiente">→</button>
+                <div class="carousel-dots" aria-hidden="true"></div>
+                <p class="carousel-caption">Armenia · Pereira · Casanare · Buga</p>
+              </div>
+            </div>
+            <div class="chapter-text">
+              <p>Mi curiosidad me ha llevado más allá de las fronteras de mi ciudad. Viajar ha sido una extensión de mi educación. He recorrido la calidez de Armenia y los paisajes vibrantes de Pereira en el Eje Cafetero, donde el verde de las montañas me ha inspirado a valorar lo nuestro. He sentido la inmensidad de los llanos en Casanare y la espiritualidad y calma que envuelve a Buga. Cada viaje ha sido una lección de geografía humana, permitiéndome entender la diversidad de nuestro país y reforzando mi deseo de llevar el deporte y la educación a cada rincón.</p>
+              <em class="hook">Y en cada regreso a casa, descubrí que lo más valioso siempre estaba esperándome allí…</em>
+            </div>
+          </div>
+          <a class="next-link" href="#capitulo-5">Continuar al capítulo V →</a>
+        </article>
+
+        <article class="chapter-card glass reveal" id="capitulo-5">
+          <span class="chapter-roman">V</span>
+          <header class="chapter-head">
+            <span class="badge">Capítulo V</span>
+            <h3 class="chapter-title">La Magia de Compartir y Celebrar</h3>
+            <p class="chapter-time">⏱ 2 min lectura</p>
+            <div class="divider"></div>
+          </header>
+          <div class="chapter-grid">
+            <div class="chapter-text">
+              <p>La vida me ha bendecido con amistades que son familia por elección. En el transcurrir de los años, he aprendido a valorar esos momentos sencillos que lo son todo: una selfie improvisada con mis mejores amigas, las risas que se extienden hasta la madrugada y la complicidad de quienes conocen mis sueños y mis miedos. Y, por supuesto, mis padres. Cada cumpleaños ha sido un hito de gratitud. Verlos allí, celebrando mi existencia con globos, pasteles y un amor que no conoce límites, es lo que me da fuerza. Ellos han sido mi refugio en las tormentas y mi mayor aplauso en los triunfos.</p>
+              <em class="hook">Pero la prueba más grande de la perseverancia aún estaba por llegar…</em>
+            </div>
+            <div class="chapter-media glass"><img class="chapter-img js-lightbox" src="imagenes/foto-07-amigas-selfie.jpeg" alt="Laura con amigas" data-caption="Familia por elección"></div>
+          </div>
+          <a class="next-link" href="#capitulo-6">Continuar al capítulo VI →</a>
+        </article>
+
+        <article class="chapter-card glass reveal" id="capitulo-6">
+          <span class="chapter-roman">VI</span>
+          <header class="chapter-head">
+            <span class="badge">Capítulo VI</span>
+            <h3 class="chapter-title">El Triunfo de la Perseverancia: La Graduación</h3>
+            <p class="chapter-time">⏱ 2 min lectura</p>
+            <div class="divider"></div>
+          </header>
+          <div class="chapter-grid image-first">
+            <div class="chapter-media glass"><img class="chapter-img js-lightbox" src="imagenes/foto-06-graduacion.jpeg" alt="Graduación de Laura" data-caption="El gran día"></div>
+            <div class="chapter-text">
+              <p>Hubo un día en que el cielo pareció más brillante: el día de mi graduación. Ese momento de colocarme la toga y el birrete no fue solo un acto protocolario; fue la culminación de noches de estudio, de dudas superadas y de una meta alcanzada con pulso propio. Ver el orgullo en los ojos de mi familia mientras sostenía mi diploma fue el regalo más grande. En ese instante comprendí que los sueños no se cumplen por arte de magia, sino por la determinación de no rendirse nunca.</p>
+              <em class="hook">Y con ese diploma en mano, comenzó el capítulo más libre de todos…</em>
+            </div>
+          </div>
+          <a class="next-link" href="#parallax-2">Continuar al capítulo VII →</a>
+        </article>
+      </div>
+    </section>
+
+    <section class="parallax second" id="parallax-2">
+      <div class="parallax-bg"></div>
+      <div class="quote-card glass reveal">
+        <blockquote>“Los sueños no se cumplen por arte de magia,<br>sino por la determinación de no rendirse nunca.”</blockquote>
+        <cite>— El Triunfo de la Perseverancia</cite>
+      </div>
+    </section>
+
+    <section>
+      <div class="wrap">
+        <article class="chapter-card glass reveal" id="capitulo-7">
+          <span class="chapter-roman">VII</span>
+          <header class="chapter-head">
+            <span class="badge">Capítulo VII</span>
+            <h3 class="chapter-title">Presente en Movimiento: Libertad y Hogar</h3>
+            <p class="chapter-time">⏱ 2 min lectura</p>
+            <div class="divider"></div>
+          </header>
+          <div class="chapter-grid">
+            <div class="chapter-text">
+              <p>Hoy, mi vida es un equilibrio entre la serenidad del hogar y la emoción de la ruta. He descubierto una libertad inigualable sobre dos ruedas. Ya sea en la agilidad de mi scooter o sintiendo el motor de mi motocicleta de marchas, el viento en el rostro me recuerda que estoy viva y que el mundo es vasto para quien se atreve a recorrerlo. Conducir es mi meditación, mi forma de conectar con el camino y conmigo misma. Al regresar a casa, me espera la calidez de los míos y la alegría juguetona de mis mascotas, esos seres leales que completan nuestro hogar. Soy el resultado de cada gol anotado, de cada kilómetro recorrido por las carreteras de Colombia, de cada clase de educación física y de cada abrazo de mis padres. Esta es mi historia, una que sigo escribiendo cada día con la fuerza de una profesional que ama lo que hace y una mujer que sabe que lo mejor aún está por venir.</p>
+              <em class="hook">Esta historia no termina aquí. Lo mejor aún está por venir. 🌸</em>
+            </div>
+            <div class="chapter-media glass"><img class="chapter-img js-lightbox" src="imagenes/foto-02-scooter-libertad.jpeg" alt="Laura en scooter" data-caption="Libertad"></div>
+          </div>
+          <a class="next-link" href="#galeria">Ver galería completa →</a>
+        </article>
+      </div>
+    </section>
+
+    <section id="galeria">
+      <div class="wrap">
+        <p class="section-label reveal">Galería</p>
+        <h2 class="section-title reveal">La Galería de la Vida</h2>
+        <p class="section-subtitle reveal">Cada foto, un momento que construyó esta historia</p>
+        <div class="gallery-grid">
+          <div class="gallery-item wide tall reveal"><img src="imagenes/foto-08-bebe-infancia.jpeg" alt="Infancia" data-caption="El comienzo"><span>El comienzo</span></div>
+          <div class="gallery-item reveal"><img src="imagenes/foto-10-sombrero-vueltiao.jpeg" alt="Sombrero vueltiao" data-caption="Raíces colombianas"><span>Raíces colombianas</span></div>
+          <div class="gallery-item reveal"><img src="imagenes/foto-05-futbol-sala-bogota.jpeg" alt="Fútbol sala" data-caption="Bogotá D.C. en la cancha"><span>Bogotá D.C. en la cancha</span></div>
+          <div class="gallery-item wide reveal"><img src="imagenes/foto-01-parque-acuatico.jpeg" alt="Familia en parque acuático" data-caption="Familia unida"><span>Familia unida</span></div>
+          <div class="gallery-item reveal"><img src="imagenes/foto-04-familia-noche.jpeg" alt="Familia de noche" data-caption="Los míos"><span>Los míos</span></div>
+          <div class="gallery-item reveal"><img src="imagenes/foto-09-mascota-perro.jpeg" alt="Mascota" data-caption="Amor peludo"><span>Amor peludo</span></div>
+          <div class="gallery-item reveal"><img src="imagenes/foto-07-amigas-selfie.jpeg" alt="Amigas" data-caption="Familia por elección"><span>Familia por elección</span></div>
+          <div class="gallery-item wide reveal"><img src="imagenes/foto-03-amigos-reunion.jpeg" alt="Reunión de amigos" data-caption="La magia de compartir"><span>La magia de compartir</span></div>
+          <div class="gallery-item reveal"><img src="imagenes/foto-06-graduacion.jpeg" alt="Graduación" data-caption="El gran día"><span>El gran día</span></div>
+          <div class="gallery-item reveal"><img src="imagenes/foto-00-cumpleanos-familia.jpeg" alt="Cumpleaños" data-caption="Feliz cumpleaños"><span>Feliz cumpleaños</span></div>
+          <div class="gallery-item reveal"><img src="imagenes/foto-02-scooter-libertad.jpeg" alt="Scooter" data-caption="Libertad"><span>Libertad</span></div>
+          <div class="gallery-item reveal"><img src="imagenes/foto-11-moto-tvs.jpeg" alt="Moto TVS" data-caption="Presente en movimiento"><span>Presente en movimiento</span></div>
         </div>
       </div>
-      <div class="timeline-item">
-        <div class="timeline-content glass-card">
-          <span class="timeline-number">II</span>
-          <div class="timeline-dot"></div>
-          <h3 class="timeline-title">El Legado de la Tierra</h3>
-          <p class="timeline-subtitle">Raíces y sangre</p>
-          <p class="timeline-text">Creció con orgullo por sus raíces colombianas. El sombrero vueltiao es su símbolo más querido — no es solo una prenda, es el recordatorio del esfuerzo de sus ancestros y el valor de la unidad familiar.</p>
-        </div>
-      </div>
-      <div class="timeline-item">
-        <div class="timeline-content glass-card">
-          <span class="timeline-number">III</span>
-          <div class="timeline-dot"></div>
-          <h3 class="timeline-title">Vocation y Movimiento</h3>
-          <p class="timeline-subtitle">El templo de la cancha</p>
-          <p class="timeline-text">Empezó jugando fútbol sala en los coliseos de Bogotá, representando los colores de su ciudad. Ese amor por el deporte se convirtió en propósito: estudió Licenciatura en Educación Física.</p>
-        </div>
-      </div>
-      <div class="timeline-item">
-        <div class="timeline-content glass-card">
-          <span class="timeline-number">IV</span>
-          <div class="timeline-dot"></div>
-          <h3 class="timeline-title">Horizontes Colombianos</h3>
-          <p class="timeline-subtitle">El camino del aprendizaje</p>
-          <p class="timeline-text">Viajó por Colombia como extensión de su educación. Conoció Armenia y Pereira en el Eje Cafetero, los llanos de Casanare y la espiritualidad de Buga. Cada viaje fue una lección de geografía humana.</p>
-        </div>
-      </div>
-      <div class="timeline-item">
-        <div class="timeline-content glass-card">
-          <span class="timeline-number">V</span>
-          <div class="timeline-dot"></div>
-          <h3 class="timeline-title">La Magia de Compartir</h3>
-          <p class="timeline-subtitle">Celebrar y conectar</p>
-          <p class="timeline-text">Sus amistades son familia por elección. Valora los momentos sencillos: selfies improvisadas, risas hasta la madrugada. Sus padres han sido su refugio en las tormentas y su mayor aplauso en los triumphs.</p>
-        </div>
-      </div>
-      <div class="timeline-item">
-        <div class="timeline-content glass-card">
-          <span class="timeline-number">VI</span>
-          <div class="timeline-dot"></div>
-          <h3 class="timeline-title">El Triunfo</h3>
-          <p class="timeline-subtitle">La graduación</p>
-          <p class="timeline-text">El día de su graduación el cielo pareció más brillante. La toga y el birrete no fueron un acto protocolario — fueron la culminación de noches de estudio, dudas superadas y una meta alcanzada con pulso propio.</p>
-        </div>
-      </div>
-      <div class="timeline-item">
-        <div class="timeline-content glass-card">
-          <span class="timeline-number">VII</span>
-          <div class="timeline-dot"></div>
-          <h3 class="timeline-title">Presente en Movimiento</h3>
-          <p class="timeline-subtitle">Libertad y hogar</p>
-          <p class="timeline-text">Hoy vive entre la serenidad del hogar y la emoción de la ruta. Tiene un scooter y una motocicleta de marchas — el viento en el rostro es su meditación. En casa la espera la calidez de su familia y la alegría de sus mascotas.</p>
-        </div>
-      </div>
-    </div>
-  </section>
+    </section>
 
-  <!-- Gallery -->
-  <section class="gallery-section" id="galeria">
-    <div class="gallery-title reveal">
-      <p class="section-label">Memories</p>
-      <h2 class="section-title">La Galería de la Vida</h2>
-    </div>
-    <div class="gallery-grid">
-      <div class="gallery-item wide" data-index="0">
-        <img src="imagenes/foto-08-bebe-infancia.jpeg" alt="Los primeros latidos" onerror="this.style.background='linear-gradient(135deg, #1a1520, #2a2030)'">
-        <div class="gallery-overlay"><span class="gallery-caption">Los primeros latidos — El comienzo de todo</span></div>
+    <section id="presente">
+      <div class="wrap present-grid">
+        <div class="reveal">
+          <p class="section-label">Hoy</p>
+          <h2 class="section-title">Presente en Movimiento</h2>
+          <p class="section-subtitle">Hoy, mi vida es un equilibrio entre la serenidad del hogar y la emoción de la ruta. He descubierto una libertad inigualable sobre dos ruedas. Ya sea en la agilidad de mi scooter o sintiendo el motor de mi motocicleta de marchas, el viento en el rostro me recuerda que estoy viva y que el mundo es vasto para quien se atreve a recorrerlo. Conducir es mi meditación, mi forma de conectar con el camino y conmigo misma. Al regresar a casa, me espera la calidez de los míos y la alegría juguetona de mis mascotas, esos seres leales que completan nuestro hogar. Soy el resultado de cada gol anotado, de cada kilómetro recorrido por las carreteras de Colombia, de cada clase de educación física y de cada abrazo de mis padres. Esta es mi historia, una que sigo escribiendo cada día con la fuerza de una profesional que ama lo que hace y una mujer que sabe que lo mejor aún está por venir.</p>
+          <div class="badges">
+            <span class="life-badge glass">🏍️ Motociclista</span>
+            <span class="life-badge glass">⚽ Deportista</span>
+            <span class="life-badge glass">📚 Licenciada en Educación Física</span>
+            <span class="life-badge glass">🐾 Amante de los Animales</span>
+          </div>
+        </div>
+        <aside class="present-card glass reveal">
+          <blockquote>“Soy el resultado de cada gol anotado, de cada kilómetro recorrido por las carreteras de Colombia, de cada clase de educación física y de cada abrazo de mis padres.”</blockquote>
+          <div class="present-photos">
+            <img class="js-lightbox" src="imagenes/foto-11-moto-tvs.jpeg" alt="Laura con moto TVS" data-caption="Presente en movimiento">
+            <img class="js-lightbox" src="imagenes/foto-04-familia-noche.jpeg" alt="Familia de Laura" data-caption="Los míos">
+          </div>
+        </aside>
       </div>
-      <div class="gallery-item" data-index="1">
-        <img src="imagenes/foto-10-sombrero-vueltiao.jpeg" alt="El sombrero vueltiao" onerror="this.style.background='linear-gradient(135deg, #1a1520, #2a2030)'">
-        <div class="gallery-overlay"><span class="gallery-caption">El sombrero vueltiao — Raíces colombianas</span></div>
-      </div>
-      <div class="gallery-item" data-index="2">
-        <img src="imagenes/foto-05-futbol-sala-bogota.jpeg" alt="Fútbol sala" onerror="this.style.background='linear-gradient(135deg, #1a1520, #2a2030)'">
-        <div class="gallery-overlay"><span class="gallery-caption">Representando Bogotá D.C. — Fútbol sala</span></div>
-      </div>
-      <div class="gallery-item" data-index="3">
-        <img src="imagenes/foto-01-parque-acuatico.jpeg" alt="Familia" onerror="this.style.background='linear-gradient(135deg, #1a1520, #2a2030)'">
-        <div class="gallery-overlay"><span class="gallery-caption">Familia united — Momentos de alegría</span></div>
-      </div>
-      <div class="gallery-item tall" data-index="4">
-        <img src="imagenes/foto-04-familia-noche.jpeg" alt="El hogar" onerror="this.style.background='linear-gradient(135deg, #1a1520, #2a2030)'">
-        <div class="gallery-overlay"><span class="gallery-caption">Los míos — El hogar bogotano</span></div>
-      </div>
-      <div class="gallery-item" data-index="5">
-        <img src="imagenes/foto-09-mascota-perro.jpeg" alt="Mascota" onerror="this.style.background='linear-gradient(135deg, #1a1520, #2a2030)'">
-        <div class="gallery-overlay"><span class="gallery-caption">La mascota del hogar — Amor peludo</span></div>
-      </div>
-      <div class="gallery-item" data-index="6">
-        <img src="imagenes/foto-07-amigas-selfie.jpeg" alt="Amigas" onerror="this.style.background='linear-gradient(135deg, #1a1520, #2a2030)'">
-        <div class="gallery-overlay"><span class="gallery-caption">Amigas — Familia por elección</span></div>
-      </div>
-      <div class="gallery-item" data-index="7">
-        <img src="imagenes/foto-03-amigos-reunion.jpeg" alt="Amigos" onerror="this.style.background='linear-gradient(135deg, #1a1520, #2a2030)'">
-        <div class="gallery-overlay"><span class="gallery-caption">La magia de compartir</span></div>
-      </div>
-      <div class="gallery-item wide" data-index="8">
-        <img src="imagenes/foto-06-graduacion.jpeg" alt="Graduación" onerror="this.style.background='linear-gradient(135deg, #1a1520, #2a2030)'">
-        <div class="gallery-overlay"><span class="gallery-caption">El triunfo de la perseverancia</span></div>
-      </div>
-      <div class="gallery-item" data-index="9">
-        <img src="imagenes/foto-00-cumpleanos-familia.jpeg" alt="Cumpleaños" onerror="this.style.background='linear-gradient(135deg, #1a1520, #2a2030)'">
-        <div class="gallery-overlay"><span class="gallery-caption">Feliz cumpleaños — Con papá y mamá</span></div>
-      </div>
-      <div class="gallery-item" data-index="10">
-        <img src="imagenes/foto-02-scooter-libertad.jpeg" alt="Scooter" onerror="this.style.background='linear-gradient(135deg, #1a1520, #2a2030)'">
-        <div class="gallery-overlay"><span class="gallery-caption">Libertad sobre dos ruedas</span></div>
-      </div>
-      <div class="gallery-item" data-index="11">
-        <img src="imagenes/foto-11-moto-tvs.jpeg" alt="Moto" onerror="this.style.background='linear-gradient(135deg, #1a1520, #2a2030)'">
-        <div class="gallery-overlay"><span class="gallery-caption">Presente en movimiento — TVS</span></div>
-      </div>
-    </div>
-  </section>
+    </section>
 
-  <!-- Quote 2 -->
-  <section class="parallax-quote">
-    <div class="quote-card glass-card reveal">
-      <p class="quote-text">"Los sueños no se cumplen por arte de magia, sino por la determinación de no rendirse nunca."</p>
-    </div>
-  </section>
-
-  <!-- Present -->
-  <section class="present" id="presente">
-    <div class="present-text reveal">
-      <p class="section-label">Hoy</p>
-      <h2 class="section-title">Presente en Movimiento</h2>
-      <div class="divider"></div>
-      <p>Hoy vive entre la serenidad del hogar y la emoción de la ruta. Tiene un scooter y una motocicleta de marchas — el viento en el rostro es su meditación, su forma de conectar con el camino y consigo misma. En casa la espera la calidez de su familia y la alegría de sus mascotas. Es el resultado de cada gol anotado, cada kilómetro recorrido y cada abrazo de sus padres. Lo mejor aún está por venir.</p>
-      <div class="badges">
-        <span class="badge">🏍️ Motociclista</span>
-        <span class="badge">⚽ Deportista</span>
-        <span class="badge">📚 Licenciada</span>
-        <span class="badge">🐾 Amante Animales</span>
+    <section>
+      <div class="share-card glass reveal">
+        <h2>¿Te gustó esta historia?</h2>
+        <p>Compártela con alguien especial</p>
+        <div class="share-actions">
+          <a class="share-btn" href="https://wa.me/?text=Mira+esta+historia+incre%C3%ADble+https://rolo0317.github.io/laura-farfan/" target="_blank" rel="noopener">📤 Compartir en WhatsApp</a>
+          <button class="share-btn" type="button" id="copyLink">🔗 Copiar enlace</button>
+          <a class="share-btn" href="#" aria-label="Instagram de Laura">📸 Instagram</a>
+        </div>
       </div>
-    </div>
-    <div class="present-image reveal">
-      <div class="glass-card">
-        <p class="present-quote">"Soy el resultado de cada gol anotado, de cada kilómetro recorrido por las carreteras de Colombia, de cada clase de educación física y de cada abrazo de mis padres. Esta es mi historia, una que sigo escribiendo cada día."</p>
-      </div>
-    </div>
-  </section>
+    </section>
+  </main>
 
-  <!-- Footer -->
   <footer>
-    <h3 class="footer-title">Lo mejor aún está por venir</h3>
+    <h2 class="footer-title">Lo mejor aún está por venir 🌸</h2>
     <div class="footer-divider"></div>
-    <p class="footer-text">Una historia colombiana de amor, esfuerzo y libertad · Bogotá D.C.</p>
-    <p class="footer-colombiana">🇨🇴 Hecha en Colombia · 2026</p>
+    <p>Una historia colombiana de amor, esfuerzo y libertad</p>
+    <p>Bogotá D.C. · Colombia · 2026</p>
+    <p>🇨🇴 Hecha en Colombia con amor</p>
+    <p>© 2026 Laura Farfán. Todos los derechos reservados.</p>
   </footer>
 
-  <!-- Lightbox -->
-  <div class="lightbox" id="lightbox">
-    <button class="lightbox-close" id="lightboxClose">×</button>
-    <button class="lightbox-nav lightbox-prev" id="lightboxPrev">‹</button>
-    <button class="lightbox-nav lightbox-next" id="lightboxNext">›</button>
-    <img class="lightbox-image" id="lightboxImage" src="" alt="">
+  <div class="lightbox" id="lightbox" aria-hidden="true">
+    <button class="lightbox-close" type="button" id="lightboxClose" aria-label="Cerrar">×</button>
+    <button class="lightbox-nav lightbox-prev" type="button" id="lightboxPrev" aria-label="Imagen anterior">←</button>
+    <img class="lightbox-img" id="lightboxImg" src="" alt="">
+    <button class="lightbox-nav lightbox-next" type="button" id="lightboxNext" aria-label="Imagen siguiente">→</button>
     <p class="lightbox-caption" id="lightboxCaption"></p>
   </div>
+  <div class="toast" id="toast">¡Enlace copiado! 🌸</div>
 
   <script>
-    // Gallery data
-    const galleryData = [
-      { src: 'imagenes/foto-08-bebe-infancia.jpeg', caption: 'Los primeros latidos — El comienzo de todo' },
-      { src: 'imagenes/foto-10-sombrero-vueltiao.jpeg', caption: 'El sombrero vueltiao — Raíces colombianas' },
-      { src: 'imagenes/foto-05-futbol-sala-bogota.jpeg', caption: 'Representando Bogotá D.C. — Fútbol sala' },
-      { src: 'imagenes/foto-01-parque-acuatico.jpeg', caption: 'Familia united — Momentos de alegría' },
-      { src: 'imagenes/foto-04-familia-noche.jpeg', caption: 'Los míos — El hogar bogotano' },
-      { src: 'imagenes/foto-09-mascota-perro.jpeg', caption: 'La mascota del hogar — Amor peludo' },
-      { src: 'imagenes/foto-07-amigas-selfie.jpeg', caption: 'Amigas — Familia por elección' },
-      { src: 'imagenes/foto-03-amigos-reunion.jpeg', caption: 'La magia de compartir' },
-      { src: 'imagenes/foto-06-graduacion.jpeg', caption: 'El triunfo de la perseverancia' },
-      { src: 'imagenes/foto-00-cumpleanos-familia.jpeg', caption: 'Feliz cumpleaños — Con papá y mamá' },
-      { src: 'imagenes/foto-02-scooter-libertad.jpeg', caption: 'Libertad sobre dos ruedas' },
-      { src: 'imagenes/foto-11-moto-tvs.jpeg', caption: 'Presente en movimiento — TVS' }
-    ];
+    const prefersReduced = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
 
-    // Cursor
-    const cursorDot = document.getElementById('cursorDot');
-    const cursorRing = document.getElementById('cursorRing');
-    let mouseX = 0, mouseY = 0;
-    let ringX = 0, ringY = 0;
-
-    document.addEventListener('mousemove', (e) => {
-      mouseX = e.clientX;
-      mouseY = e.clientY;
-      cursorDot.style.left = mouseX - 4 + 'px';
-      cursorDot.style.top = mouseY - 4 + 'px';
-    });
-
-    function animateRing() {
-      ringX += (mouseX - ringX) * 0.15;
-      ringY += (mouseY - ringY) * 0.15;
-      cursorRing.style.left = ringX - 20 + 'px';
-      cursorRing.style.top = ringY - 20 + 'px';
-      requestAnimationFrame(animateRing);
+    const cursorDot = document.getElementById("cursorDot");
+    const cursorRing = document.getElementById("cursorRing");
+    let mouseX = window.innerWidth / 2;
+    let mouseY = window.innerHeight / 2;
+    let ringX = mouseX;
+    let ringY = mouseY;
+    if (window.matchMedia("(pointer: fine)").matches) {
+      window.addEventListener("mousemove", (event) => {
+        mouseX = event.clientX;
+        mouseY = event.clientY;
+        cursorDot.style.transform = `translate(${mouseX - 5}px, ${mouseY - 5}px)`;
+      });
+      const animateCursor = () => {
+        ringX += (mouseX - ringX) * 0.16;
+        ringY += (mouseY - ringY) * 0.16;
+        cursorRing.style.transform = `translate(${ringX - 17}px, ${ringY - 17}px)`;
+        requestAnimationFrame(animateCursor);
+      };
+      animateCursor();
     }
-    animateRing();
 
-    // Nav scroll effect
-    const nav = document.getElementById('nav');
-    window.addEventListener('scroll', () => {
-      if (window.scrollY > 50) {
-        nav.classList.add('scrolled');
-      } else {
-        nav.classList.remove('scrolled');
-      }
+    const nav = document.getElementById("siteNav");
+    const progress = document.getElementById("readingProgress");
+    const navToggle = document.getElementById("navToggle");
+    const navLinks = document.getElementById("navLinks");
+    navToggle.addEventListener("click", () => {
+      const open = navLinks.classList.toggle("open");
+      navToggle.setAttribute("aria-expanded", open);
     });
+    navLinks.querySelectorAll("a").forEach((link) => link.addEventListener("click", () => {
+      navLinks.classList.remove("open");
+      navToggle.setAttribute("aria-expanded", "false");
+    }));
 
-    // Reveal on scroll
-    const revealElements = document.querySelectorAll('.reveal, .timeline-item, .gallery-item');
-    const observer = new IntersectionObserver((entries) => {
-      entries.forEach((entry, index) => {
+    const onScroll = () => {
+      const scrollTop = document.documentElement.scrollTop || document.body.scrollTop;
+      const maxScroll = document.documentElement.scrollHeight - window.innerHeight;
+      nav.classList.toggle("scrolled", scrollTop > 50);
+      progress.style.width = `${Math.min(100, (scrollTop / maxScroll) * 100)}%`;
+      document.querySelectorAll(".parallax-bg").forEach((bg) => {
+        const rect = bg.parentElement.getBoundingClientRect();
+        const offset = (window.innerHeight - rect.top) * 0.12;
+        bg.style.transform = `translateY(${offset}px)`;
+      });
+    };
+    window.addEventListener("scroll", onScroll, { passive: true });
+    onScroll();
+
+    const revealObserver = new IntersectionObserver((entries) => {
+      entries.forEach((entry) => {
         if (entry.isIntersecting) {
-          setTimeout(() => {
-            entry.target.classList.add('visible');
-          }, index * 100);
+          entry.target.classList.add("visible");
+          revealObserver.unobserve(entry.target);
         }
       });
-    }, { threshold: 0.1 });
+    }, { threshold: 0.15 });
 
-    revealElements.forEach(el => observer.observe(el));
-
-    // Gallery items stagger
-    const galleryItems = document.querySelectorAll('.gallery-item');
-    galleryItems.forEach((item, index) => {
-      item.style.transitionDelay = (index * 0.1) + 's';
+    document.querySelectorAll(".reveal").forEach((el, index) => {
+      const inChapter = el.classList.contains("chapter-card");
+      const inStats = el.classList.contains("stat");
+      const inGallery = el.classList.contains("gallery-item");
+      if (inChapter || inStats || inGallery) el.style.transitionDelay = `${(index % 8) * 0.1}s`;
+      revealObserver.observe(el);
     });
 
-    // Lightbox
-    const lightbox = document.getElementById('lightbox');
-    const lightboxImage = document.getElementById('lightboxImage');
-    const lightboxCaption = document.getElementById('lightboxCaption');
-    let currentIndex = 0;
+    const cityCarousel = document.getElementById("cityCarousel");
+    const slides = [...cityCarousel.querySelectorAll(".carousel-slide")];
+    const dotsBox = cityCarousel.querySelector(".carousel-dots");
+    let currentSlide = 0;
+    let carouselTimer;
 
-    galleryItems.forEach((item, index) => {
-      item.addEventListener('click', () => {
-        currentIndex = index;
-        openLightbox(index);
+    slides.forEach((slide, index) => {
+      const dot = document.createElement("button");
+      dot.className = `carousel-dot${index === 0 ? " active" : ""}`;
+      dot.type = "button";
+      dot.setAttribute("aria-label", `Ver ciudad ${index + 1}`);
+      dot.addEventListener("click", () => showSlide(index));
+      dotsBox.appendChild(dot);
+      const img = slide.querySelector("img");
+      img.addEventListener("error", () => {
+        slide.classList.add("fallback");
+        img.style.display = "none";
       });
     });
+    const dots = [...dotsBox.children];
+    function showSlide(index) {
+      currentSlide = (index + slides.length) % slides.length;
+      slides.forEach((slide, i) => slide.classList.toggle("active", i === currentSlide));
+      dots.forEach((dot, i) => dot.classList.toggle("active", i === currentSlide));
+    }
+    function startCarousel() {
+      if (prefersReduced) return;
+      clearInterval(carouselTimer);
+      carouselTimer = setInterval(() => showSlide(currentSlide + 1), 3500);
+    }
+    cityCarousel.querySelector(".carousel-prev").addEventListener("click", () => showSlide(currentSlide - 1));
+    cityCarousel.querySelector(".carousel-next").addEventListener("click", () => showSlide(currentSlide + 1));
+    cityCarousel.addEventListener("mouseenter", () => clearInterval(carouselTimer));
+    cityCarousel.addEventListener("mouseleave", startCarousel);
+    startCarousel();
+
+    const lightboxItems = [...document.querySelectorAll(".js-lightbox, .gallery-item img")].map((img) => ({
+      src: img.getAttribute("src"),
+      alt: img.getAttribute("alt") || "",
+      caption: img.dataset.caption || img.getAttribute("alt") || "El Tapiz de Mi Vida"
+    }));
+    const lightbox = document.getElementById("lightbox");
+    const lightboxImg = document.getElementById("lightboxImg");
+    const lightboxCaption = document.getElementById("lightboxCaption");
+    let lightboxIndex = 0;
+    let touchStartX = 0;
 
     function openLightbox(index) {
-      currentIndex = index;
-      lightboxImage.src = galleryData[index].src;
-      lightboxCaption.textContent = galleryData[index].caption;
-      lightbox.classList.add('active');
+      lightboxIndex = index;
+      const item = lightboxItems[lightboxIndex];
+      lightboxImg.src = item.src;
+      lightboxImg.alt = item.alt;
+      lightboxCaption.textContent = item.caption;
+      lightbox.classList.add("active");
+      lightbox.setAttribute("aria-hidden", "false");
+      document.body.style.overflow = "hidden";
     }
-
-    document.getElementById('lightboxClose').addEventListener('click', () => {
-      lightbox.classList.remove('active');
+    function closeLightbox() {
+      lightbox.classList.remove("active");
+      lightbox.setAttribute("aria-hidden", "true");
+      document.body.style.overflow = "";
+    }
+    function moveLightbox(step) {
+      lightboxIndex = (lightboxIndex + step + lightboxItems.length) % lightboxItems.length;
+      openLightbox(lightboxIndex);
+    }
+    document.querySelectorAll(".js-lightbox, .gallery-item img").forEach((img, index) => {
+      img.addEventListener("click", () => openLightbox(index));
+    });
+    document.getElementById("lightboxClose").addEventListener("click", closeLightbox);
+    document.getElementById("lightboxPrev").addEventListener("click", () => moveLightbox(-1));
+    document.getElementById("lightboxNext").addEventListener("click", () => moveLightbox(1));
+    lightbox.addEventListener("click", (event) => {
+      if (event.target === lightbox) closeLightbox();
+    });
+    lightbox.addEventListener("touchstart", (event) => {
+      touchStartX = event.changedTouches[0].clientX;
+    }, { passive: true });
+    lightbox.addEventListener("touchend", (event) => {
+      const delta = event.changedTouches[0].clientX - touchStartX;
+      if (Math.abs(delta) > 45) moveLightbox(delta > 0 ? -1 : 1);
+    }, { passive: true });
+    document.addEventListener("keydown", (event) => {
+      if (!lightbox.classList.contains("active")) return;
+      if (event.key === "Escape") closeLightbox();
+      if (event.key === "ArrowLeft") moveLightbox(-1);
+      if (event.key === "ArrowRight") moveLightbox(1);
     });
 
-    document.getElementById('lightboxPrev').addEventListener('click', () => {
-      currentIndex = (currentIndex - 1 + galleryData.length) % galleryData.length;
-      lightboxImage.src = galleryData[currentIndex].src;
-      lightboxCaption.textContent = galleryData[currentIndex].caption;
-    });
-
-    document.getElementById('lightboxNext').addEventListener('click', () => {
-      currentIndex = (currentIndex + 1) % galleryData.length;
-      lightboxImage.src = galleryData[currentIndex].src;
-      lightboxCaption.textContent = galleryData[currentIndex].caption;
-    });
-
-    // Keyboard navigation
-    document.addEventListener('keydown', (e) => {
-      if (!lightbox.classList.contains('active')) return;
-      if (e.key === 'Escape') lightbox.classList.remove('active');
-      if (e.key === 'ArrowLeft') {
-        currentIndex = (currentIndex - 1 + galleryData.length) % galleryData.length;
-        lightboxImage.src = galleryData[currentIndex].src;
-        lightboxCaption.textContent = galleryData[currentIndex].caption;
-      }
-      if (e.key === 'ArrowRight') {
-        currentIndex = (currentIndex + 1) % galleryData.length;
-        lightboxImage.src = galleryData[currentIndex].src;
-        lightboxCaption.textContent = galleryData[currentIndex].caption;
-      }
-    });
-
-    // Close lightbox on background click
-    lightbox.addEventListener('click', (e) => {
-      if (e.target === lightbox) lightbox.classList.remove('active');
-    });
-
-    // Parallax effect
-    window.addEventListener('scroll', () => {
-      const scrolled = window.scrollY;
-      document.querySelectorAll('.parallax-quote').forEach(section => {
-        const speed = 0.3;
-        section.style.backgroundPositionY = (scrolled * speed) + 'px';
+    document.querySelectorAll('a[href^="#"]').forEach((anchor) => {
+      anchor.addEventListener("click", (event) => {
+        const target = document.querySelector(anchor.getAttribute("href"));
+        if (!target) return;
+        event.preventDefault();
+        target.scrollIntoView({ behavior: prefersReduced ? "auto" : "smooth", block: "start" });
       });
     });
-  </script>
-</body>
-</html>
-    }
 
-    /* Barra tricolor animada al tope de la página */
-    body::before {
-      content: '';
-      position: fixed;
-      top: 0; left: 0; right: 0;
-      height: 3px;
-      background: linear-gradient(to right,
-        var(--col-amarillo) 0%,
-        var(--col-amarillo) 40%,
-        var(--col-azul) 40%,
-        var(--col-azul) 60%,
-        var(--col-rojo) 60%,
-        var(--col-rojo) 100%
-      );
-      z-index: 9999;
-    }
-
-    header {
-      text-align: center;
-      padding: 60px 20px 40px;
-      background: linear-gradient(180deg, #151515 0%, var(--bg-dark) 100%);
-    }
-
-    header h1 {
-      font-size: 2.5rem;
-      font-weight: 300;
-      letter-spacing: 0.1em;
-      margin-bottom: 8px;
-    }
-
-    header h1 span {
-      color: var(--col-amarillo);
-    }
-
-    header p {
-      color: var(--text-secondary);
-      font-size: 1rem;
-      letter-spacing: 0.05em;
-    }
-
-    .gallery {
-      display: grid;
-      grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
-      gap: 24px;
-      padding: 40px;
-      max-width: 1400px;
-      margin: 0 auto;
-    }
-
-    .photo-card {
-      background: var(--bg-card);
-      border-radius: 12px;
-      overflow: hidden;
-      transition: transform 0.3s ease, box-shadow 0.3s ease;
-    }
-
-    .photo-card:hover {
-      transform: translateY(-4px);
-      box-shadow: 0 12px 40px rgba(0, 0, 0, 0.4);
-    }
-
-    .photo-card img {
-      width: 100%;
-      height: 220px;
-      object-fit: cover;
-      display: block;
-    }
-
-    .photo-card .caption {
-      padding: 16px;
-      font-size: 0.9rem;
-      color: var(--text-secondary);
-      border-left: 3px solid var(--col-azul);
-    }
-
-    footer {
-      text-align: center;
-      padding: 40px 20px;
-      background: #0a0a0a;
-      color: var(--text-secondary);
-    }
-
-    footer .footer-colombiana {
-      display: inline-flex;
-      align-items: center;
-      gap: 8px;
-      margin-top: 16px;
-      font-size: 0.78rem;
-      letter-spacing: 0.15em;
-      color: var(--col-amarillo);
-      text-transform: uppercase;
-    }
-
-    @media (max-width: 600px) {
-      header h1 { font-size: 1.8rem; }
-      .gallery { padding: 20px; gap: 16px; }
-    }
-  </style>
-</head>
-<body>
-  <header>
-    <h1>Laura <span>Farfán</span></h1>
-    <p>Una vida en momentos — Bogotá D.C.</p>
-  </header>
-
-  <main class="gallery" id="gallery"></main>
-
-  <footer>
-    <p>&copy; 2026 Laura Farfán. Todos los derechos reservados.</p>
-    <p class="footer-colombiana">🇨🇴 Hecha en Colombia · Bogotá D.C.</p>
-  </footer>
-
-  <script>
-    const photos = [
-      { src: 'imagenes/foto-08-bebe-infancia.jpeg',     caption: 'Los primeros latidos — El comienzo de todo' },
-      { src: 'imagenes/foto-10-sombrero-vueltiao.jpeg',  caption: 'El sombrero vueltiao — Legado y raíces colombianas' },
-      { src: 'imagenes/foto-05-futbol-sala-bogota.jpeg', caption: 'Representando a Bogotá D.C. — Fútbol sala' },
-      { src: 'imagenes/foto-01-parque-acuatico.jpeg',    caption: 'Familia unida — Momentos de alegría' },
-      { src: 'imagenes/foto-04-familia-noche.jpeg',      caption: 'Los míos y mi mascota — El hogar bogotano' },
-      { src: 'imagenes/foto-09-mascota-perro.jpeg',      caption: 'La mascota del hogar — Amor peludo' },
-      { src: 'imagenes/foto-07-amigas-selfie.jpeg',      caption: 'Amigas — Familia por elección' },
-      { src: 'imagenes/foto-03-amigos-reunion.jpeg',     caption: 'La magia de compartir — Momentos con amigos' },
-      { src: 'imagenes/foto-06-graduacion.jpeg',         caption: 'El día de la graduación — Sueños cumplidos' },
-      { src: 'imagenes/foto-00-cumpleanos-familia.jpeg', caption: 'Feliz cumpleaños — Celebrando con papá y mamá' },
-      { src: 'imagenes/foto-02-scooter-libertad.jpeg',   caption: 'Libertad sobre dos ruedas — El scooter' },
-      { src: 'imagenes/foto-11-moto-tvs.jpeg',           caption: 'La moto TVS — Presente en movimiento' },
-    ];
-
-    const gallery = document.getElementById('gallery');
-    photos.forEach(photo => {
-      const card = document.createElement('div');
-      card.className = 'photo-card';
-      card.innerHTML = `
-        <img src="${photo.src}" alt="${photo.caption}" loading="lazy">
-        <div class="caption">${photo.caption}</div>
-      `;
-      gallery.appendChild(card);
+    const toast = document.getElementById("toast");
+    document.getElementById("copyLink").addEventListener("click", async () => {
+      const url = "https://rolo0317.github.io/laura-farfan/";
+      try {
+        await navigator.clipboard.writeText(url);
+      } catch (error) {
+        const input = document.createElement("input");
+        input.value = url;
+        document.body.appendChild(input);
+        input.select();
+        document.execCommand("copy");
+        input.remove();
+      }
+      toast.classList.add("show");
+      setTimeout(() => toast.classList.remove("show"), 3000);
     });
   </script>
 </body>
