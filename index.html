@@ -3,17 +3,22 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Laura Farfán — Mi Historia</title>
+  <title>El Tapiz de Mi Vida — Laura Farfán</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,600;0,700;1,400;1,600&family=Nunito:wght@300;400;500;600&display=swap" rel="stylesheet">
   <style>
-    /* TOQUE COLOMBIANO — colores bandera como acento sutil */
     :root {
       --col-amarillo: #FCD116;
       --col-azul: #003087;
       --col-rojo: #CE1126;
-      --bg-dark: #0f0f0f;
-      --bg-card: #1a1a1a;
-      --text-primary: #f5f5f5;
-      --text-secondary: #a0a0a0;
+      --bg-dark: #060410;
+      --gold: #c9a84c;
+      --gold-light: #e8c97a;
+      --rose: #e8a4b8;
+      --glass-bg: rgba(255,255,255,0.06);
+      --glass-border: rgba(255,255,255,0.10);
+      --ease-out: cubic-bezier(.16,1,.3,1);
     }
 
     * {
@@ -22,12 +27,1121 @@
       box-sizing: border-box;
     }
 
+    html {
+      scroll-behavior: smooth;
+    }
+
     body {
-      font-family: 'Segoe UI', system-ui, sans-serif;
+      font-family: 'Nunito', sans-serif;
       background: var(--bg-dark);
-      color: var(--text-primary);
-      line-height: 1.6;
+      color: #f5f5f5;
+      line-height: 1.7;
+      overflow-x: hidden;
+      cursor: none;
+    }
+
+    /* Cursor personalizado */
+    .cursor-dot {
+      width: 8px;
+      height: 8px;
+      background: var(--gold);
+      border-radius: 50%;
+      position: fixed;
+      pointer-events: none;
+      z-index: 10000;
+      transition: transform 0.1s ease;
+    }
+
+    .cursor-ring {
+      width: 40px;
+      height: 40px;
+      border: 1px solid var(--gold-light);
+      border-radius: 50%;
+      position: fixed;
+      pointer-events: none;
+      z-index: 9999;
+      transition: transform 0.15s ease, opacity 0.3s ease;
+      opacity: 0.6;
+    }
+
+    /* Noise texture overlay */
+    .noise-overlay {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      pointer-events: none;
+      z-index: 9998;
+      opacity: 0.03;
+      background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)'/%3E%3C/svg%3E");
+    }
+
+    /* Barra tricolor */
+    .tricolor-bar {
+      position: fixed;
+      top: 0;
+      left: 0;
+      right: 0;
+      height: 4px;
+      background: linear-gradient(to right,
+        var(--col-amarillo) 0%, var(--col-amarillo) 40%,
+        var(--col-azul) 40%, var(--col-azul) 60%,
+        var(--col-rojo) 60%, var(--col-rojo) 100%
+      );
+      z-index: 10001;
+    }
+
+    /* Navegación */
+    nav {
+      position: fixed;
+      top: 4px;
+      left: 0;
+      right: 0;
+      padding: 1rem 2rem;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      background: rgba(6,4,16,0.8);
+      backdrop-filter: blur(20px);
+      -webkit-backdrop-filter: blur(20px);
+      border-bottom: 1px solid var(--glass-border);
+      z-index: 1000;
+      transition: box-shadow 0.4s var(--ease-out);
+    }
+
+    nav.scrolled {
+      box-shadow: 0 8px 40px rgba(0,0,0,0.5);
+    }
+
+    .nav-logo {
+      font-family: 'Playfair Display', serif;
+      font-size: 1.3rem;
+      color: var(--gold);
+      font-style: italic;
+      letter-spacing: 0.02em;
+    }
+
+    .nav-links {
+      display: flex;
+      gap: 2rem;
+      list-style: none;
+    }
+
+    .nav-links a {
+      color: #f5f5f5;
+      text-decoration: none;
+      font-size: 0.9rem;
+      font-weight: 500;
+      letter-spacing: 0.05em;
+      text-transform: uppercase;
+      transition: color 0.3s ease;
+      position: relative;
+    }
+
+    .nav-links a::after {
+      content: '';
+      position: absolute;
+      bottom: -4px;
+      left: 0;
+      width: 0;
+      height: 1px;
+      background: var(--gold);
+      transition: width 0.4s var(--ease-out);
+    }
+
+    .nav-links a:hover {
+      color: var(--gold);
+    }
+
+    .nav-links a:hover::after {
+      width: 100%;
+    }
+
+    /* Hero */
+    .hero {
       min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+      text-align: center;
+      padding: 2rem;
+      position: relative;
+      background: radial-gradient(ellipse at 50% 30%, rgba(201,168,76,0.08) 0%, transparent 60%),
+                  radial-gradient(ellipse at 20% 80%, rgba(0,48,135,0.1) 0%, transparent 40%),
+                  radial-gradient(ellipse at 80% 80%, rgba(206,17,38,0.08) 0%, transparent 40%),
+                  var(--bg-dark);
+    }
+
+    .hero-decoration {
+      position: absolute;
+      top: 80px;
+      left: 50%;
+      transform: translateX(-50%);
+      display: flex;
+      gap: 8px;
+    }
+
+    .hero-decoration span {
+      width: 40px;
+      height: 4px;
+      border-radius: 2px;
+    }
+
+    .hero-decoration span:nth-child(1) { background: var(--col-amarillo); }
+    .hero-decoration span:nth-child(2) { background: var(--col-azul); }
+    .hero-decoration span:nth-child(3) { background: var(--col-rojo); }
+
+    .hero-subtitle {
+      font-size: 0.85rem;
+      letter-spacing: 0.25em;
+      text-transform: uppercase;
+      color: var(--rose);
+      margin-bottom: 1rem;
+      opacity: 0;
+      animation: subeOp 1s var(--ease-out) 0.2s forwards;
+    }
+
+    .hero-title {
+      font-family: 'Playfair Display', serif;
+      font-size: clamp(2.5rem, 8vw, 5rem);
+      font-weight: 400;
+      line-height: 1.1;
+      margin-bottom: 1.5rem;
+      opacity: 0;
+      animation: subeOp 1s var(--ease-out) 0.4s forwards;
+    }
+
+    .hero-title .gold {
+      color: var(--gold);
+      font-style: italic;
+    }
+
+    .hero-desc {
+      max-width: 600px;
+      font-size: 1.1rem;
+      color: rgba(245,245,245,0.8);
+      line-height: 1.8;
+      opacity: 0;
+      animation: subeOp 1s var(--ease-out) 0.6s forwards;
+    }
+
+    .scroll-indicator {
+      position: absolute;
+      bottom: 40px;
+      left: 50%;
+      transform: translateX(-50%);
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 8px;
+      opacity: 0;
+      animation: subeOp 1s var(--ease-out) 0.8s forwards;
+    }
+
+    .scroll-indicator span {
+      font-size: 0.7rem;
+      letter-spacing: 0.2em;
+      text-transform: uppercase;
+      color: rgba(245,245,245,0.5);
+    }
+
+    .scroll-line {
+      width: 1px;
+      height: 40px;
+      background: linear-gradient(to bottom, var(--gold), transparent);
+      animation: pulso 2s ease-in-out infinite;
+    }
+
+    @keyframes subeOp {
+      to { opacity: 1; transform: translateY(0); }
+    }
+
+    @keyframes pulso {
+      0%, 100% { opacity: 0.3; transform: scaleY(1); }
+      50% { opacity: 1; transform: scaleY(1.2); }
+    }
+
+    /* Secciones generales */
+    section {
+      padding: 6rem 2rem;
+      max-width: 1200px;
+      margin: 0 auto;
+    }
+
+    .section-label {
+      font-size: 0.75rem;
+      letter-spacing: 0.3em;
+      text-transform: uppercase;
+      color: var(--gold);
+      margin-bottom: 0.5rem;
+    }
+
+    .section-title {
+      font-family: 'Playfair Display', serif;
+      font-size: clamp(2rem, 5vw, 3rem);
+      font-weight: 400;
+      margin-bottom: 1.5rem;
+    }
+
+    .divider {
+      width: 60px;
+      height: 2px;
+      background: linear-gradient(90deg, var(--gold), var(--gold-light));
+      margin: 1rem 0;
+    }
+
+    /* Glass card */
+    .glass-card {
+      background: var(--glass-bg);
+      backdrop-filter: blur(20px);
+      -webkit-backdrop-filter: blur(20px);
+      border: 1px solid var(--glass-border);
+      border-radius: 16px;
+      padding: 2rem;
+    }
+
+    /* Intro section */
+    .intro {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 4rem;
+      align-items: center;
+    }
+
+    .intro-text p {
+      color: rgba(245,245,245,0.85);
+      font-size: 1.05rem;
+      margin-top: 1rem;
+    }
+
+    .intro-image {
+      position: relative;
+    }
+
+    .intro-image::before {
+      content: '';
+      position: absolute;
+      top: -20px;
+      left: -20px;
+      right: 20px;
+      bottom: 20px;
+      border: 1px solid var(--gold);
+      border-radius: 16px;
+      opacity: 0.3;
+    }
+
+    .intro-image img {
+      width: 100%;
+      border-radius: 16px;
+      object-fit: cover;
+    }
+
+    /* Stats */
+    .stats {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 1.5rem;
+      margin: 4rem 0;
+    }
+
+    .stat-card {
+      text-align: center;
+      padding: 2rem 1rem;
+    }
+
+    .stat-number {
+      font-family: 'Playfair Display', serif;
+      font-size: 2.5rem;
+      color: var(--gold);
+      margin-bottom: 0.5rem;
+    }
+
+    .stat-label {
+      font-size: 0.9rem;
+      color: rgba(245,245,245,0.7);
+    }
+
+    /* Parallax quote */
+    .parallax-quote {
+      min-height: 60vh;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      background: var(--bg-dark);
+      position: relative;
+      overflow: hidden;
+    }
+
+    .parallax-quote::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      background: radial-gradient(ellipse at 50% 50%, rgba(201,168,76,0.1) 0%, transparent 70%);
+    }
+
+    .quote-card {
+      max-width: 700px;
+      text-align: center;
+      padding: 3rem;
+      position: relative;
+      z-index: 1;
+    }
+
+    .quote-text {
+      font-family: 'Playfair Display', serif;
+      font-size: clamp(1.3rem, 3vw, 1.8rem);
+      font-style: italic;
+      color: rgba(245,245,245,0.95);
+      line-height: 1.6;
+    }
+
+    /* Timeline */
+    .timeline {
+      position: relative;
+      padding: 4rem 0;
+    }
+
+    .timeline::before {
+      content: '';
+      position: absolute;
+      left: 50%;
+      top: 0;
+      bottom: 0;
+      width: 2px;
+      background: linear-gradient(to bottom, var(--gold), var(--rose));
+      transform: translateX(-50%);
+    }
+
+    .timeline-item {
+      display: flex;
+      justify-content: flex-end;
+      padding-right: calc(50% + 40px);
+      margin-bottom: 4rem;
+      opacity: 0;
+      transform: translateY(50px);
+      transition: all 0.8s var(--ease-out);
+    }
+
+    .timeline-item.visible {
+      opacity: 1;
+      transform: translateY(0);
+    }
+
+    .timeline-item:nth-child(even) {
+      justify-content: flex-start;
+      padding-right: 0;
+      padding-left: calc(50% + 40px);
+    }
+
+    .timeline-content {
+      max-width: 450px;
+      position: relative;
+    }
+
+    .timeline-number {
+      font-family: 'Playfair Display', serif;
+      font-size: 6rem;
+      color: rgba(201,168,76,0.1);
+      position: absolute;
+      top: -40px;
+      left: -20px;
+      z-index: -1;
+    }
+
+    .timeline-dot {
+      position: absolute;
+      right: -48px;
+      top: 20px;
+      width: 16px;
+      height: 16px;
+      border-radius: 50%;
+      background: var(--gold);
+      box-shadow: 0 0 20px var(--gold);
+    }
+
+    .timeline-item:nth-child(1) .timeline-dot { background: var(--col-amarillo); box-shadow: 0 0 20px var(--col-amarillo); }
+    .timeline-item:nth-child(2) .timeline-dot { background: var(--col-azul); box-shadow: 0 0 20px var(--col-azul); }
+    .timeline-item:nth-child(3) .timeline-dot { background: var(--col-rojo); box-shadow: 0 0 20px var(--col-rojo); }
+    .timeline-item:nth-child(4) .timeline-dot { background: var(--gold); box-shadow: 0 0 20px var(--gold); }
+    .timeline-item:nth-child(5) .timeline-dot { background: var(--rose); box-shadow: 0 0 20px var(--rose); }
+    .timeline-item:nth-child(6) .timeline-dot { background: var(--gold-light); box-shadow: 0 0 20px var(--gold-light); }
+    .timeline-item:nth-child(7) .timeline-dot { background: var(--col-amarillo); box-shadow: 0 0 20px var(--col-amarillo); }
+
+    .timeline-item:nth-child(even) .timeline-dot {
+      right: auto;
+      left: -48px;
+    }
+
+    .timeline-title {
+      font-family: 'Playfair Display', serif;
+      font-size: 1.5rem;
+      margin-bottom: 0.5rem;
+      color: var(--gold-light);
+    }
+
+    .timeline-subtitle {
+      font-size: 0.8rem;
+      letter-spacing: 0.15em;
+      text-transform: uppercase;
+      color: var(--rose);
+      margin-bottom: 1rem;
+    }
+
+    .timeline-text {
+      color: rgba(245,245,245,0.8);
+      font-size: 0.95rem;
+    }
+
+    /* Gallery */
+    .gallery-section {
+      padding: 6rem 2rem;
+      max-width: 1400px;
+      margin: 0 auto;
+    }
+
+    .gallery-title {
+      text-align: center;
+      margin-bottom: 3rem;
+    }
+
+    .gallery-grid {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 1rem;
+    }
+
+    .gallery-item {
+      position: relative;
+      border-radius: 12px;
+      overflow: hidden;
+      cursor: pointer;
+      opacity: 0;
+      transform: translateY(30px);
+      transition: all 0.6s var(--ease-out);
+    }
+
+    .gallery-item.visible {
+      opacity: 1;
+      transform: translateY(0);
+    }
+
+    .gallery-item.wide { grid-column: span 2; }
+    .gallery-item.tall { grid-row: span 2; }
+
+    .gallery-item img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      transition: transform 0.6s var(--ease-out);
+    }
+
+    .gallery-item:hover img {
+      transform: scale(1.06);
+    }
+
+    .gallery-overlay {
+      position: absolute;
+      inset: 0;
+      background: linear-gradient(to top, rgba(6,4,16,0.9) 0%, transparent 60%);
+      opacity: 0;
+      transition: opacity 0.4s ease;
+      display: flex;
+      align-items: flex-end;
+      padding: 1.5rem;
+    }
+
+    .gallery-item:hover .gallery-overlay {
+      opacity: 1;
+    }
+
+    .gallery-caption {
+      font-size: 0.9rem;
+      color: #f5f5f5;
+    }
+
+    /* Lightbox */
+    .lightbox {
+      position: fixed;
+      inset: 0;
+      background: rgba(6,4,16,0.95);
+      backdrop-filter: blur(30px);
+      -webkit-backdrop-filter: blur(30px);
+      z-index: 10002;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      opacity: 0;
+      visibility: hidden;
+      transition: all 0.4s ease;
+    }
+
+    .lightbox.active {
+      opacity: 1;
+      visibility: visible;
+    }
+
+    .lightbox-close {
+      position: absolute;
+      top: 2rem;
+      right: 2rem;
+      background: none;
+      border: none;
+      color: #f5f5f5;
+      font-size: 2rem;
+      cursor: pointer;
+      opacity: 0.7;
+      transition: opacity 0.3s ease;
+    }
+
+    .lightbox-close:hover {
+      opacity: 1;
+    }
+
+    .lightbox-image {
+      max-width: 80vw;
+      max-height: 70vh;
+      border-radius: 12px;
+    }
+
+    .lightbox-caption {
+      margin-top: 1.5rem;
+      font-size: 1.1rem;
+      color: rgba(245,245,245,0.9);
+      text-align: center;
+    }
+
+    .lightbox-nav {
+      position: absolute;
+      top: 50%;
+      transform: translateY(-50%);
+      background: var(--glass-bg);
+      border: 1px solid var(--glass-border);
+      color: #f5f5f5;
+      font-size: 1.5rem;
+      width: 50px;
+      height: 50px;
+      border-radius: 50%;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      transition: all 0.3s ease;
+    }
+
+    .lightbox-nav:hover {
+      background: var(--gold);
+      color: var(--bg-dark);
+    }
+
+    .lightbox-prev { left: 2rem; }
+    .lightbox-next { right: 2rem; }
+
+    /* Present section */
+    .present {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 4rem;
+      align-items: center;
+    }
+
+    .badges {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 0.8rem;
+      margin-top: 2rem;
+    }
+
+    .badge {
+      background: var(--glass-bg);
+      border: 1px solid var(--glass-border);
+      padding: 0.6rem 1.2rem;
+      border-radius: 30px;
+      font-size: 0.85rem;
+      color: rgba(245,245,245,0.9);
+    }
+
+    .present-quote {
+      font-family: 'Playfair Display', serif;
+      font-size: 1.3rem;
+      font-style: italic;
+      color: rgba(245,245,245,0.9);
+      line-height: 1.7;
+      padding: 2rem;
+    }
+
+    /* Footer */
+    footer {
+      text-align: center;
+      padding: 4rem 2rem;
+      background: linear-gradient(to bottom, var(--bg-dark), #030208);
+    }
+
+    .footer-title {
+      font-family: 'Playfair Display', serif;
+      font-size: 1.8rem;
+      font-style: italic;
+      color: var(--gold);
+      margin-bottom: 1.5rem;
+    }
+
+    .footer-divider {
+      width: 80px;
+      height: 2px;
+      background: linear-gradient(90deg, transparent, var(--gold), transparent);
+      margin: 0 auto 1.5rem;
+    }
+
+    .footer-text {
+      color: rgba(245,245,245,0.6);
+      font-size: 0.95rem;
+      margin-bottom: 1rem;
+    }
+
+    .footer-colombiana {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      margin-top: 1rem;
+      font-size: 0.8rem;
+      letter-spacing: 0.15em;
+      text-transform: uppercase;
+      color: var(--col-amarillo);
+    }
+
+    /* Reveal animation */
+    .reveal {
+      opacity: 0;
+      transform: translateY(50px);
+      transition: all 0.8s var(--ease-out);
+    }
+
+    .reveal.visible {
+      opacity: 1;
+      transform: translateY(0);
+    }
+
+    /* Responsive */
+    @media (max-width: 768px) {
+      .nav-links { display: none; }
+      .intro, .present { grid-template-columns: 1fr; }
+      .stats { grid-template-columns: repeat(2, 1fr); }
+      .timeline::before { left: 20px; }
+      .timeline-item, .timeline-item:nth-child(even) {
+        padding: 0 0 0 60px;
+        justify-content: flex-start;
+      }
+      .timeline-dot, .timeline-item:nth-child(even) .timeline-dot {
+        left: 12px !important;
+        right: auto !important;
+      }
+      .gallery-grid { grid-template-columns: repeat(2, 1fr); }
+      .gallery-item.wide, .gallery-item.tall { grid-column: span 1; grid-row: span 1; }
+      .lightbox-nav { width: 40px; height: 40px; font-size: 1.2rem; }
+      .lightbox-prev { left: 1rem; }
+      .lightbox-next { right: 1rem; }
+    }
+  </style>
+</head>
+<body>
+  <!-- Cursor -->
+  <div class="cursor-dot" id="cursorDot"></div>
+  <div class="cursor-ring" id="cursorRing"></div>
+  
+  <!-- Noise overlay -->
+  <div class="noise-overlay"></div>
+  
+  <!-- Barra tricolor -->
+  <div class="tricolor-bar"></div>
+
+  <!-- Navegación -->
+  <nav id="nav">
+    <div class="nav-logo">El Tapiz de Mi Vida</div>
+    <ul class="nav-links">
+      <li><a href="#inicio">Inicio</a></li>
+      <li><a href="#historia">Historia</a></li>
+      <li><a href="#galeria">Galería</a></li>
+      <li><a href="#capitulos">Capítulos</a></li>
+      <li><a href="#presente">Presente</a></li>
+    </ul>
+  </nav>
+
+  <!-- Hero -->
+  <section class="hero" id="inicio">
+    <div class="hero-decoration">
+      <span></span><span></span><span></span>
+    </div>
+    <p class="hero-subtitle">Bogotá D.C. · Colombia</p>
+    <h1 class="hero-title">El Tapiz de <span class="gold">Mi Vida</span></h1>
+    <p class="hero-desc">Entre raíces, sueños y libertad — una historia de amor incondicional, esfuerzo constante y la búsqueda incansable de la felicidad desde el corazón de Colombia.</p>
+    <div class="scroll-indicator">
+      <span>Desliza</span>
+      <div class="scroll-line"></div>
+    </div>
+  </section>
+
+  <!-- Intro -->
+  <section class="intro" id="historia">
+    <div class="intro-text reveal">
+      <p class="section-label">El comienzo</p>
+      <h2 class="section-title">Los Primeros Latidos</h2>
+      <div class="divider"></div>
+      <p>Nació rodeada de amor familiar. Sus primeras fotos la muestran pequeña, tierna, envuelta en cobijas de Piolín con un vestido de cuadros. Las manos que la sostuvieron de bebé le enseñaron a caminar con firmeza y a mirar al futuro sin miedo.</p>
+    </div>
+    <div class="intro-image reveal">
+      <div class="glass-card">
+        <img src="imagenes/foto-08-bebe-infancia.jpeg" alt="Los primeros latidos" onerror="this.style.background='linear-gradient(135deg, #1a1520, #2a2030)'">
+      </div>
+    </div>
+  </section>
+
+  <!-- Stats -->
+  <section>
+    <div class="stats">
+      <div class="stat-card glass-card reveal">
+        <div class="stat-number">∞</div>
+        <div class="stat-label">Amor de familia</div>
+      </div>
+      <div class="stat-card glass-card reveal">
+        <div class="stat-number">5+</div>
+        <div class="stat-label">Ciudades colombianas</div>
+      </div>
+      <div class="stat-card glass-card reveal">
+        <div class="stat-number">1</div>
+        <div class="stat-label">Graduación cumplida</div>
+      </div>
+      <div class="stat-card glass-card reveal">
+        <div class="stat-number">2</div>
+        <div class="stat-label">Ruedas de libertad</div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Quote 1 -->
+  <section class="parallax-quote">
+    <div class="quote-card glass-card reveal">
+      <p class="quote-text">"La verdadera riqueza no está en lo que tenemos, sino en a quiénes tenemos a nuestro lado en la mesa."</p>
+    </div>
+  </section>
+
+  <!-- Timeline -->
+  <section id="capitulos">
+    <div class="gallery-title reveal">
+      <p class="section-label">Mi historia</p>
+      <h2 class="section-title">Los Siete Capítulos</h2>
+    </div>
+    <div class="timeline">
+      <div class="timeline-item">
+        <div class="timeline-content glass-card">
+          <span class="timeline-number">I</span>
+          <div class="timeline-dot"></div>
+          <h3 class="timeline-title">Los Primeros Latidos</h3>
+          <p class="timeline-subtitle">El despertar</p>
+          <p class="timeline-text">Nació rodeada de amor familiar. Sus primeras fotos la muestran pequeña, tierna, envuelta en cobijas de Piolín con un vestido de cuadros. Las manos que la sostuvieron de bebé le enseñaron a caminar con firmeza y a mirar al futuro sin miedo.</p>
+        </div>
+      </div>
+      <div class="timeline-item">
+        <div class="timeline-content glass-card">
+          <span class="timeline-number">II</span>
+          <div class="timeline-dot"></div>
+          <h3 class="timeline-title">El Legado de la Tierra</h3>
+          <p class="timeline-subtitle">Raíces y sangre</p>
+          <p class="timeline-text">Creció con orgullo por sus raíces colombianas. El sombrero vueltiao es su símbolo más querido — no es solo una prenda, es el recordatorio del esfuerzo de sus ancestros y el valor de la unidad familiar.</p>
+        </div>
+      </div>
+      <div class="timeline-item">
+        <div class="timeline-content glass-card">
+          <span class="timeline-number">III</span>
+          <div class="timeline-dot"></div>
+          <h3 class="timeline-title">Vocation y Movimiento</h3>
+          <p class="timeline-subtitle">El templo de la cancha</p>
+          <p class="timeline-text">Empezó jugando fútbol sala en los coliseos de Bogotá, representando los colores de su ciudad. Ese amor por el deporte se convirtió en propósito: estudió Licenciatura en Educación Física.</p>
+        </div>
+      </div>
+      <div class="timeline-item">
+        <div class="timeline-content glass-card">
+          <span class="timeline-number">IV</span>
+          <div class="timeline-dot"></div>
+          <h3 class="timeline-title">Horizontes Colombianos</h3>
+          <p class="timeline-subtitle">El camino del aprendizaje</p>
+          <p class="timeline-text">Viajó por Colombia como extensión de su educación. Conoció Armenia y Pereira en el Eje Cafetero, los llanos de Casanare y la espiritualidad de Buga. Cada viaje fue una lección de geografía humana.</p>
+        </div>
+      </div>
+      <div class="timeline-item">
+        <div class="timeline-content glass-card">
+          <span class="timeline-number">V</span>
+          <div class="timeline-dot"></div>
+          <h3 class="timeline-title">La Magia de Compartir</h3>
+          <p class="timeline-subtitle">Celebrar y conectar</p>
+          <p class="timeline-text">Sus amistades son familia por elección. Valora los momentos sencillos: selfies improvisadas, risas hasta la madrugada. Sus padres han sido su refugio en las tormentas y su mayor aplauso en los triumphs.</p>
+        </div>
+      </div>
+      <div class="timeline-item">
+        <div class="timeline-content glass-card">
+          <span class="timeline-number">VI</span>
+          <div class="timeline-dot"></div>
+          <h3 class="timeline-title">El Triunfo</h3>
+          <p class="timeline-subtitle">La graduación</p>
+          <p class="timeline-text">El día de su graduación el cielo pareció más brillante. La toga y el birrete no fueron un acto protocolario — fueron la culminación de noches de estudio, dudas superadas y una meta alcanzada con pulso propio.</p>
+        </div>
+      </div>
+      <div class="timeline-item">
+        <div class="timeline-content glass-card">
+          <span class="timeline-number">VII</span>
+          <div class="timeline-dot"></div>
+          <h3 class="timeline-title">Presente en Movimiento</h3>
+          <p class="timeline-subtitle">Libertad y hogar</p>
+          <p class="timeline-text">Hoy vive entre la serenidad del hogar y la emoción de la ruta. Tiene un scooter y una motocicleta de marchas — el viento en el rostro es su meditación. En casa la espera la calidez de su familia y la alegría de sus mascotas.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Gallery -->
+  <section class="gallery-section" id="galeria">
+    <div class="gallery-title reveal">
+      <p class="section-label">Memories</p>
+      <h2 class="section-title">La Galería de la Vida</h2>
+    </div>
+    <div class="gallery-grid">
+      <div class="gallery-item wide" data-index="0">
+        <img src="imagenes/foto-08-bebe-infancia.jpeg" alt="Los primeros latidos" onerror="this.style.background='linear-gradient(135deg, #1a1520, #2a2030)'">
+        <div class="gallery-overlay"><span class="gallery-caption">Los primeros latidos — El comienzo de todo</span></div>
+      </div>
+      <div class="gallery-item" data-index="1">
+        <img src="imagenes/foto-10-sombrero-vueltiao.jpeg" alt="El sombrero vueltiao" onerror="this.style.background='linear-gradient(135deg, #1a1520, #2a2030)'">
+        <div class="gallery-overlay"><span class="gallery-caption">El sombrero vueltiao — Raíces colombianas</span></div>
+      </div>
+      <div class="gallery-item" data-index="2">
+        <img src="imagenes/foto-05-futbol-sala-bogota.jpeg" alt="Fútbol sala" onerror="this.style.background='linear-gradient(135deg, #1a1520, #2a2030)'">
+        <div class="gallery-overlay"><span class="gallery-caption">Representando Bogotá D.C. — Fútbol sala</span></div>
+      </div>
+      <div class="gallery-item" data-index="3">
+        <img src="imagenes/foto-01-parque-acuatico.jpeg" alt="Familia" onerror="this.style.background='linear-gradient(135deg, #1a1520, #2a2030)'">
+        <div class="gallery-overlay"><span class="gallery-caption">Familia united — Momentos de alegría</span></div>
+      </div>
+      <div class="gallery-item tall" data-index="4">
+        <img src="imagenes/foto-04-familia-noche.jpeg" alt="El hogar" onerror="this.style.background='linear-gradient(135deg, #1a1520, #2a2030)'">
+        <div class="gallery-overlay"><span class="gallery-caption">Los míos — El hogar bogotano</span></div>
+      </div>
+      <div class="gallery-item" data-index="5">
+        <img src="imagenes/foto-09-mascota-perro.jpeg" alt="Mascota" onerror="this.style.background='linear-gradient(135deg, #1a1520, #2a2030)'">
+        <div class="gallery-overlay"><span class="gallery-caption">La mascota del hogar — Amor peludo</span></div>
+      </div>
+      <div class="gallery-item" data-index="6">
+        <img src="imagenes/foto-07-amigas-selfie.jpeg" alt="Amigas" onerror="this.style.background='linear-gradient(135deg, #1a1520, #2a2030)'">
+        <div class="gallery-overlay"><span class="gallery-caption">Amigas — Familia por elección</span></div>
+      </div>
+      <div class="gallery-item" data-index="7">
+        <img src="imagenes/foto-03-amigos-reunion.jpeg" alt="Amigos" onerror="this.style.background='linear-gradient(135deg, #1a1520, #2a2030)'">
+        <div class="gallery-overlay"><span class="gallery-caption">La magia de compartir</span></div>
+      </div>
+      <div class="gallery-item wide" data-index="8">
+        <img src="imagenes/foto-06-graduacion.jpeg" alt="Graduación" onerror="this.style.background='linear-gradient(135deg, #1a1520, #2a2030)'">
+        <div class="gallery-overlay"><span class="gallery-caption">El triunfo de la perseverancia</span></div>
+      </div>
+      <div class="gallery-item" data-index="9">
+        <img src="imagenes/foto-00-cumpleanos-familia.jpeg" alt="Cumpleaños" onerror="this.style.background='linear-gradient(135deg, #1a1520, #2a2030)'">
+        <div class="gallery-overlay"><span class="gallery-caption">Feliz cumpleaños — Con papá y mamá</span></div>
+      </div>
+      <div class="gallery-item" data-index="10">
+        <img src="imagenes/foto-02-scooter-libertad.jpeg" alt="Scooter" onerror="this.style.background='linear-gradient(135deg, #1a1520, #2a2030)'">
+        <div class="gallery-overlay"><span class="gallery-caption">Libertad sobre dos ruedas</span></div>
+      </div>
+      <div class="gallery-item" data-index="11">
+        <img src="imagenes/foto-11-moto-tvs.jpeg" alt="Moto" onerror="this.style.background='linear-gradient(135deg, #1a1520, #2a2030)'">
+        <div class="gallery-overlay"><span class="gallery-caption">Presente en movimiento — TVS</span></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Quote 2 -->
+  <section class="parallax-quote">
+    <div class="quote-card glass-card reveal">
+      <p class="quote-text">"Los sueños no se cumplen por arte de magia, sino por la determinación de no rendirse nunca."</p>
+    </div>
+  </section>
+
+  <!-- Present -->
+  <section class="present" id="presente">
+    <div class="present-text reveal">
+      <p class="section-label">Hoy</p>
+      <h2 class="section-title">Presente en Movimiento</h2>
+      <div class="divider"></div>
+      <p>Hoy vive entre la serenidad del hogar y la emoción de la ruta. Tiene un scooter y una motocicleta de marchas — el viento en el rostro es su meditación, su forma de conectar con el camino y consigo misma. En casa la espera la calidez de su familia y la alegría de sus mascotas. Es el resultado de cada gol anotado, cada kilómetro recorrido y cada abrazo de sus padres. Lo mejor aún está por venir.</p>
+      <div class="badges">
+        <span class="badge">🏍️ Motociclista</span>
+        <span class="badge">⚽ Deportista</span>
+        <span class="badge">📚 Licenciada</span>
+        <span class="badge">🐾 Amante Animales</span>
+      </div>
+    </div>
+    <div class="present-image reveal">
+      <div class="glass-card">
+        <p class="present-quote">"Soy el resultado de cada gol anotado, de cada kilómetro recorrido por las carreteras de Colombia, de cada clase de educación física y de cada abrazo de mis padres. Esta es mi historia, una que sigo escribiendo cada día."</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- Footer -->
+  <footer>
+    <h3 class="footer-title">Lo mejor aún está por venir</h3>
+    <div class="footer-divider"></div>
+    <p class="footer-text">Una historia colombiana de amor, esfuerzo y libertad · Bogotá D.C.</p>
+    <p class="footer-colombiana">🇨🇴 Hecha en Colombia · 2026</p>
+  </footer>
+
+  <!-- Lightbox -->
+  <div class="lightbox" id="lightbox">
+    <button class="lightbox-close" id="lightboxClose">×</button>
+    <button class="lightbox-nav lightbox-prev" id="lightboxPrev">‹</button>
+    <button class="lightbox-nav lightbox-next" id="lightboxNext">›</button>
+    <img class="lightbox-image" id="lightboxImage" src="" alt="">
+    <p class="lightbox-caption" id="lightboxCaption"></p>
+  </div>
+
+  <script>
+    // Gallery data
+    const galleryData = [
+      { src: 'imagenes/foto-08-bebe-infancia.jpeg', caption: 'Los primeros latidos — El comienzo de todo' },
+      { src: 'imagenes/foto-10-sombrero-vueltiao.jpeg', caption: 'El sombrero vueltiao — Raíces colombianas' },
+      { src: 'imagenes/foto-05-futbol-sala-bogota.jpeg', caption: 'Representando Bogotá D.C. — Fútbol sala' },
+      { src: 'imagenes/foto-01-parque-acuatico.jpeg', caption: 'Familia united — Momentos de alegría' },
+      { src: 'imagenes/foto-04-familia-noche.jpeg', caption: 'Los míos — El hogar bogotano' },
+      { src: 'imagenes/foto-09-mascota-perro.jpeg', caption: 'La mascota del hogar — Amor peludo' },
+      { src: 'imagenes/foto-07-amigas-selfie.jpeg', caption: 'Amigas — Familia por elección' },
+      { src: 'imagenes/foto-03-amigos-reunion.jpeg', caption: 'La magia de compartir' },
+      { src: 'imagenes/foto-06-graduacion.jpeg', caption: 'El triunfo de la perseverancia' },
+      { src: 'imagenes/foto-00-cumpleanos-familia.jpeg', caption: 'Feliz cumpleaños — Con papá y mamá' },
+      { src: 'imagenes/foto-02-scooter-libertad.jpeg', caption: 'Libertad sobre dos ruedas' },
+      { src: 'imagenes/foto-11-moto-tvs.jpeg', caption: 'Presente en movimiento — TVS' }
+    ];
+
+    // Cursor
+    const cursorDot = document.getElementById('cursorDot');
+    const cursorRing = document.getElementById('cursorRing');
+    let mouseX = 0, mouseY = 0;
+    let ringX = 0, ringY = 0;
+
+    document.addEventListener('mousemove', (e) => {
+      mouseX = e.clientX;
+      mouseY = e.clientY;
+      cursorDot.style.left = mouseX - 4 + 'px';
+      cursorDot.style.top = mouseY - 4 + 'px';
+    });
+
+    function animateRing() {
+      ringX += (mouseX - ringX) * 0.15;
+      ringY += (mouseY - ringY) * 0.15;
+      cursorRing.style.left = ringX - 20 + 'px';
+      cursorRing.style.top = ringY - 20 + 'px';
+      requestAnimationFrame(animateRing);
+    }
+    animateRing();
+
+    // Nav scroll effect
+    const nav = document.getElementById('nav');
+    window.addEventListener('scroll', () => {
+      if (window.scrollY > 50) {
+        nav.classList.add('scrolled');
+      } else {
+        nav.classList.remove('scrolled');
+      }
+    });
+
+    // Reveal on scroll
+    const revealElements = document.querySelectorAll('.reveal, .timeline-item, .gallery-item');
+    const observer = new IntersectionObserver((entries) => {
+      entries.forEach((entry, index) => {
+        if (entry.isIntersecting) {
+          setTimeout(() => {
+            entry.target.classList.add('visible');
+          }, index * 100);
+        }
+      });
+    }, { threshold: 0.1 });
+
+    revealElements.forEach(el => observer.observe(el));
+
+    // Gallery items stagger
+    const galleryItems = document.querySelectorAll('.gallery-item');
+    galleryItems.forEach((item, index) => {
+      item.style.transitionDelay = (index * 0.1) + 's';
+    });
+
+    // Lightbox
+    const lightbox = document.getElementById('lightbox');
+    const lightboxImage = document.getElementById('lightboxImage');
+    const lightboxCaption = document.getElementById('lightboxCaption');
+    let currentIndex = 0;
+
+    galleryItems.forEach((item, index) => {
+      item.addEventListener('click', () => {
+        currentIndex = index;
+        openLightbox(index);
+      });
+    });
+
+    function openLightbox(index) {
+      currentIndex = index;
+      lightboxImage.src = galleryData[index].src;
+      lightboxCaption.textContent = galleryData[index].caption;
+      lightbox.classList.add('active');
+    }
+
+    document.getElementById('lightboxClose').addEventListener('click', () => {
+      lightbox.classList.remove('active');
+    });
+
+    document.getElementById('lightboxPrev').addEventListener('click', () => {
+      currentIndex = (currentIndex - 1 + galleryData.length) % galleryData.length;
+      lightboxImage.src = galleryData[currentIndex].src;
+      lightboxCaption.textContent = galleryData[currentIndex].caption;
+    });
+
+    document.getElementById('lightboxNext').addEventListener('click', () => {
+      currentIndex = (currentIndex + 1) % galleryData.length;
+      lightboxImage.src = galleryData[currentIndex].src;
+      lightboxCaption.textContent = galleryData[currentIndex].caption;
+    });
+
+    // Keyboard navigation
+    document.addEventListener('keydown', (e) => {
+      if (!lightbox.classList.contains('active')) return;
+      if (e.key === 'Escape') lightbox.classList.remove('active');
+      if (e.key === 'ArrowLeft') {
+        currentIndex = (currentIndex - 1 + galleryData.length) % galleryData.length;
+        lightboxImage.src = galleryData[currentIndex].src;
+        lightboxCaption.textContent = galleryData[currentIndex].caption;
+      }
+      if (e.key === 'ArrowRight') {
+        currentIndex = (currentIndex + 1) % galleryData.length;
+        lightboxImage.src = galleryData[currentIndex].src;
+        lightboxCaption.textContent = galleryData[currentIndex].caption;
+      }
+    });
+
+    // Close lightbox on background click
+    lightbox.addEventListener('click', (e) => {
+      if (e.target === lightbox) lightbox.classList.remove('active');
+    });
+
+    // Parallax effect
+    window.addEventListener('scroll', () => {
+      const scrolled = window.scrollY;
+      document.querySelectorAll('.parallax-quote').forEach(section => {
+        const speed = 0.3;
+        section.style.backgroundPositionY = (scrolled * speed) + 'px';
+      });
+    });
+  </script>
+</body>
+</html>
     }
 
     /* Barra tricolor animada al tope de la página */
