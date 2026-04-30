@@ -9,32 +9,29 @@
   <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,600;0,700;1,400;1,600&family=Nunito:wght@300;400;500;600&display=swap" rel="stylesheet">
   <style>
     :root {
-      --col-amarillo: #FCD116;
-      --col-azul: #003087;
-      --col-rojo: #CE1126;
-      --bg-dark: #060410;
-      --gold: #c9a84c;
-      --gold-light: #e8c97a;
-      --rose: #e8a4b8;
-      --glass-bg: rgba(255,255,255,0.06);
-      --glass-border: rgba(255,255,255,0.10);
+      --fucsia: #f70071;
+      --fucsia2: #ff1b82;
+      --rosa: #ff5aa4;
+      --rosa2: #ff96c5;
+      --rosa3: #ffc0dc;
+      --fondo: #0d0009;
+      --fondo2: #1a0012;
+      --vidrio: rgba(247,0,113,0.07);
+      --borde: rgba(255,27,130,0.18);
+      --texto: #fff0f7;
+      --texto2: rgba(255,200,225,0.65);
+      --oro: var(--fucsia);
+      --oro-claro: var(--rosa);
       --ease-out: cubic-bezier(.16,1,.3,1);
     }
 
-    * {
-      margin: 0;
-      padding: 0;
-      box-sizing: border-box;
-    }
-
-    html {
-      scroll-behavior: smooth;
-    }
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    html { scroll-behavior: smooth; }
 
     body {
       font-family: 'Nunito', sans-serif;
-      background: var(--bg-dark);
-      color: #f5f5f5;
+      background: var(--fondo);
+      color: var(--texto);
       line-height: 1.7;
       overflow-x: hidden;
       cursor: none;
@@ -44,27 +41,24 @@
     .cursor-dot {
       width: 8px;
       height: 8px;
-      background: var(--gold);
+      background: var(--fucsia);
       border-radius: 50%;
       position: fixed;
       pointer-events: none;
       z-index: 10000;
-      transition: transform 0.1s ease;
     }
-
     .cursor-ring {
       width: 40px;
       height: 40px;
-      border: 1px solid var(--gold-light);
+      border: 1px solid rgba(247,0,113,0.5);
       border-radius: 50%;
       position: fixed;
       pointer-events: none;
       z-index: 9999;
-      transition: transform 0.15s ease, opacity 0.3s ease;
       opacity: 0.6;
     }
 
-    /* Noise texture overlay */
+    /* Noise overlay */
     .noise-overlay {
       position: fixed;
       top: 0;
@@ -77,7 +71,7 @@
       background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)'/%3E%3C/svg%3E");
     }
 
-    /* Barra tricolor */
+    /* Barra tricolor fucsia */
     .tricolor-bar {
       position: fixed;
       top: 0;
@@ -85,9 +79,9 @@
       right: 0;
       height: 4px;
       background: linear-gradient(to right,
-        var(--col-amarillo) 0%, var(--col-amarillo) 40%,
-        var(--col-azul) 40%, var(--col-azul) 60%,
-        var(--col-rojo) 60%, var(--col-rojo) 100%
+        var(--fucsia) 0%, var(--fucsia) 40%,
+        var(--rosa) 40%, var(--rosa) 60%,
+        var(--rosa3) 60%, var(--rosa3) 100%
       );
       z-index: 10001;
     }
@@ -102,13 +96,914 @@
       display: flex;
       justify-content: space-between;
       align-items: center;
-      background: rgba(6,4,16,0.8);
+      background: rgba(13,0,9,0.85);
       backdrop-filter: blur(20px);
-      -webkit-backdrop-filter: blur(20px);
-      border-bottom: 1px solid var(--glass-border);
+      border-bottom: 1px solid var(--borde);
       z-index: 1000;
       transition: box-shadow 0.4s var(--ease-out);
     }
+    nav.scrolled { box-shadow: 0 8px 40px rgba(247,0,113,0.2); }
+    .nav-logo {
+      font-family: 'Playfair Display', serif;
+      font-size: 1.3rem;
+      color: var(--fucsia);
+      font-style: italic;
+    }
+    .nav-links {
+      display: flex;
+      gap: 2rem;
+      list-style: none;
+    }
+    .nav-links a {
+      color: var(--texto);
+      text-decoration: none;
+      font-size: 0.9rem;
+      font-weight: 500;
+      letter-spacing: 0.05em;
+      text-transform: uppercase;
+      transition: color 0.3s ease;
+      position: relative;
+    }
+    .nav-links a::after {
+      content: '';
+      position: absolute;
+      bottom: -4px;
+      left: 0;
+      width: 0;
+      height: 1px;
+      background: var(--fucsia);
+      transition: width 0.4s var(--ease-out);
+    }
+    .nav-links a:hover { color: var(--fucsia); }
+    .nav-links a:hover::after { width: 100%; }
+
+    /* Hero */
+    .hero {
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+      text-align: center;
+      padding: 2rem;
+      position: relative;
+      background:
+        radial-gradient(ellipse 80% 60% at 15% 10%, rgba(247,0,113,.15) 0%, transparent 60%),
+        radial-gradient(ellipse 60% 50% at 85% 80%, rgba(255,96,197,.10) 0%, transparent 55%),
+        radial-gradient(ellipse 50% 40% at 55% 35%, rgba(255,27,130,.08) 0%, transparent 50%),
+        var(--fondo);
+    }
+
+    .hero-decoration {
+      position: absolute;
+      top: 100px;
+      left: 50%;
+      transform: translateX(-50%);
+      display: flex;
+      gap: 12px;
+    }
+    .hero-decoration span {
+      width: 12px;
+      height: 12px;
+      border-radius: 50%;
+    }
+    .hero-decoration span:nth-child(1) { background: var(--fucsia); }
+    .hero-decoration span:nth-child(2) { background: var(--rosa); }
+    .hero-decoration span:nth-child(3) { background: var(--rosa3); }
+
+    .hero-subtitle {
+      font-size: 0.85rem;
+      letter-spacing: 0.25em;
+      text-transform: uppercase;
+      color: var(--rosa);
+      margin-bottom: 1rem;
+      opacity: 0;
+      animation: subeOp 1s var(--ease-out) 0.2s forwards;
+    }
+
+    .hero-title {
+      font-family: 'Playfair Display', serif;
+      font-size: clamp(2.5rem, 8vw, 5rem);
+      font-weight: 400;
+      line-height: 1.1;
+      margin-bottom: 1rem;
+      opacity: 0;
+      animation: subeOp 1s var(--ease-out) 0.4s forwards;
+    }
+    .hero-title .gold { color: var(--fucsia); font-style: italic; }
+
+    .hero-desc {
+      max-width: 600px;
+      font-size: 1.05rem;
+      color: var(--texto2);
+      line-height: 1.8;
+      margin-bottom: 2rem;
+      opacity: 0;
+      animation: subeOp 1s var(--ease-out) 0.6s forwards;
+    }
+
+    .hero-cta {
+      display: inline-block;
+      background: var(--fucsia);
+      color: #fff;
+      padding: 1rem 2.5rem;
+      border-radius: 50px;
+      text-decoration: none;
+      font-weight: 600;
+      letter-spacing: 0.05em;
+      transition: all 0.4s var(--ease-out);
+      opacity: 0;
+      animation: subeOp 1s var(--ease-out) 0.7s forwards;
+    }
+    .hero-cta:hover {
+      background: var(--fucsia2);
+      transform: scale(1.04);
+    }
+
+    .scroll-indicator {
+      position: absolute;
+      bottom: 40px;
+      left: 50%;
+      transform: translateX(-50%);
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 8px;
+      opacity: 0;
+      animation: subeOp 1s var(--ease-out) 0.9s forwards;
+    }
+    .scroll-indicator span {
+      font-size: 0.7rem;
+      letter-spacing: 0.2em;
+      text-transform: uppercase;
+      color: var(--texto2);
+    }
+    .scroll-line {
+      width: 1px;
+      height: 40px;
+      background: linear-gradient(to bottom, var(--fucsia), transparent);
+      animation: pulso 2s ease-in-out infinite;
+    }
+
+    @keyframes subeOp { to { opacity: 1; transform: translateY(0); } }
+    @keyframes pulso { 0%, 100% { opacity: 0.3; transform: scaleY(1); } 50% { opacity: 1; transform: scaleY(1.2); } }
+
+    /* Secciones */
+    section { padding: 6rem 2rem; max-width: 1200px; margin: 0 auto; }
+    .section-label { font-size: 0.75rem; letter-spacing: 0.3em; text-transform: uppercase; color: var(--fucsia); margin-bottom: 0.5rem; }
+    .section-title { font-family: 'Playfair Display', serif; font-size: clamp(2rem, 5vw, 3rem); font-weight: 400; margin-bottom: 1.5rem; }
+    .divider { width: 60px; height: 2px; background: linear-gradient(90deg, var(--fucsia), var(--rosa)); margin: 1rem 0; }
+
+    /* Glass card */
+    .glass-card {
+      background: var(--vidrio);
+      backdrop-filter: blur(20px);
+      border: 1px solid var(--borde);
+      border-radius: 16px;
+      padding: 2rem;
+    }
+
+    /* Intro */
+    .intro { display: grid; grid-template-columns: 1fr 1fr; gap: 4rem; align-items: center; }
+    .intro-text p { color: var(--texto2); font-size: 1.05rem; margin-top: 1rem; }
+    .intro-image img { width: 100%; border-radius: 16px; object-fit: cover; }
+
+    /* Stats */
+    .stats { display: grid; grid-template-columns: repeat(4, 1fr); gap: 1.5rem; margin: 4rem 0; }
+    .stat-card { text-align: center; padding: 2rem 1rem; }
+    .stat-number { font-family: 'Playfair Display', serif; font-size: 2.5rem; color: var(--rosa); margin-bottom: 0.5rem; }
+    .stat-label { font-size: 0.9rem; color: var(--texto2); }
+
+    /* Parallax quote */
+    .parallax-quote {
+      min-height: 60vh;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      background: linear-gradient(85%, rgba(247,0,113,0.08) 0%, rgba(13,0,9,0.85) 100%);
+      position: relative;
+      overflow: hidden;
+    }
+    .quote-card {
+      max-width: 700px;
+      text-align: center;
+      padding: 3rem;
+      background: rgba(247,0,113,0.08);
+      border: 1px solid var(--borde);
+      border-radius: 16px;
+    }
+    .quote-text {
+      font-family: 'Playfair Display', serif;
+      font-size: clamp(1.3rem, 3vw, 1.8rem);
+      font-style: italic;
+      color: var(--texto);
+      line-height: 1.6;
+    }
+    .quote-author {
+      display: block;
+      margin-top: 1.5rem;
+      font-size: 0.75rem;
+      letter-spacing: 0.2em;
+      text-transform: uppercase;
+      color: var(--fucsia);
+    }
+
+    /* Timeline */
+    .timeline { position: relative; padding: 4rem 0; }
+    .timeline::before {
+      content: '';
+      position: absolute;
+      left: 50%;
+      top: 0;
+      bottom: 0;
+      width: 2px;
+      background: linear-gradient(to bottom, var(--fucsia), var(--rosa));
+      transform: translateX(-50%);
+    }
+
+    .timeline-item {
+      display: flex;
+      justify-content: flex-end;
+      padding-right: calc(50% + 60px);
+      margin-bottom: 3rem;
+      opacity: 0;
+      transform: translateY(50px);
+      transition: all 0.8s var(--ease-out);
+    }
+    .timeline-item.visible { opacity: 1; transform: translateY(0); }
+    .timeline-item:nth-child(even) {
+      justify-content: flex-start;
+      padding-right: 0;
+      padding-left: calc(50% + 60px);
+    }
+
+    .timeline-content { max-width: 420px; position: relative; }
+    .timeline-number {
+      font-family: 'Playfair Display', serif;
+      font-size: 6rem;
+      color: rgba(247,0,113,0.08);
+      position: absolute;
+      top: -30px;
+      left: -10px;
+      z-index: 0;
+    }
+    .timeline-dot {
+      position: absolute;
+      right: -52px;
+      top: 20px;
+      width: 16px;
+      height: 16px;
+      border-radius: 50%;
+      background: var(--fucsia);
+      box-shadow: 0 0 20px var(--fucsia);
+    }
+    .timeline-item:nth-child(1) .timeline-dot { background: var(--fucsia); box-shadow: 0 0 20px var(--fucsia); }
+    .timeline-item:nth-child(2) .timeline-dot { background: var(--fucsia2); box-shadow: 0 0 20px var(--fucsia2); }
+    .timeline-item:nth-child(3) .timeline-dot { background: var(--rosa); box-shadow: 0 0 20px var(--rosa); }
+    .timeline-item:nth-child(4) .timeline-dot { background: var(--rosa2); box-shadow: 0 0 20px var(--rosa2); }
+    .timeline-item:nth-child(5) .timeline-dot { background: var(--rosa3); box-shadow: 0 0 20px var(--rosa3); }
+    .timeline-item:nth-child(6) .timeline-dot { background: var(--fucsia); box-shadow: 0 0 20px var(--fucsia); }
+    .timeline-item:nth-child(7) .timeline-dot { background: var(--fucsia2); box-shadow: 0 0 20px var(--fucsia2); }
+    .timeline-item:nth-child(even) .timeline-dot { right: auto; left: -52px; }
+
+    .timeline-inner {
+      display: flex;
+      gap: 1.5rem;
+      align-items: flex-start;
+    }
+    .timeline-item:nth-child(even) .timeline-inner { flex-direction: row-reverse; }
+
+    .timeline-photo {
+      flex-shrink: 0;
+      width: 180px;
+      height: 220px;
+      border-radius: 16px;
+      border: 1px solid var(--borde);
+      box-shadow: 0 8px 32px rgba(247,0,113,0.18);
+      overflow: hidden;
+      cursor: pointer;
+      transition: transform 0.4s var(--ease-out);
+    }
+    .timeline-photo:hover { transform: scale(1.03); }
+    .timeline-photo img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+    }
+
+    .timeline-text-content { flex: 1; }
+    .timeline-title { font-family: 'Playfair Display', serif; font-size: 1.4rem; margin-bottom: 0.3rem; color: var(--rosa); }
+    .timeline-subtitle { font-size: 0.75rem; letter-spacing: 0.15em; text-transform: uppercase; color: var(--rosa2); margin-bottom: 0.8rem; }
+    .timeline-text { color: var(--texto2); font-size: 0.9rem; line-height: 1.7; }
+
+    /* Carousel for Chapter IV */
+    .carousel-container {
+      flex-shrink: 0;
+      width: 180px;
+      height: 220px;
+      border-radius: 16px;
+      border: 1px solid var(--borde);
+      box-shadow: 0 8px 32px rgba(247,0,113,0.18);
+      overflow: hidden;
+      position: relative;
+    }
+    .carousel-slide {
+      position: absolute;
+      inset: 0;
+      opacity: 0;
+      transition: opacity 0.8s ease-in-out;
+    }
+    .carousel-slide.active { opacity: 1; }
+    .carousel-slide img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+    }
+    .carousel-overlay {
+      position: absolute;
+      bottom: 0;
+      left: 0;
+      right: 0;
+      padding: 1rem;
+      background: linear-gradient(to top, rgba(13,0,9,0.9) 0%, transparent 100%);
+      text-align: center;
+    }
+    .carousel-overlay span {
+      font-size: 0.7rem;
+      font-style: italic;
+      color: var(--rosa2);
+    }
+    .carousel-dots {
+      position: absolute;
+      bottom: 8px;
+      left: 50%;
+      transform: translateX(-50%);
+      display: flex;
+      gap: 6px;
+    }
+    .carousel-dot {
+      width: 6px;
+      height: 6px;
+      border-radius: 50%;
+      background: var(--rosa3);
+      cursor: pointer;
+      transition: background 0.3s ease;
+    }
+    .carousel-dot.active { background: var(--fucsia); }
+
+    /* Gallery */
+    .gallery-section { padding: 6rem 2rem; max-width: 1400px; margin: 0 auto; }
+    .gallery-title { text-align: center; margin-bottom: 3rem; }
+    .gallery-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 1rem; }
+    .gallery-item {
+      position: relative;
+      border-radius: 12px;
+      overflow: hidden;
+      cursor: pointer;
+      opacity: 0;
+      transform: translateY(30px);
+      transition: all 0.6s var(--ease-out);
+    }
+    .gallery-item.visible { opacity: 1; transform: translateY(0); }
+    .gallery-item.wide { grid-column: span 2; }
+    .gallery-item.tall { grid-row: span 2; }
+    .gallery-item img { width: 100%; height: 100%; object-fit: cover; transition: transform 0.6s var(--ease-out); }
+    .gallery-item:hover img { transform: scale(1.06); }
+    .gallery-overlay {
+      position: absolute;
+      inset: 0;
+      background: linear-gradient(to top, rgba(13,0,9,0.9) 0%, transparent 60%);
+      opacity: 0;
+      transition: opacity 0.4s ease;
+      display: flex;
+      align-items: flex-end;
+      padding: 1.5rem;
+    }
+    .gallery-item:hover .gallery-overlay { opacity: 1; }
+    .gallery-caption { font-size: 0.9rem; color: var(--texto); }
+
+    /* Lightbox */
+    .lightbox {
+      position: fixed;
+      inset: 0;
+      background: rgba(13,0,9,0.95);
+      backdrop-filter: blur(30px);
+      z-index: 10002;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      opacity: 0;
+      visibility: hidden;
+      transition: all 0.4s ease;
+    }
+    .lightbox.active { opacity: 1; visibility: visible; }
+    .lightbox-close {
+      position: absolute;
+      top: 2rem;
+      right: 2rem;
+      background: none;
+      border: none;
+      color: var(--texto);
+      font-size: 2rem;
+      cursor: pointer;
+      opacity: 0.7;
+      transition: opacity 0.3s ease;
+    }
+    .lightbox-close:hover { opacity: 1; }
+    .lightbox-image { max-width: 80vw; max-height: 70vh; border-radius: 12px; }
+    .lightbox-caption { margin-top: 1.5rem; font-size: 1.1rem; color: var(--texto2); text-align: center; }
+    .lightbox-nav {
+      position: absolute;
+      top: 50%;
+      transform: translateY(-50%);
+      background: var(--vidrio);
+      border: 1px solid var(--borde);
+      color: var(--texto);
+      font-size: 1.5rem;
+      width: 50px;
+      height: 50px;
+      border-radius: 50%;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      transition: all 0.3s ease;
+    }
+    .lightbox-nav:hover { background: var(--fucsia); color: #fff; }
+    .lightbox-prev { left: 2rem; }
+    .lightbox-next { right: 2rem; }
+
+    /* Present */
+    .present { display: grid; grid-template-columns: 1fr 1fr; gap: 4rem; align-items: center; }
+    .badges { display: flex; flex-wrap: wrap; gap: 0.8rem; margin-top: 2rem; }
+    .badge {
+      background: var(--vidrio);
+      border: 1px solid var(--borde);
+      padding: 0.6rem 1.2rem;
+      border-radius: 30px;
+      font-size: 0.85rem;
+      color: var(--texto);
+    }
+    .present-quote {
+      font-family: 'Playfair Display', serif;
+      font-size: 1.2rem;
+      font-style: italic;
+      color: var(--texto);
+      line-height: 1.7;
+      padding: 2rem;
+    }
+
+    /* Footer */
+    footer { text-align: center; padding: 4rem 2rem; background: linear-gradient(to bottom, var(--fondo), #050005); }
+    .footer-title { font-family: 'Playfair Display', serif; font-size: 1.8rem; font-style: italic; color: var(--fucsia); margin-bottom: 1.5rem; }
+    .footer-divider { width: 80px; height: 2px; background: linear-gradient(90deg, transparent, var(--fucsia), transparent); margin: 0 auto 1.5rem; }
+    .footer-text { color: var(--texto2); font-size: 0.95rem; margin-bottom: 1rem; }
+    .footer-colombiana { display: inline-flex; align-items: center; gap: 8px; margin-top: 1rem; font-size: 0.8rem; letter-spacing: 0.15em; text-transform: uppercase; color: var(--rosa3); }
+
+    /* Reveal */
+    .reveal { opacity: 0; transform: translateY(50px); transition: all 0.8s var(--ease-out); }
+    .reveal.visible { opacity: 1; transform: translateY(0); }
+
+    /* Responsive */
+    @media (max-width: 768px) {
+      .nav-links { display: none; }
+      .intro, .present { grid-template-columns: 1fr; }
+      .stats { grid-template-columns: repeat(2, 1fr); }
+      .timeline::before { left: 20px; }
+      .timeline-item, .timeline-item:nth-child(even) { padding: 0 0 0 60px; justify-content: flex-start; }
+      .timeline-dot, .timeline-item:nth-child(even) .timeline-dot { left: 12px !important; right: auto !important; }
+      .timeline-inner { flex-direction: column !important; }
+      .timeline-photo, .carousel-container { width: 100%; height: 200px; }
+      .gallery-grid { grid-template-columns: repeat(2, 1fr); }
+      .gallery-item.wide, .gallery-item.tall { grid-column: span 1; grid-row: span 1; }
+      .lightbox-nav { width: 40px; height: 40px; font-size: 1.2rem; }
+      .lightbox-prev { left: 1rem; }
+      .lightbox-next { right: 1rem; }
+    }
+  </style>
+</head>
+<body>
+  <!-- Cursor -->
+  <div class="cursor-dot" id="cursorDot"></div>
+  <div class="cursor-ring" id="cursorRing"></div>
+  <div class="noise-overlay"></div>
+  <div class="tricolor-bar"></div>
+
+  <!-- Navegación -->
+  <nav id="nav">
+    <div class="nav-logo">El Tapiz de Mi Vida</div>
+    <ul class="nav-links">
+      <li><a href="#inicio">Inicio</a></li>
+      <li><a href="#historia">Historia</a></li>
+      <li><a href="#galeria">Galería</a></li>
+      <li><a href="#capitulos">Capítulos</a></li>
+      <li><a href="#presente">Presente</a></li>
+    </ul>
+  </nav>
+
+  <!-- Hero -->
+  <section class="hero" id="inicio">
+    <div class="hero-decoration"><span></span><span></span><span></span></div>
+    <p class="hero-subtitle">Entre Raíces, Sueños y Libertad</p>
+    <h1 class="hero-title">El Tapiz de <span class="gold">Mi Vida</span></h1>
+    <p class="hero-desc">Esta es la historia de una vida que se ha tejido con hilos de amor incondicional, esfuerzo constante y la búsqueda incansable de la felicidad. Cada imagen que guardo no es solo un recuerdo, sino un testimonio de los pasos que me han convertido en la persona que soy hoy.</p>
+    <a href="#historia" class="hero-cta">Descubre mi historia ↓</a>
+    <div class="scroll-indicator"><span>Desliza</span><div class="scroll-line"></div></div>
+  </section>
+
+  <!-- Intro -->
+  <section class="intro" id="historia">
+    <div class="intro-text reveal">
+      <p class="section-label">El comienzo</p>
+      <h2 class="section-title">Los Primeros Latidos</h2>
+      <div class="divider"></div>
+      <p>Todo comenzó con la sencillez y la pureza de la infancia. Recuerdo —o me han contado a través de las fotos— aquel rincón cálido donde el mundo era pequeño y seguro. Allí estaba yo, una pequeña rodeada de la ternura de una cobija de Piolín, luciendo un vestido de cuadros que hoy me arranca una sonrisa. En esa etapa, la vida se medía en caricias y en el cuidado constante de una familia que me recibió como el tesoro más grande.</p>
+    </div>
+    <div class="intro-image reveal">
+      <div class="glass-card">
+        <img src="imagenes/foto-08-bebe-infancia.jpeg" alt="Los primeros latidos" onerror="this.style.background='linear-gradient(135deg, #1a0012, #2a0020)'">
+      </div>
+    </div>
+  </section>
+
+  <!-- Stats -->
+  <section>
+    <div class="stats">
+      <div class="stat-card glass-card reveal"><div class="stat-number">∞</div><div class="stat-label">Amor de familia</div></div>
+      <div class="stat-card glass-card reveal"><div class="stat-number">5+</div><div class="stat-label">Ciudades colombianas</div></div>
+      <div class="stat-card glass-card reveal"><div class="stat-number">1</div><div class="stat-label">Graduación cumplida</div></div>
+      <div class="stat-card glass-card reveal"><div class="stat-number">2</div><div class="stat-label">Ruedas de libertad</div></div>
+    </div>
+  </section>
+
+  <!-- Quote 1 -->
+  <section class="parallax-quote">
+    <div class="quote-card reveal">
+      <p class="quote-text">"La verdadera riqueza no está en lo que tenemos, sino en a quiénes tenemos a nuestro lado en la mesa."</p>
+      <span class="quote-author">— Laura Farfán</span>
+    </div>
+  </section>
+
+  <!-- Timeline -->
+  <section id="capitulos">
+    <div class="gallery-title reveal">
+      <p class="section-label">Mi historia</p>
+      <h2 class="section-title">Los Siete Capítulos</h2>
+    </div>
+    <div class="timeline">
+      <!-- Capítulo I -->
+      <div class="timeline-item">
+        <div class="timeline-content glass-card">
+          <span class="timeline-number">I</span>
+          <div class="timeline-dot"></div>
+          <div class="timeline-inner">
+            <div class="timeline-photo" data-index="0"><img src="imagenes/foto-08-bebe-infancia.jpeg" alt="Capítulo I" onerror="this.style.background='linear-gradient(135deg, #1a0012, #2a0020)'"></div>
+            <div class="timeline-text-content">
+              <h3 class="timeline-title">Los Primeros Latidos</h3>
+              <p class="timeline-subtitle">El despertar</p>
+              <p class="timeline-text">Todo comenzó con la sencillez y la pureza de la infancia. Recuerdo —o me han contado a través de las fotos— aquel rincón cálido donde el mundo era pequeño y seguro. Allí estaba yo, una pequeña rodeada de la ternura de una cobija de Piolín, luciendo un vestido de cuadros que hoy me arranca una sonrisa. En esa etapa, la vida se medía en caricias y en el cuidado constante de una familia que me recibió como el tesoro más grande. Esas manos que me sostenían entonces son las mismas que, con el tiempo, me enseñaron a caminar con firmeza y a mirar al futuro sin miedo.</p>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Capítulo II -->
+      <div class="timeline-item">
+        <div class="timeline-content glass-card">
+          <span class="timeline-number">II</span>
+          <div class="timeline-dot"></div>
+          <div class="timeline-inner">
+            <div class="timeline-photo" data-index="1"><img src="imagenes/foto-10-sombrero-vueltiao.jpeg" alt="Capítulo II" onerror="this.style.background='linear-gradient(135deg, #1a0012, #2a0020)'"></div>
+            <div class="timeline-text-content">
+              <h3 class="timeline-title">El Legado de la Tierra</h3>
+              <p class="timeline-subtitle">Raíces y sangre</p>
+              <p class="timeline-text">Crecí entendiendo que nadie llega lejos si olvida de dónde viene. Mi identidad está profundamente ligada a mis raíces y a la tradición que mi familia lleva con orgullo. Uno de los tesoros más grandes de mi memoria es la imagen de todos nosotros unidos, compartiendo la alegría de nuestra cultura y luciendo el sombrero vueltiao. Ese símbolo no es solo una prenda; es el recordatorio del esfuerzo de nuestros ancestros, de la tierra que pisamos y del valor de la unidad. En casa, aprendí que la verdadera riqueza no está en lo que tenemos, sino en a quiénes tenemos a nuestro lado en la mesa.</p>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Capítulo III -->
+      <div class="timeline-item">
+        <div class="timeline-content glass-card">
+          <span class="timeline-number">III</span>
+          <div class="timeline-dot"></div>
+          <div class="timeline-inner">
+            <div class="timeline-photo" data-index="2"><img src="imagenes/foto-05-futbol-sala-bogota.jpeg" alt="Capítulo III" onerror="this.style.background='linear-gradient(135deg, #1a0012, #2a0020)'"></div>
+            <div class="timeline-text-content">
+              <h3 class="timeline-title">Vocación y Movimiento</h3>
+              <p class="timeline-subtitle">El templo de la cancha</p>
+              <p class="timeline-text">Lo que empezó como un juego en los coliseos de Bogotá, representando los colores de mi ciudad en el fútbol sala, se transformó en el propósito de mi vida. Vestir esos uniformes y sentir la adrenalina de la competencia me llevó a entender que el cuerpo y el movimiento son herramientas de transformación social. Por eso, hoy mi camino está trazado por la Licenciatura en Educación Física. No solo busco ser una deportista, sino una guía que enseñe el valor de la disciplina, la salud y la perseverancia a las futuras generaciones. La cancha dejó de ser solo un lugar de juego para convertirse en mi laboratorio de enseñanza, donde el sudor y el esfuerzo se traducen en formación y carácter.</p>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Capítulo IV - Carousel -->
+      <div class="timeline-item">
+        <div class="timeline-content glass-card">
+          <span class="timeline-number">IV</span>
+          <div class="timeline-dot"></div>
+          <div class="timeline-inner">
+            <div class="carousel-container" id="carousel-chapter">
+              <div class="carousel-slide active"><img src="imagenes/ciudad-01.jpeg" alt="Ciudad 1" onerror="this.style.background='linear-gradient(135deg, #1a0012, #2a0020)'"></div>
+              <div class="carousel-slide"><img src="imagenes/ciudad-02.jpeg" alt="Ciudad 2" onerror="this.style.background='linear-gradient(135deg, #1a0012, #2a0020)'"></div>
+              <div class="carousel-slide"><img src="imagenes/ciudad-03.jpeg" alt="Ciudad 3" onerror="this.style.background='linear-gradient(135deg, #1a0012, #2a0020)'"></div>
+              <div class="carousel-slide"><img src="imagenes/ciudad-04.jpeg" alt="Ciudad 4" onerror="this.style.background='linear-gradient(135deg, #1a0012, #2a0020)'"></div>
+              <div class="carousel-overlay"><span>Armenia · Pereira · Casanare · Buga</span></div>
+              <div class="carousel-dots">
+                <span class="carousel-dot active" data-slide="0"></span>
+                <span class="carousel-dot" data-slide="1"></span>
+                <span class="carousel-dot" data-slide="2"></span>
+                <span class="carousel-dot" data-slide="3"></span>
+              </div>
+            </div>
+            <div class="timeline-text-content">
+              <h3 class="timeline-title">Horizontes Colombianos</h3>
+              <p class="timeline-subtitle">El camino del aprendizaje</p>
+              <p class="timeline-text">Mi curiosidad me ha llevado más allá de las fronteras de mi ciudad. Viajar ha sido una extensión de mi educación. He recorrido la calidez de Armenia y los paisajes vibrantes de Pereira en el Eje Cafetero, donde el verde de las montañas me ha inspirado a valorar lo nuestro. He sentido la inmensidad de los llanos en Casanare y la espiritualidad y calma que envuelve a Buga. Cada viaje ha sido una lección de geografía humana, permitiéndome entender la diversidad de nuestro país y reforzando mi deseo de llevar el deporte y la educación a cada rincón.</p>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Capítulo V -->
+      <div class="timeline-item">
+        <div class="timeline-content glass-card">
+          <span class="timeline-number">V</span>
+          <div class="timeline-dot"></div>
+          <div class="timeline-inner">
+            <div class="timeline-photo" data-index="6"><img src="imagenes/foto-07-amigas-selfie.jpeg" alt="Capítulo V" onerror="this.style.background='linear-gradient(135deg, #1a0012, #2a0020)'"></div>
+            <div class="timeline-text-content">
+              <h3 class="timeline-title">La Magia de Compartir</h3>
+              <p class="timeline-subtitle">Celebrar y conectar</p>
+              <p class="timeline-text">La vida me ha bendecido con amistades que son familia por elección. He aprendido a valorar esos momentos sencillos que lo son todo: una selfie improvisada con mis mejores amigas, las risas que se extienden hasta la madrugada y la complicidad de quienes conocen mis sueños y mis miedos. Y, por supuesto, mis padres. Cada cumpleaños ha sido un hito de gratitud. Verlos allí, celebrando mi existencia con globos, pasteles y un amor que no conoce límites, es lo que me da fuerza. Ellos han sido mi refugio en las tormentas y mi mayor aplauso en los triumphs.</p>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Capítulo VI -->
+      <div class="timeline-item">
+        <div class="timeline-content glass-card">
+          <span class="timeline-number">VI</span>
+          <div class="timeline-dot"></div>
+          <div class="timeline-inner">
+            <div class="timeline-photo" data-index="8"><img src="imagenes/foto-06-graduacion.jpeg" alt="Capítulo VI" onerror="this.style.background='linear-gradient(135deg, #1a0012, #2a0020)'"></div>
+            <div class="timeline-text-content">
+              <h3 class="timeline-title">El Triunfo</h3>
+              <p class="timeline-subtitle">La graduación</p>
+              <p class="timeline-text">Hubo un día en que el cielo pareció más brillante: el día de mi graduación. Ese momento de colocarme la toga y el birrete no fue solo un acto protocolario; fue la culminación de noches de estudio, de dudas superadas y de una meta alcanzada con pulso propio. Ver el orgullo en los ojos de mi familia mientras sostenía mi diploma fue el regalo más grande. En ese instante comprendí que los sueños no se cumplen por arte de magia, sino por la determinación de no rendirse nunca.</p>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Capítulo VII -->
+      <div class="timeline-item">
+        <div class="timeline-content glass-card">
+          <span class="timeline-number">VII</span>
+          <div class="timeline-dot"></div>
+          <div class="timeline-inner">
+            <div class="timeline-photo" data-index="10"><img src="imagenes/foto-02-scooter-libertad.jpeg" alt="Capítulo VII" onerror="this.style.background='linear-gradient(135deg, #1a0012, #2a0020)'"></div>
+            <div class="timeline-text-content">
+              <h3 class="timeline-title">Presente en Movimiento</h3>
+              <p class="timeline-subtitle">Libertad y hogar</p>
+              <p class="timeline-text">Hoy, mi vida es un equilibrio entre la serenidad del hogar y la emoción de la ruta. He descubierto una libertad inigualable sobre dos ruedas. Ya sea en la agilidad de mi scooter o sintiendo el motor de mi motocicleta de marchas, el viento en el rostro me recuerda que estoy viva y que el mundo es vasto para quien se atreve a recorrerlo. Conducir es mi meditación, mi forma de conectar con el camino y conmigo misma. Al regresar a casa, me espera la calidez de los míos y la alegría juguetona de mis mascotas, esos seres leales que completan nuestro hogar.</p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Gallery -->
+  <section class="gallery-section" id="galeria">
+    <div class="gallery-title reveal">
+      <p class="section-label">Memories</p>
+      <h2 class="section-title">La Galería de la Vida</h2>
+    </div>
+    <div class="gallery-grid">
+      <div class="gallery-item wide" data-index="0"><img src="imagenes/foto-08-bebe-infancia.jpeg" alt="" onerror="this.style.background='linear-gradient(135deg, #1a0012, #2a0020)'"><div class="gallery-overlay"><span class="gallery-caption">Los primeros latidos — El comienzo de todo</span></div></div>
+      <div class="gallery-item" data-index="1"><img src="imagenes/foto-10-sombrero-vueltiao.jpeg" alt="" onerror="this.style.background='linear-gradient(135deg, #1a0012, #2a0020)'"><div class="gallery-overlay"><span class="gallery-caption">El sombrero vueltiao — Raíces colombianas</span></div></div>
+      <div class="gallery-item" data-index="2"><img src="imagenes/foto-05-futbol-sala-bogota.jpeg" alt="" onerror="this.style.background='linear-gradient(135deg, #1a0012, #2a0020)'"><div class="gallery-overlay"><span class="gallery-caption">Representando Bogotá D.C. — Fútbol sala</span></div></div>
+      <div class="gallery-item" data-index="3"><img src="imagenes/foto-01-parque-acuatico.jpeg" alt="" onerror="this.style.background='linear-gradient(135deg, #1a0012, #2a0020)'"><div class="gallery-overlay"><span class="gallery-caption">Familia united — Momentos de alegría</span></div></div>
+      <div class="gallery-item tall" data-index="4"><img src="imagenes/foto-04-familia-noche.jpeg" alt="" onerror="this.style.background='linear-gradient(135deg, #1a0012, #2a0020)'"><div class="gallery-overlay"><span class="gallery-caption">Los míos — El hogar bogotano</span></div></div>
+      <div class="gallery-item" data-index="5"><img src="imagenes/foto-09-mascota-perro.jpeg" alt="" onerror="this.style.background='linear-gradient(135deg, #1a0012, #2a0020)'"><div class="gallery-overlay"><span class="gallery-caption">La mascota del hogar — Amor peludo</span></div></div>
+      <div class="gallery-item" data-index="6"><img src="imagenes/foto-07-amigas-selfie.jpeg" alt="" onerror="this.style.background='linear-gradient(135deg, #1a0012, #2a0020)'"><div class="gallery-overlay"><span class="gallery-caption">Amigas — Familia por elección</span></div></div>
+      <div class="gallery-item" data-index="7"><img src="imagenes/foto-03-amigos-reunion.jpeg" alt="" onerror="this.style.background='linear-gradient(135deg, #1a0012, #2a0020)'"><div class="gallery-overlay"><span class="gallery-caption">La magia de compartir</span></div></div>
+      <div class="gallery-item wide" data-index="8"><img src="imagenes/foto-06-graduacion.jpeg" alt="" onerror="this.style.background='linear-gradient(135deg, #1a0012, #2a0020)'"><div class="gallery-overlay"><span class="gallery-caption">El triunfo de la perseverancia</span></div></div>
+      <div class="gallery-item" data-index="9"><img src="imagenes/foto-00-cumpleanos-familia.jpeg" alt="" onerror="this.style.background='linear-gradient(135deg, #1a0012, #2a0020)'"><div class="gallery-overlay"><span class="gallery-caption">Feliz cumpleaños — Con papá y mamá</span></div></div>
+      <div class="gallery-item" data-index="10"><img src="imagenes/foto-02-scooter-libertad.jpeg" alt="" onerror="this.style.background='linear-gradient(135deg, #1a0012, #2a0020)'"><div class="gallery-overlay"><span class="gallery-caption">Libertad sobre dos ruedas</span></div></div>
+      <div class="gallery-item" data-index="11"><img src="imagenes/foto-11-moto-tvs.jpeg" alt="" onerror="this.style.background='linear-gradient(135deg, #1a0012, #2a0020)'"><div class="gallery-overlay"><span class="gallery-caption">Presente en movimiento — TVS</span></div></div>
+    </div>
+  </section>
+
+  <!-- Quote 2 -->
+  <section class="parallax-quote">
+    <div class="quote-card reveal">
+      <p class="quote-text">"Los sueños no se cumplen por arte de magia, sino por la determinación de no rendirse nunca."</p>
+      <span class="quote-author">— Laura Farfán</span>
+    </div>
+  </section>
+
+  <!-- Present -->
+  <section class="present" id="presente">
+    <div class="present-text reveal">
+      <p class="section-label">Hoy</p>
+      <h2 class="section-title">Presente en Movimiento</h2>
+      <div class="divider"></div>
+      <p>Hoy, mi vida es un equilibrio entre la serenidad del hogar y la emoción de la ruta. He descubierto una libertad inigualable sobre dos ruedas. Ya sea en la agilidad de mi scooter o sintiendo el motor de mi motocicleta de marchas, el viento en el rostro me recuerda que estoy viva y que el mundo es vasto para quien se atreve a recorrerlo. Conducir es mi meditación, mi forma de conectar con el camino y conmigo misma. Al regresar a casa, me espera la calidez de los míos y la alegría juguetona de mis mascotas, esos seres leales que completan nuestro hogar. Soy el resultado de cada gol anotado, de cada kilómetro recorrido por las carreteras de Colombia, de cada clase de educación física y de cada abrazo de mis padres. Esta es mi historia, una que sigo escribiendo cada día con la fuerza de una profesional que ama lo que hace y una mujer que sabe que lo mejor aún está por venir.</p>
+      <div class="badges">
+        <span class="badge">🏍️ Motociclista</span>
+        <span class="badge">⚽ Deportista</span>
+        <span class="badge">📚 Licenciada</span>
+        <span class="badge">🐾 Amante Animales</span>
+      </div>
+    </div>
+    <div class="present-image reveal">
+      <div class="glass-card">
+        <p class="present-quote">"Soy el resultado de cada gol anotado, de cada kilómetro recorrido por las carreteras de Colombia, de cada clase de educación física y de cada abrazo de mis padres. Esta es mi historia, una que sigo escribiendo cada día."</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- Footer -->
+  <footer>
+    <h3 class="footer-title">Lo mejor aún está por venir</h3>
+    <div class="footer-divider"></div>
+    <p class="footer-text">Una historia colombiana de amor, esfuerzo y libertad · Bogotá D.C.</p>
+    <p class="footer-colombiana">🇨🇴 Hecha en Colombia · 2026</p>
+  </footer>
+
+  <!-- Lightbox -->
+  <div class="lightbox" id="lightbox">
+    <button class="lightbox-close" id="lightboxClose">×</button>
+    <button class="lightbox-nav lightbox-prev" id="lightboxPrev">‹</button>
+    <button class="lightbox-nav lightbox-next" id="lightboxNext">›</button>
+    <img class="lightbox-image" id="lightboxImage" src="" alt="">
+    <p class="lightbox-caption" id="lightboxCaption"></p>
+  </div>
+
+  <script>
+    // Gallery data
+    const galleryData = [
+      { src: 'imagenes/foto-08-bebe-infancia.jpeg', caption: 'Los primeros latidos — El comienzo de todo' },
+      { src: 'imagenes/foto-10-sombrero-vueltiao.jpeg', caption: 'El sombrero vueltiao — Raíces colombianas' },
+      { src: 'imagenes/foto-05-futbol-sala-bogota.jpeg', caption: 'Representando Bogotá D.C. — Fútbol sala' },
+      { src: 'imagenes/foto-01-parque-acuatico.jpeg', caption: 'Familia united — Momentos de alegría' },
+      { src: 'imagenes/foto-04-familia-noche.jpeg', caption: 'Los míos — El hogar bogotano' },
+      { src: 'imagenes/foto-09-mascota-perro.jpeg', caption: 'La mascota del hogar — Amor peludo' },
+      { src: 'imagenes/foto-07-amigas-selfie.jpeg', caption: 'Amigas — Familia por elección' },
+      { src: 'imagenes/foto-03-amigos-reunion.jpeg', caption: 'La magia de compartir' },
+      { src: 'imagenes/foto-06-graduacion.jpeg', caption: 'El triunfo de la perseverancia' },
+      { src: 'imagenes/foto-00-cumpleanos-familia.jpeg', caption: 'Feliz cumpleaños — Con papá y mamá' },
+      { src: 'imagenes/foto-02-scooter-libertad.jpeg', caption: 'Libertad sobre dos ruedas' },
+      { src: 'imagenes/foto-11-moto-tvs.jpeg', caption: 'Presente en movimiento — TVS' }
+    ];
+
+    // Cursor
+    const cursorDot = document.getElementById('cursorDot');
+    const cursorRing = document.getElementById('cursorRing');
+    let mouseX = 0, mouseY = 0, ringX = 0, ringY = 0;
+
+    document.addEventListener('mousemove', (e) => {
+      mouseX = e.clientX;
+      mouseY = e.clientY;
+      cursorDot.style.left = mouseX - 4 + 'px';
+      cursorDot.style.top = mouseY - 4 + 'px';
+    });
+
+    function animateRing() {
+      ringX += (mouseX - ringX) * 0.15;
+      ringY += (mouseY - ringY) * 0.15;
+      cursorRing.style.left = ringX - 20 + 'px';
+      cursorRing.style.top = ringY - 20 + 'px';
+      requestAnimationFrame(animateRing);
+    }
+    animateRing();
+
+    // Nav scroll
+    const nav = document.getElementById('nav');
+    window.addEventListener('scroll', () => {
+      nav.classList.toggle('scrolled', window.scrollY > 50);
+    });
+
+    // Reveal on scroll
+    const revealElements = document.querySelectorAll('.reveal, .timeline-item, .gallery-item');
+    const observer = new IntersectionObserver((entries) => {
+      entries.forEach((entry) => {
+        if (entry.isIntersecting) entry.target.classList.add('visible');
+      });
+    }, { threshold: 0.1 });
+    revealElements.forEach(el => observer.observe(el));
+
+    // Gallery stagger
+    document.querySelectorAll('.gallery-item').forEach((item, index) => {
+      item.style.transitionDelay = (index * 0.1) + 's';
+    });
+
+    // Lightbox
+    const lightbox = document.getElementById('lightbox');
+    const lightboxImage = document.getElementById('lightboxImage');
+    const lightboxCaption = document.getElementById('lightboxCaption');
+    let currentIndex = 0;
+
+    function openLightbox(index) {
+      currentIndex = index;
+      lightboxImage.src = galleryData[index].src;
+      lightboxCaption.textContent = galleryData[index].caption;
+      lightbox.classList.add('active');
+    }
+
+    document.querySelectorAll('.gallery-item').forEach((item, index) => {
+      item.addEventListener('click', () => openLightbox(index));
+    });
+
+    document.querySelectorAll('.timeline-photo').forEach((photo, index) => {
+      photo.addEventListener('click', () => openLightbox(index));
+    });
+
+    document.getElementById('lightboxClose').addEventListener('click', () => lightbox.classList.remove('active'));
+    document.getElementById('lightboxPrev').addEventListener('click', () => {
+      currentIndex = (currentIndex - 1 + galleryData.length) % galleryData.length;
+      lightboxImage.src = galleryData[currentIndex].src;
+      lightboxCaption.textContent = galleryData[currentIndex].caption;
+    });
+    document.getElementById('lightboxNext').addEventListener('click', () => {
+      currentIndex = (currentIndex + 1) % galleryData.length;
+      lightboxImage.src = galleryData[currentIndex].src;
+      lightboxCaption.textContent = galleryData[currentIndex].caption;
+    });
+
+    document.addEventListener('keydown', (e) => {
+      if (!lightbox.classList.contains('active')) return;
+      if (e.key === 'Escape') lightbox.classList.remove('active');
+      if (e.key === 'ArrowLeft') {
+        currentIndex = (currentIndex - 1 + galleryData.length) % galleryData.length;
+        lightboxImage.src = galleryData[currentIndex].src;
+        lightboxCaption.textContent = galleryData[currentIndex].caption;
+      }
+      if (e.key === 'ArrowRight') {
+        currentIndex = (currentIndex + 1) % galleryData.length;
+        lightboxImage.src = galleryData[currentIndex].src;
+        lightboxCaption.textContent = galleryData[currentIndex].caption;
+      }
+    });
+
+    lightbox.addEventListener('click', (e) => {
+      if (e.target === lightbox) lightbox.classList.remove('active');
+    });
+
+    // Carousel Chapter IV
+    const carousel = document.getElementById('carousel-chapter');
+    if (carousel) {
+      const slides = carousel.querySelectorAll('.carousel-slide');
+      const dots = carousel.querySelectorAll('.carousel-dot');
+      let currentSlide = 0;
+      let interval;
+      let isPaused = false;
+
+      function showSlide(index) {
+        slides.forEach(s => s.classList.remove('active'));
+        dots.forEach(d => d.classList.remove('active'));
+        slides[index].classList.add('active');
+        dots[index].classList.add('active');
+      }
+
+      function nextSlide() {
+        if (!isPaused) {
+          currentSlide = (currentSlide + 1) % slides.length;
+          showSlide(currentSlide);
+        }
+      }
+
+      interval = setInterval(nextSlide, 3500);
+
+      dots.forEach((dot, index) => {
+        dot.addEventListener('click', () => {
+          currentSlide = index;
+          showSlide(currentSlide);
+          clearInterval(interval);
+          interval = setInterval(nextSlide, 3500);
+        });
+      });
+
+      carousel.addEventListener('mouseenter', () => { isPaused = true; });
+      carousel.addEventListener('mouseleave', () => { isPaused = false; });
+    }
+
+    // Parallax
+    window.addEventListener('scroll', () => {
+      const scrolled = window.scrollY;
+      document.querySelectorAll('.parallax-quote').forEach(section => {
+        section.style.backgroundPositionY = (scrolled * 0.3) + 'px';
+      });
+    });
+  </script>
+</body>
+</html>
 
     nav.scrolled {
       box-shadow: 0 8px 40px rgba(0,0,0,0.5);
